@@ -1,0 +1,2 @@
+rootProject.name='Liberty&Passage'
+include ':app'
