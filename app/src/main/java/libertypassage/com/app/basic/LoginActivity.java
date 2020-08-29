@@ -35,7 +35,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -76,12 +78,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     Spinner spn_countryCode;
     String country_Name, flag = "x", country;
-    List<CountryDetail> countryDetails = new ArrayList<CountryDetail>();
     ArrayList<String> Country_names_array = new ArrayList<String>();
     ArrayList<CountryDto> countries = new ArrayList<>();
     ArrayList<CountryDto> filterdNames = new ArrayList<>();
     CountryCodeSpinnerAdapter adapter;
     Dialog dialog;
+
 
 
     @Override
@@ -139,7 +141,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         et_mobileNo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @SuppressLint("ResourceAsColor")
@@ -195,9 +196,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
 
+        String jsonFileString = Utility.getJsonFromAssets(getApplicationContext(), "countrylist.json");
+        Gson gson = new Gson();
+        Type listUserType = new TypeToken<List<CountryDetail>>() { }.getType();
 
-        countryDetails.clear();
-        countryDetails.addAll(Utility.getCountryList(context));
+        List<CountryDetail> countryDetails = gson.fromJson(jsonFileString, listUserType);
         for (int i = 0; i < countryDetails.size(); i++) {
             countries.add(new CountryDto(countryDetails.get(i).getCountryName(), countryDetails.get(i).getCallingcodes(), countryDetails.get(i).getId()));
             Country_names_array.add(countryDetails.get(i).getCountryName().toUpperCase());
@@ -206,15 +209,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         spn_countryCode.setAdapter(adapter);
         spn_countryCode.setOnItemSelectedListener(LoginActivity.this);
         setCountryCode();
-
-        if (countryDetails.size() == 0) {
-            if (Utility.isConnectingToInternet(context)) {
-                getCountry();
-            } else {
-                Toast.makeText(getApplicationContext(), "Please connect to internet and try again", Toast.LENGTH_LONG).show();
-            }
-        }
-
     }
 
     @Override
@@ -372,48 +366,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<ModelOTP> call, Throwable t) {
-                Utility.stopProgressDialog(context);
-//                Log.e("model", "onFailure    " + t.getMessage());
-                Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void getCountry() {
-        Utility.showProgressDialog(context);
-        ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelCountryList> call = apiInterface.getCountries(Constants.KEY_BOT);
-
-        call.enqueue(new Callback<ModelCountryList>() {
-            @Override
-            public void onResponse(Call<ModelCountryList> call, Response<ModelCountryList> response) {
-                Utility.stopProgressDialog(context);
-                ModelCountryList model = response.body();
-                Log.e("modelChangeStaus", new Gson().toJson(model));
-                if (model != null && model.getError().equals(false)) {
-
-                    countryDetails = model.getDetails();
-                    for (int i = 0; i < countryDetails.size(); i++) {
-                        countries.add(new CountryDto(countryDetails.get(i).getCountryName(), countryDetails.get(i).getCallingcodes(), countryDetails.get(i).getId()));
-                        Country_names_array.add(countryDetails.get(i).getCountryName().toUpperCase());
-                    }
-
-                    Log.e("countryDetails", new Gson().toJson(countryDetails));
-                    adapter = new CountryCodeSpinnerAdapter(context, R.layout.spinner_text, Country_names_array);
-                    spn_countryCode.setAdapter(adapter);
-                    Log.e("country-----", adapter.getItem(2));
-                    spn_countryCode.setOnItemSelectedListener(LoginActivity.this);
-                    setCountryCode();
-
-
-                } else if (model != null && model.getError().equals(true)) {
-                    Utility.stopProgressDialog(context);
-                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelCountryList> call, Throwable t) {
                 Utility.stopProgressDialog(context);
 //                Log.e("model", "onFailure    " + t.getMessage());
                 Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();

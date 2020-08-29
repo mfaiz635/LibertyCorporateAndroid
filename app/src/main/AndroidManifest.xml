@@ -16,9 +16,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
-
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -46,36 +43,60 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".basic.LoginActivity" />
-        <activity android:name=".basic.ForgotPassword" />
-        <activity android:name=".basic.UpdatePassword" />
-        <activity android:name=".basic.SignUpActivity" />
-        <activity android:name=".basic.VerifyOTPSignUp" />
-        <activity android:name=".basic.RequestOtpEmail" />
-        <activity android:name=".basic.VerifyOtpEmailSignUp" />
-        <activity android:name=".basic.VerifyOTPForgotPassword" />
-        <activity android:name=".basic.Acknowledgement" />
-        <activity android:name=".basic.EnrolmentDeclaration" />
-        <activity android:name=".basic.MyTemperature" />
-        <activity android:name=".basic.NoInternetConnection" />
-        <activity android:name=".basic.AddAddress" />
-        <activity android:name=".basic.ConfirmDetails" />
-        <activity android:name=".basic.ChangeStatus" />
-        <activity android:name=".basic.HomePage" />
-        <activity android:name=".basic.RedLocationAlert" />
-        <activity android:name=".basic.YellowInfectedAlert" />
-        <activity android:name=".basic.UpdateAddress" />
-        <activity android:name=".basic.UpdateProfile" />
-        <activity android:name=".basic.VerifyOtpEmailUpadteProfile" />
-        <activity android:name=".basic.RequestOtpEmailForgotPassword" />
-        <activity android:name=".basic.VerifyOtpEmailForgotPassword" />
-        <activity android:name=".basic.UpdateMyTemperature" />
-        <activity android:name=".basic.LocationHistory" />
-        <activity android:name=".basic.GlobeExploreActivity" />
-        <activity android:name=".other.QRCodeScanerActivity" />
-        <activity android:name=".other.QRScanResultActivity" />
-        <activity android:name=".basic.TestingActivity" />
-
+        <activity android:name=".basic.LoginActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.ForgotPassword"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.UpdatePassword"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.SignUpActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.VerifyOTPSignUp"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.RequestOtpEmail"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.VerifyOtpEmailSignUp"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.VerifyOTPForgotPassword"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.Acknowledgement"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.EnrolmentDeclaration"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.MyTemperature"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.NoInternetConnection"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.AddAddress"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.ConfirmDetails"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.ChangeStatus"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.HomePage"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.UpdateAddress"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.UpdateProfile"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.VerifyOtpEmailUpadteProfile"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.RequestOtpEmailForgotPassword"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.VerifyOtpEmailForgotPassword"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.UpdateMyTemperature"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.LocationHistory"
+            android:launchMode="singleTop"/>
+        <activity android:name=".other.QRCodeScanerActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".other.QRScanResultActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".basic.TestingActivity"
+            android:launchMode="singleTop"/>
+<!--        <activity android:name=".basic.RedLocationAlert" />-->
+<!--        <activity android:name=".basic.YellowInfectedAlert" />-->
 
         <activity
             android:name=".image_croping.CropImageActivity"

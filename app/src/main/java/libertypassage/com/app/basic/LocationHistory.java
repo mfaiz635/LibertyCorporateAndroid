@@ -161,7 +161,6 @@ public class LocationHistory extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(getApplicationContext(), "Please connect to internet and try again", Toast.LENGTH_LONG).show();
             }
         }
-
     }
 
 

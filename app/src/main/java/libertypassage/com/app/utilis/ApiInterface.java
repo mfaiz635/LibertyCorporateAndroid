@@ -164,8 +164,7 @@ public interface ApiInterface {
     @POST(Constants.LOCATION_HISTORY)
     @FormUrlEncoded
     Call<ModelLocationHistory> getLocationHistory(@Header("Authorization") String auth,
-                                                  @Field("if_bot") String if_bot
-                                    );
+                                                  @Field("if_bot") String if_bot);
 
     @POST(Constants.TRACK_USER_LOCATION)
     @FormUrlEncoded

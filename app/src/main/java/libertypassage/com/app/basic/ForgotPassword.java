@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,7 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +60,6 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
     private final String TAG = ForgotPassword.class.getSimpleName();
     Spinner spnCountryCode;
     String country_Name, flag = "x", country;
-    List<CountryDetail> countryDetails = new ArrayList<CountryDetail>();
     ArrayList<String> Country_names_array = new ArrayList<String>();
     ArrayList<CountryDto> countries = new ArrayList<>();
     ArrayList<CountryDto> filterdNames = new ArrayList<>();
@@ -86,9 +88,11 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         submit_btn.setOnClickListener(this);
         tv_login.setOnClickListener(this);
 
+        String jsonFileString = Utility.getJsonFromAssets(getApplicationContext(), "countrylist.json");
+        Gson gson = new Gson();
+        Type listUserType = new TypeToken<List<CountryDetail>>() { }.getType();
 
-        countryDetails.clear();
-        countryDetails.addAll(Utility.getCountryList(context));
+        List<CountryDetail> countryDetails = gson.fromJson(jsonFileString, listUserType);
         for (int i = 0; i < countryDetails.size(); i++) {
             countries.add(new CountryDto(countryDetails.get(i).getCountryName(), countryDetails.get(i).getCallingcodes(), countryDetails.get(i).getId()));
             Country_names_array.add(countryDetails.get(i).getCountryName().toUpperCase());
@@ -98,15 +102,14 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         spnCountryCode.setOnItemSelectedListener(ForgotPassword.this);
         setCountryCode();
 
-        if (countryDetails.size() == 0) {
-            if (Utility.isConnectingToInternet(context)) {
-                getCountry();
-            } else {
-                Toast.makeText(getApplicationContext(), "Please connect to internet and try again", Toast.LENGTH_LONG).show();
+        et_mobileNo.setFocusable(false);
+        et_mobileNo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                et_mobileNo.setFocusableInTouchMode(true);
+                return false;
             }
-        }
-
-
+        });
     }
 
     @Override
@@ -186,54 +189,6 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onFailure(Call<ModelReset> call, Throwable t) {
                 Utility.stopProgressDialog(context);
-                Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    private void getCountry() {
-        Utility.showProgressDialog(context);
-        ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelCountryList> call = apiInterface.getCountries(Constants.KEY_BOT);
-
-        call.enqueue(new Callback<ModelCountryList>() {
-            @Override
-            public void onResponse(Call<ModelCountryList> call, Response<ModelCountryList> response) {
-                Utility.stopProgressDialog(context);
-                ModelCountryList model = response.body();
-                Log.e("modelChangeStaus", new Gson().toJson(model));
-                if (model != null && model.getError().equals(false)) {
-
-                    countryDetails = model.getDetails();
-                    for (int i = 0; i < countryDetails.size(); i++) {
-                        countries.add(new CountryDto(countryDetails.get(i).getCountryName(), countryDetails.get(i).getCallingcodes(), countryDetails.get(i).getId()));
-                        Country_names_array.add(countryDetails.get(i).getCountryName().toUpperCase());
-                    }
-
-                    Log.e("countryDetails", new Gson().toJson(countryDetails));
-                    adapter = new CountryCodeSpinnerAdapter(context, R.layout.spinner_text, Country_names_array);
-                    spnCountryCode.setAdapter(adapter);
-                    Log.e("country-----", adapter.getItem(2));
-                    spnCountryCode.setOnItemSelectedListener(ForgotPassword.this);
-                    setCountryCode();
-
-
-                } else if (model != null && model.getError().equals(true)) {
-                    Utility.stopProgressDialog(context);
-                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelCountryList> call, Throwable t) {
-                Utility.stopProgressDialog(context);
-//                Log.e("model", "onFailure    " + t.getMessage());
                 Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
             }
         });
@@ -372,5 +327,11 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
 
         //calling a method of the adapter class and passing the filtered list
         codeAdapter.filterList(filterdNames);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

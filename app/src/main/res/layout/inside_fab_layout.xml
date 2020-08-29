@@ -67,38 +67,6 @@
 
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/layoutLocation"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|end"-->
-<!--            android:layout_marginTop="@dimen/_5sdp"-->
-<!--            android:layout_marginRight="@dimen/_5sdp"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:orientation="horizontal">-->
-
-
-<!--            <libertypassage.com.app.widgets.CenturyGothicBoldTextView-->
-<!--                android:id="@+id/cvtPhoto"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginRight="@dimen/_5sdp"-->
-<!--                android:text="Update Location"-->
-<!--                android:textAppearance="?android:attr/textAppearanceSmall"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textStyle="bold" />-->
-
-
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/fabPhoto"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:src="@drawable/qr_gray"-->
-<!--                app:backgroundTint="#1B1F3A"-->
-<!--                app:fabSize="mini" />-->
-
-<!--        </LinearLayout>-->
-
         <LinearLayout
             android:id="@+id/layoutProfile"
             android:layout_width="wrap_content"
@@ -109,7 +77,6 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-
             <libertypassage.com.app.widgets.CenturyGothicBoldTextView
                 android:id="@+id/cvtEdit"
                 android:layout_width="wrap_content"
@@ -119,7 +86,6 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabEdit"
@@ -162,38 +128,7 @@
                 app:fabSize="mini" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutglobExplore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
 
-
-            <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-                android:id="@+id/globExplore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:text="Globe Explore"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabglobExplore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/circle_gray"
-                android:src="@drawable/logout"
-                app:backgroundTint="#1B1F3A"
-                app:fabSize="mini" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutLogout"
@@ -205,7 +140,6 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-
             <libertypassage.com.app.widgets.CenturyGothicBoldTextView
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"
@@ -216,7 +150,6 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabLogout"
                 android:layout_width="wrap_content"
@@ -225,7 +158,6 @@
                 android:src="@drawable/logout"
                 app:backgroundTint="#1B1F3A"
                 app:fabSize="mini" />
-
         </LinearLayout>
 
     </LinearLayout>

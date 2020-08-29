@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +42,7 @@ public class SplashActivity extends Activity {
     private Handler handler = new Handler();
     private String TAG = SplashActivity.class.getSimpleName();
     private List<CountryDetail> countryDetails = new ArrayList<CountryDetail>();
-
-    ArrayList<DetailIndustryProf> ipArrayList = new ArrayList<DetailIndustryProf>();
+    private ArrayList<DetailIndustryProf> ipArrayList = new ArrayList<DetailIndustryProf>();
     private String token;
     private static final int PERMISSION_CODE = 100;
     String[] permission = new String[]{
@@ -52,27 +54,23 @@ public class SplashActivity extends Activity {
             Manifest.permission.ACCESS_BACKGROUND_LOCATION};
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         context = SplashActivity.this;
-        int TIME_OUT = 2000;
+        int TIME_OUT = 10;
 
         // get Device Id
         String DeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         Utility.setSharedPreference(context, Constants.KEY_DEVICEID, DeviceId);
         token = Utility.getSharedPreferences(context, Constants.KEY_BEARER_TOKEN);
 
-
         if (Utility.hasPermissionInManifest(SplashActivity.this, PERMISSION_CODE, permission)) {
             handler.postDelayed(runnable, TIME_OUT);
         }
-
     }
-
 
     Runnable runnable = new Runnable() {
         @Override
@@ -80,7 +78,7 @@ public class SplashActivity extends Activity {
             Log.e("Splash", "token : " + token);
             if (!token.equals("")) {
                 String start = Utility.getSharedPreferences(context, Constants.KEY_START);
-                 if (start.equals("1")) {
+                if (start.equals("1")) {
                     startActivity(new Intent(context, EnrolmentDeclaration.class));
                     finish();
                 } else if (start.equals("2")) {
@@ -92,9 +90,9 @@ public class SplashActivity extends Activity {
                 } else if (start.equals("4")) {
                     startActivity(new Intent(context, AddAddress.class));
                     finish();
-                 } else if (start.equals("6")) {
-                     startActivity(new Intent(context, VerifyOtpEmailUpadteProfile.class).putExtra("from", "splash"));
-                     finish();
+                } else if (start.equals("6")) {
+                    startActivity(new Intent(context, VerifyOtpEmailUpadteProfile.class).putExtra("from", "splash"));
+                    finish();
                 } else if (start.equals("5")) {
                     startActivity(new Intent(context, HomePage.class));
                     finish();
@@ -125,29 +123,19 @@ public class SplashActivity extends Activity {
                     finish();
                 } else {
                     Utility.setSharedPreference(context, Constants.KEY_FOR_TITLE, "Required LogIn for update your status");
-                    if (Utility.isConnectingToInternet(context)) {
-                        getCountry();
-                    } else {
-                        Intent i = new Intent(context, LoginActivity.class);
-                        startActivity(i);
-                        finish();
-                    }
+                    Intent i = new Intent(context, LoginActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             }
-
-//            Intent intent = new Intent(context, TestingActivity.class);
-//            startActivity(intent);
-//            finish();
-
         }
     };
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         boolean hasAllPermissions = false;
-
         switch (requestCode) {
             case PERMISSION_CODE:
                 if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
@@ -161,95 +149,6 @@ public class SplashActivity extends Activity {
                     handler.postDelayed(runnable, 2000);
                 }
                 break;
-
         }
     }
-
-    private void getCountry() {
-        Utility.showProgressDialog(context);
-        ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelCountryList> call = apiInterface.getCountries(Constants.KEY_BOT);
-
-        call.enqueue(new Callback<ModelCountryList>() {
-            @Override
-            public void onResponse(Call<ModelCountryList> call, Response<ModelCountryList> response) {
-//                Utility.stopProgressDialog(context);
-                ModelCountryList model = response.body();
-                Log.e("Country", new Gson().toJson(model));
-                if (model != null && model.getError().equals(false)) {
-
-                    countryDetails = model.getDetails();
-                    if (countryDetails != null) {
-                        Utility.saveCountryList(context, countryDetails);
-                    }
-                    getIndustryProfessions();
-
-
-
-                } else if (model != null && model.getError().equals(true)) {
-                    Utility.stopProgressDialog(context);
-                    Intent i = new Intent(context, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-//                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelCountryList> call, Throwable t) {
-                Utility.stopProgressDialog(context);
-                Intent i = new Intent(context, LoginActivity.class);
-                startActivity(i);
-                finish();
-//                 Log.e("model", "onFailure    " + t.getMessage());
-//                 Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void getIndustryProfessions() {
-//        Utility.showProgressDialog(context);
-        ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<IndustryProfessions> call = apiInterface.getIndustryProfessions(Constants.KEY_BOT, "1");
-
-        call.enqueue(new Callback<IndustryProfessions>() {
-            @Override
-            public void onResponse(Call<IndustryProfessions> call, Response<IndustryProfessions> response) {
-                Utility.stopProgressDialog(context);
-                IndustryProfessions model = response.body();
-                Log.e("modelChangeStaus", new Gson().toJson(model));
-                if (model != null && model.getError().equals(false)) {
-                    List<DetailIndustryProf> ipList = new ArrayList<DetailIndustryProf>();
-                    ipList.clear();
-                    ipList = model.getDetails();
-
-                    ipArrayList.clear();
-                    ipArrayList.add(new DetailIndustryProf(0, 1, "Select Profession"));
-                    ipArrayList.addAll(ipList);
-                    if (ipArrayList != null) {
-                        Utility.saveIndustryProfession(context, ipArrayList);
-                    }
-                    Intent i = new Intent(context, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-
-
-                } else if (model != null && model.getError().equals(true)) {
-                    Utility.stopProgressDialog(context);
-                    Intent i = new Intent(context, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<IndustryProfessions> call, Throwable t) {
-                Utility.stopProgressDialog(context);
-                Intent i = new Intent(context, LoginActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-    }
-
 }

@@ -40,9 +40,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -83,17 +85,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView iv_back, editImage, pass_view, pass_hide;
     private CircleImageView civProfile;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    private Pattern UpperCasePatten = Pattern.compile("[A-Z ]");
     private final String error_msg = "Required";
     private String firebaseToken, fullName, email, mobile, mobileWithCountry,
             password, imageProfilePath, s_gender, s_ageGroup, s_profession;
     private int profId, countryId;
     private Context context;
     private String TAG = SignUpActivity.class.getSimpleName();
-    ImageCompression imageCompression;
     Spinner spnCountryCode, spinnerGender, spinnerAgeGroup, spinnerProfession;
     String country_Name, flag = "x", country;
-    List<CountryDetail> countryDetails = new ArrayList<CountryDetail>();
     ArrayList<String> Country_names_array = new ArrayList<String>();
     ArrayList<CountryDto> countries = new ArrayList<>();
     ArrayList<CountryDto> filterdNames = new ArrayList<>();
@@ -162,8 +161,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 });
 
 
-        countryDetails.clear();
-        countryDetails.addAll(Utility.getCountryList(context));
+        String jsonFileString = Utility.getJsonFromAssets(getApplicationContext(), "countrylist.json");
+        Gson gson = new Gson();
+        Type listUserType = new TypeToken<List<CountryDetail>>() { }.getType();
+
+        List<CountryDetail> countryDetails = gson.fromJson(jsonFileString, listUserType);
         for (int i = 0; i < countryDetails.size(); i++) {
             countries.add(new CountryDto(countryDetails.get(i).getCountryName(), countryDetails.get(i).getCallingcodes(), countryDetails.get(i).getId()));
             Country_names_array.add(countryDetails.get(i).getCountryName().toUpperCase());
@@ -177,14 +179,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         ipArrayList.addAll(Utility.getIndustryProfession(context));
         professionAdapter = new ProfessionsAdapter(context, ipArrayList);
         spinnerProfession.setAdapter(professionAdapter);
-
-        if (countryDetails.size() == 0) {
+        if (ipArrayList.size() == 0) {
             if (Utility.isConnectingToInternet(context)) {
-                getCountry();
+                getIndustryProfessions();
             } else {
                 Toast.makeText(getApplicationContext(), "Please connect to internet and try again", Toast.LENGTH_LONG).show();
             }
         }
+
         et_fullName.setText(Utility.getSharedPreferences(context, Constants.KEY_FULLNAME));
         et_email.setText(Utility.getSharedPreferences(context, Constants.KEY_EMAIL));
         Glide.with(context).load(Utility.getSharedPreferences(context, Constants.KEY_POFILE_PIC)).placeholder(R.drawable.profile_pic).error(R.drawable.profile_pic).into(civProfile);
@@ -528,29 +530,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!Utility.isMyServiceRunning(LocationUpdateService.class, SignUpActivity.this)) {
-            Intent intent = new Intent(this, LocationUpdateService.class);
-            startService(intent);
-        }
-
-        if (tv_countryCode.getText().toString().length() == 0) {
-            getCountry();
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-
 
     private void getIndustryProfessions() {
-//        Utility.showProgressDialog(context);
+        Utility.showProgressDialog(context);
         ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
         Call<IndustryProfessions> call = apiInterface.getIndustryProfessions(Constants.KEY_BOT, "1");
 
@@ -583,48 +565,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onFailure(Call<IndustryProfessions> call, Throwable t) {
                 Utility.stopProgressDialog(context);
-                Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void getCountry() {
-        Utility.showProgressDialog(context);
-        ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelCountryList> call = apiInterface.getCountries(Constants.KEY_BOT);
-
-        call.enqueue(new Callback<ModelCountryList>() {
-            @Override
-            public void onResponse(Call<ModelCountryList> call, Response<ModelCountryList> response) {
-//                Utility.stopProgressDialog(context);
-                ModelCountryList model = response.body();
-                Log.e("getCountry", new Gson().toJson(model));
-                if (model != null && model.getError().equals(false)) {
-
-                    countryDetails = model.getDetails();
-                    for (int i = 0; i < countryDetails.size(); i++) {
-                        countries.add(new CountryDto(countryDetails.get(i).getCountryName(), countryDetails.get(i).getCallingcodes(), countryDetails.get(i).getId()));
-                        Country_names_array.add(countryDetails.get(i).getCountryName().toUpperCase());
-                    }
-
-                    Log.e("countryDetails", new Gson().toJson(countryDetails));
-                    adapter = new CountryCodeSpinnerAdapter(context, R.layout.spinner_text, Country_names_array);
-                    spnCountryCode.setAdapter(adapter);
-                    Log.e("country-----", adapter.getItem(2));
-                    spnCountryCode.setOnItemSelectedListener(SignUpActivity.this);
-                    setCountryCode();
-                    getIndustryProfessions();
-
-                } else if (model != null && model.getError().equals(true)) {
-                    Utility.stopProgressDialog(context);
-                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelCountryList> call, Throwable t) {
-                Utility.stopProgressDialog(context);
-//                Log.e("model", "onFailure    " + t.getMessage());
                 Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
             }
         });
@@ -772,7 +712,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         codeAdapter.filterList(filterdNames);
     }
 
-
     private void FileTypeDialog() {
         final BottomSheetDialog dialog = new BottomSheetDialog(SignUpActivity.this);
         View view = SignUpActivity.this.getLayoutInflater().inflate(R.layout.file_type_layout, null);
@@ -842,5 +781,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         dialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
 }

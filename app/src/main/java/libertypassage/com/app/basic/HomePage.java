@@ -56,13 +56,13 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     private TextView tv_changeStatus, tv_status_title, tv_people, tv_status_msg, tv_DetailsMsg,
             tv_yellowMsg, tv_redMsg, tv_whenDidYellow, tv_whenDidRed;
     private RelativeLayout rl_ok, rl_goBack;
-    private ImageView iv_temp, iv_qrScaner, iv_status_logo;
+    private ImageView iv_temp, iv_qrScaner;
     private ImageSpeedometer imageSpeedometer;
     private String token, title, subTitle, descrption, alertDescrption;
     private int statusId, no_of_people, PERMISSION_ID = 44;
     private boolean fabExpanded = false;
     private FloatingActionButton fabSettings;
-    private LinearLayout layoutDetails, layoutLocation, layoutProfile, layoutInfectedArea, layoutglobExplore, layoutLogout;
+    private LinearLayout layoutDetails, layoutProfile, layoutInfectedArea, layoutLogout;
 
 
 
@@ -80,8 +80,6 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     private void findID() {
         iv_temp = findViewById(R.id.iv_temp);
         iv_qrScaner = findViewById(R.id.iv_qrScaner);
-        iv_status_logo = findViewById(R.id.iv_status_logo);
-        iv_status_logo.setVisibility(View.GONE);
         imageSpeedometer = findViewById(R.id.imageSpeedometer);
         tv_status_title = findViewById(R.id.tv_status_title);
         tv_people = findViewById(R.id.tv_people);
@@ -100,10 +98,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
         fabSettings = findViewById(R.id.fabSetting);
         layoutDetails = findViewById(R.id.layoutDetails);
-//        layoutLocation = findViewById(R.id.layoutLocation);
         layoutProfile = findViewById(R.id.layoutProfile);
         layoutInfectedArea = findViewById(R.id.layoutInfectedArea);
-        layoutglobExplore = findViewById(R.id.layoutglobExplore);
         layoutLogout = findViewById(R.id.layoutLogout);
 
 
@@ -116,10 +112,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         rl_goBack.setOnClickListener(this);
         fabSettings.setOnClickListener(this);
         layoutDetails.setOnClickListener(this);
-//        layoutLocation.setOnClickListener(this);
         layoutProfile.setOnClickListener(this);
         layoutInfectedArea.setOnClickListener(this);
-        layoutglobExplore.setOnClickListener(this);
         layoutLogout.setOnClickListener(this);
         Utility.setSharedPreference(context, Constants.KEY_START, "5");
         closeSubMenusFab();
@@ -230,13 +224,13 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 break;
             }
 
-            case R.id.layoutglobExplore: {
-                Intent intent = new Intent(context, GlobeExploreActivity.class);
-                intent.putExtra("from", "home");
-                startActivity(intent);
-                closeSubMenusFab();
-                break;
-            }
+//            case R.id.layoutglobExplore: {
+//                Intent intent = new Intent(context, GlobeExploreActivity.class);
+//                intent.putExtra("from", "home");
+//                startActivity(intent);
+//                closeSubMenusFab();
+//                break;
+//            }
 
             case R.id.layoutLogout: {
                 closeSubMenusFab();
@@ -350,7 +344,6 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         tv_redMsg.setText(alertDescrption);
 
         if (statusId == 3) {    // green status
-            iv_status_logo.setImageDrawable(getResources().getDrawable(R.drawable.green));
             tv_status_title.setTextColor(getResources().getColor(R.color.green_app));
             tv_people.setVisibility(View.GONE);
             tv_changeStatus.setVisibility(View.VISIBLE);
@@ -362,7 +355,6 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             rl_goBack.setVisibility(View.GONE);
 
         } else if (statusId == 1) {   // yellow status
-            iv_status_logo.setImageDrawable(getResources().getDrawable(R.drawable.yellow));
             tv_status_title.setTextColor(getResources().getColor(R.color.yellow_app));
             tv_people.setVisibility(View.GONE);
             tv_status_msg.setVisibility(View.GONE);
@@ -376,7 +368,6 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             rl_goBack.setVisibility(View.VISIBLE);
 
         } else if (statusId == 2) {     // red status
-            iv_status_logo.setImageDrawable(getResources().getDrawable(R.drawable.red));
             tv_status_title.setTextColor(getResources().getColor(R.color.red_app));
             tv_people.setVisibility(View.GONE);
             tv_changeStatus.setVisibility(View.VISIBLE);
@@ -408,10 +399,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     //closes FAB submenus
     private void closeSubMenusFab() {
         layoutDetails.setVisibility(View.INVISIBLE);
-//        layoutLocation.setVisibility(View.INVISIBLE);
         layoutProfile.setVisibility(View.INVISIBLE);
         layoutInfectedArea.setVisibility(View.INVISIBLE);
-        layoutglobExplore.setVisibility(View.INVISIBLE);
         layoutLogout.setVisibility(View.INVISIBLE);
         fabSettings.setImageResource(R.drawable.slider);
         fabExpanded = false;
@@ -420,10 +409,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     //Opens FAB submenus
     private void openSubMenusFab() {
         layoutDetails.setVisibility(View.VISIBLE);
-//        layoutLocation.setVisibility(View.VISIBLE);
         layoutProfile.setVisibility(View.VISIBLE);
         layoutInfectedArea.setVisibility(View.VISIBLE);
-//        layoutglobExplore.setVisibility(View.VISIBLE);
 //        layoutLogout.setVisibility(View.VISIBLE);
         //Change settings icon to 'X' icon
         fabSettings.setImageResource(R.drawable.ic_close_white);
