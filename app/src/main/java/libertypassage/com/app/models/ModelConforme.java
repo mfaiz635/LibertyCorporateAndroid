@@ -4,6 +4,8 @@ package libertypassage.com.app.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import libertypassage.com.app.models.login.LogInDetails;
+
 public class ModelConforme {
 
     @SerializedName("error")

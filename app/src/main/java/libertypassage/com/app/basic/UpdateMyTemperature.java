@@ -37,6 +37,7 @@ public class UpdateMyTemperature extends AppCompatActivity implements View.OnCli
     private Context context;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

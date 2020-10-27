@@ -70,6 +70,11 @@ public class ChangeStatus extends AppCompatActivity implements View.OnClickListe
         oldHospitalAddress = Utility.getSharedPreferences(context, Constants.KEY_HOSPITAL_ADD);
         confirmHospitalDate = Utility.getSharedPreferences(context, Constants.KEY_HOSPITAL_DATE);
         statusId = getIntent().getIntExtra("statusId", 0);
+//        Log.e("statusId", statusId+"");
+//        Log.e("status", status);
+//        Log.e("dateChangeStatus", dateChangeStatus);
+//        Log.e("oldHospitalAddress", oldHospitalAddress);
+//        Log.e("confirmHospitalDate", confirmHospitalDate);
 
         findID();
         init();
@@ -125,7 +130,7 @@ public class ChangeStatus extends AppCompatActivity implements View.OnClickListe
 
             if (!dateChangeStatus.isEmpty()) {
                 tv_lastStatusChange.setVisibility(View.VISIBLE);
-                tv_lastStatusChange.setText("Confirmed 'Fit for work' on " + dateChangeStatus1);
+                tv_lastStatusChange.setText("Confirmed 'Covid-19 negative' on " + dateChangeStatus1);
                 et_hospitalName.setText(oldHospitalAddress);
                 tv_select_date.setText(confirmHospitalDate);
             } else {
@@ -150,16 +155,13 @@ public class ChangeStatus extends AppCompatActivity implements View.OnClickListe
 
             if (!dateChangeStatus.isEmpty()) {
                 tv_lastStatusChange.setVisibility(View.VISIBLE);
-                tv_lastStatusChange.setText("Confirmed 'Unfit for work' on " + dateChangeStatus1);
+                tv_lastStatusChange.setText("Confirmed 'Covid-19 positive' on " + dateChangeStatus1);
                 et_hospitalName.setText(oldHospitalAddress);
                 tv_select_date.setText(confirmHospitalDate);
             } else {
                 tv_lastStatusChange.setVisibility(View.GONE);
             }
-
         }
-
-
     }
 
     private void init() {
@@ -349,14 +351,16 @@ public class ChangeStatus extends AppCompatActivity implements View.OnClickListe
                 if (model != null && model.getError().equals(false)) {
                     
                     Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
-//                    Date date = Calendar.getInstance().getTime();
-//                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//                    String currentDate = df.format(date);
-//
-//                    Utility.setSharedPreference(context, Constants.KEY_STATUS, status);
-//                    Utility.setSharedPreference(context, Constants.KEY_CHANGE_STATUS, currentDate);
-//                    Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_ADD, hospital);
-//                    Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_DATE, selectDate);
+                    Date date = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String currentDate = df.format(date);
+
+                    Utility.setSharedPreference(context, Constants.KEY_STATUS, status);
+                    Utility.setSharedPreference(context, Constants.KEY_CHANGE_STATUS, currentDate);
+                    Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_ADD, hospital);
+                    Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_DATE, selectDate);
+
+                    Log.e(" 4545", currentDate);
                     Intent intent = new Intent(context, HomePage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

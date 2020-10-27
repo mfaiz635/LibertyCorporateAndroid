@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blue"
     tools:context=".basic.LoginActivity">
 
@@ -39,9 +40,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
             <ImageView
                 android:id="@+id/logo"
@@ -66,7 +66,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_3sdp"
                     android:src="@drawable/country"
-                    android:tint="@color/white" />
+                    app:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/iv_country_gray"
@@ -75,7 +75,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_3sdp"
                     android:src="@drawable/country"
-                    android:tint="@color/gray_out"
+                    app:tint="@color/gray_out"
                     android:visibility="gone" />
 
                 <LinearLayout
@@ -165,7 +165,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_3sdp"
                     android:src="@drawable/email_icon"
-                    android:tint="@color/white" />
+                    app:tint="@color/white" />
 
                 <LinearLayout
                     android:id="@+id/ll_userName"
@@ -210,7 +210,7 @@
                     android:layout_height="25dp"
                     android:layout_centerVertical="true"
                     android:src="@drawable/password"
-                    android:tint="@color/white" />
+                    app:tint="@color/white" />
 
                 <libertypassage.com.app.widgets.CenturyGothicEditText
                     android:id="@+id/et_password_login"
@@ -235,7 +235,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/pass_hide"
-                    android:tint="@color/white" />
+                    app:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/pass_hide"
@@ -244,7 +244,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/pass_show"
-                    android:tint="@color/white"
+                    app:tint="@color/white"
                     android:visibility="gone" />
 
                 <View

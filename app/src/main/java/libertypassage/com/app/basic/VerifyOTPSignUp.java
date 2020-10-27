@@ -255,6 +255,7 @@ public class VerifyOTPSignUp extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+
     public void dismissKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (null != activity.getCurrentFocus())

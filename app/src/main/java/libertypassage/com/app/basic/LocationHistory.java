@@ -1,14 +1,34 @@
 package libertypassage.com.app.basic;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,10 +47,12 @@ import libertypassage.com.app.models.DetailLocationHistory;
 import libertypassage.com.app.models.ModelLocationHistory;
 import libertypassage.com.app.models.MyItem;
 import libertypassage.com.app.other.MarkerClusterRenderer;
+import libertypassage.com.app.services.GPSTrackerLocation;
 import libertypassage.com.app.utilis.ApiInterface;
 import libertypassage.com.app.utilis.ClientInstance;
 import libertypassage.com.app.utilis.Constants;
 import libertypassage.com.app.utilis.Utility;
+import libertypassage.com.app.widgets.CenturyGothicTextview;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,7 +63,7 @@ public class LocationHistory extends AppCompatActivity implements View.OnClickLi
     private String TAG = LocationHistory.class.getSimpleName();
     private Context context;
     private ImageView iv_back;
-    private String token, from, s_lats="", s_longs="", s_location_address="";
+    private String token, s_lats="", s_longs="", s_location_address="";
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private List<DetailLocationHistory> detailLocationHistories = new ArrayList<DetailLocationHistory>();
@@ -59,22 +81,29 @@ public class LocationHistory extends AppCompatActivity implements View.OnClickLi
         findID();
     }
 
-
     private void findID() {
         iv_back = findViewById(R.id.iv_back);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         iv_back.setOnClickListener(this);
-        from = getIntent().getStringExtra("from");
 
-        Utility.getMyLocation(context);
         s_lats = Utility.getSharedPreferences(context, Constants.KEY_LAT);
         s_longs = Utility.getSharedPreferences(context, Constants.KEY_LONG);
-        s_location_address = Utility.getSharedPreferences(context, Constants.KEY_MY_LOCATION);
-        Log.e("s_lats", s_lats + s_longs);
-
+        GPSLocation();
     }
 
+    public void GPSLocation() {
+        GPSTrackerLocation gps = new GPSTrackerLocation(context);
+        LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER ) ) {
+            enableGPSSettingsRequest(LocationHistory.this);
+        }else{
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            s_lats = String.valueOf(latitude);
+            s_longs = String.valueOf(longitude);
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -100,7 +129,7 @@ public class LocationHistory extends AppCompatActivity implements View.OnClickLi
             mMap.addMarker(new MarkerOptions().position(myLatLong).title(s_location_address));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(s_lats), Double.parseDouble(s_longs)), 15));
         }else{
-            Toast.makeText(context, "Required enable your location", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Required enable your location", Toast.LENGTH_LONG).show();
         }
 
          setUpClusterer();
@@ -205,6 +234,64 @@ public class LocationHistory extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    private void enableGPSSettingsRequest(Context context) {
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context).addApi(LocationServices.API).build();
+        googleApiClient.connect();
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.e(TAG, "All location settings are satisfied.");
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+//                        Log.e(TAG, "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+                        try {
+                            // Show the dialog by calling startResolutionForResult(), and check the result
+                            status.startResolutionForResult(LocationHistory.this, 100);
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.e(TAG, "PendingIntent unable to execute request.");
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.e(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                        break;
+                }
+            }
+        });
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        //final LocationSettingsStates states = LocationSettingsStates.fromIntent(intent);
+        switch (requestCode) {
+            case 100:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        GPSLocation();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Log.e("Cancel", "Not enabled GPS");
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -212,5 +299,3 @@ public class LocationHistory extends AppCompatActivity implements View.OnClickLi
     }
 }
 
-//   https://developers.google.com/maps/documentation/android-sdk/shapes#polygons
-//    https://developers.google.com/maps/documentation/android-sdk/utility/marker-clustering

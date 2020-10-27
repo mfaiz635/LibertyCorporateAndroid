@@ -59,7 +59,6 @@
             android:paddingLeft="@dimen/_15sdp"
             android:paddingRight="@dimen/_15sdp">
 
-
             <libertypassage.com.app.widgets.CenturyGothicTextview
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,36 +67,6 @@
                 android:text="EDIT PROFILE"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp" />
-
-            <RelativeLayout
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="@dimen/_120sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:visibility="gone"
-                >
-
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/civProfile"
-                    android:layout_width="@dimen/_110sdp"
-                    android:layout_height="@dimen/_110sdp"
-                    android:padding="2dp"
-                    android:src="@drawable/profile_pic" />
-
-                <ImageView
-                    android:id="@+id/editImage"
-                    android:layout_width="@dimen/_35sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/_35sdp"
-                    android:backgroundTint="@color/white"
-                    android:background="@drawable/circle_orange"
-                    android:elevation="@dimen/_5sdp"
-                    android:padding="@dimen/_7sdp"
-                    android:src="@drawable/edit">
-
-                </ImageView>
-            </RelativeLayout>
 
             <libertypassage.com.app.widgets.CenturyGothicEditText
                 android:id="@+id/et_fullName"
@@ -121,9 +90,6 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@color/white" />
-
-
-
 
             <libertypassage.com.app.widgets.CenturyGothicEditText
                 android:id="@+id/et_email"
@@ -248,7 +214,7 @@
                 android:background="@color/white" />
 
             <Spinner
-                android:id="@+id/spinnerProfession"
+                android:id="@+id/spinnerIndustry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/_35sdp"
@@ -263,6 +229,21 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@color/white" />
 
+            <Spinner
+                android:id="@+id/spinnerProfession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/_35sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@android:color/transparent" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@color/white" />
 
             <libertypassage.com.app.widgets.CenturyGothicTextview
                 android:id="@+id/tv_next"

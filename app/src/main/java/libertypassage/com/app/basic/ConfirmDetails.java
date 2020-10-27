@@ -26,7 +26,6 @@ public class ConfirmDetails extends AppCompatActivity implements View.OnClickLis
     private CenturyGothicTextview tv_next, tv_address, tv_temprature, tv_tempratureType;
     private ImageView iv_back, iv_temp_edit, iv_location_edit;
     private RelativeLayout rl_restart;
-    private String token;
     private Context context;
 
 
@@ -56,7 +55,6 @@ public class ConfirmDetails extends AppCompatActivity implements View.OnClickLis
         iv_location_edit.setOnClickListener(this);
         tv_next.setOnClickListener(this);
         rl_restart.setOnClickListener(this);
-        token = Utility.getSharedPreferences(context, Constants.KEY_BEARER_TOKEN);
     }
 
     private void init() {
@@ -75,7 +73,6 @@ public class ConfirmDetails extends AppCompatActivity implements View.OnClickLis
 
             case R.id.tv_next: {
                 localNotification();
-
                 break;
             }
 
@@ -148,7 +145,6 @@ public class ConfirmDetails extends AppCompatActivity implements View.OnClickLis
         calendar.set(Calendar.HOUR_OF_DAY, 7);
         calendar.set(Calendar.MINUTE, 0);
         manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
-
 
         Intent intent = new Intent(context, HomePage.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -17,10 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
-
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import libertypassage.com.app.R;
 import libertypassage.com.app.models.Details;
 import libertypassage.com.app.models.DetailsOTP;

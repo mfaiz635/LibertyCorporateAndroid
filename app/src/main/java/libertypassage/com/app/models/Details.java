@@ -4,6 +4,11 @@ package libertypassage.com.app.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import libertypassage.com.app.models.login.Address;
+import libertypassage.com.app.models.login.Confirmed;
+import libertypassage.com.app.models.login.LastTrack;
+import libertypassage.com.app.models.login.Temprature;
+
 public class Details {
 
     @SerializedName("usr_id")

@@ -106,11 +106,10 @@ public class RestartServiceBroadcastReceiver extends BroadcastReceiver {
                     try {
                         context.getApplicationContext().registerReceiver(restartSensorServiceReceiver, filter);
                     } catch (Exception ex) {
-
                     }
                 }
             }
-        }, 300000);
+        }, 60000);
 
     }
 

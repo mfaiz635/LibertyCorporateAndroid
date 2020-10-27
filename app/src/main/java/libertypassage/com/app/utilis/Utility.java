@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import libertypassage.com.app.R;
 import libertypassage.com.app.models.CountryDetail;
+import libertypassage.com.app.models.DetailIndustry;
 import libertypassage.com.app.models.DetailIndustryProf;
 import libertypassage.com.app.models.DetailLocationHistory;
 import libertypassage.com.app.models.ModelMyLocation;
@@ -41,7 +42,7 @@ import libertypassage.com.app.models.ModelMyLocation;
 
 public class Utility {
     private static String PREFERENCE = "LIBERTY";
-    private static String KEY_COUNTRY_LIST = "country_list";
+    private static String KEY_INDUSTRY_LIST = "industry_list";
     private static String KEY_INDUSTRY_PROF = "industry_profession";
     private static String KEY_LOCATION_HISTORY = "location_history";
     private static ProgressDialog progressDialog;
@@ -114,19 +115,19 @@ public class Utility {
     }
 
 
-    public static void saveCountryList(Context context, List<CountryDetail> list) {
+    public static void saveIndustry(Context context, List<DetailIndustry> list) {
         String str = new Gson().toJson(list);
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(KEY_COUNTRY_LIST, str);
+        editor.putString(KEY_INDUSTRY_LIST, str);
         editor.apply();
     }
 
-    public static ArrayList<CountryDetail> getCountryList(Context context) {
+    public static ArrayList<DetailIndustry> getIndustry(Context context) {
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-        String str = sp.getString(KEY_COUNTRY_LIST, null);
+        String str = sp.getString(KEY_INDUSTRY_LIST, null);
         try {
-            CountryDetail[] arr = new Gson().fromJson(str, CountryDetail[].class);
+            DetailIndustry[] arr = new Gson().fromJson(str, DetailIndustry[].class);
             return new ArrayList<>(Arrays.asList(arr));
         } catch (Exception e) {
             return new ArrayList<>();

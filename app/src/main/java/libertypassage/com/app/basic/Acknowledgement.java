@@ -3,8 +3,6 @@ package libertypassage.com.app.basic;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,7 +18,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,17 +34,13 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import libertypassage.com.app.R;
-import libertypassage.com.app.models.ModelResponse;
-import libertypassage.com.app.models.user.ModelUser;
+import libertypassage.com.app.models.ModelTrackUserLocation;
 import libertypassage.com.app.utilis.ApiInterface;
 import libertypassage.com.app.utilis.ClientInstance;
 import libertypassage.com.app.utilis.Constants;
@@ -216,7 +209,6 @@ public class Acknowledgement extends AppCompatActivity implements View.OnClickLi
         );
     }
 
-
     private void getAddress() {
         Geocoder geocoder;
         List<Address> addresses;
@@ -255,22 +247,20 @@ public class Acknowledgement extends AppCompatActivity implements View.OnClickLi
     private void addTrackUserLocation() {
         Utility.showProgressDialog(context);
         ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelUser> call = apiInterface.addTrackUserLocation(Constants.KEY_HEADER + token,
-                Constants.KEY_BOT, latitudes, longitudes, altitudes, macAddress, wifiIpAddress);
+        Call<ModelTrackUserLocation> call = apiInterface.addTrackUserLocation(Constants.KEY_HEADER + token,
+                Constants.KEY_BOT, latitudes, longitudes, altitudes, macAddress, wifiIpAddress, "0");
 
-        call.enqueue(new Callback<ModelUser>() {
+        call.enqueue(new Callback<ModelTrackUserLocation>() {
             @Override
-            public void onResponse(Call<ModelUser> call, Response<ModelUser> response) {
+            public void onResponse(Call<ModelTrackUserLocation> call, Response<ModelTrackUserLocation> response) {
                 Utility.stopProgressDialog(context);
-                ModelUser model = response.body();
+                ModelTrackUserLocation model = response.body();
 
                 if (model != null && model.getError().equals(false)) {
-
                     Utility.setSharedPreference(context, Constants.KEY_START, "3");
                     Intent intent = new Intent(context, MyTemperature.class);
                     startActivity(intent);
 
-                    
                 } else if (model != null && model.getError().equals(true)) {
                     Utility.stopProgressDialog(context);
                     Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
@@ -278,7 +268,7 @@ public class Acknowledgement extends AppCompatActivity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(Call<ModelUser> call, Throwable t) {
+            public void onFailure(Call<ModelTrackUserLocation> call, Throwable t) {
                 Utility.stopProgressDialog(context);
                 Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
             }

@@ -284,10 +284,6 @@ public class UpdateAddress extends AppCompatActivity implements View.OnClickList
                         setResult(111, intent);
                         finish();
                     } else {
-                        Intent intent = new Intent(context, HomePage.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
                         finish();
                     }
 

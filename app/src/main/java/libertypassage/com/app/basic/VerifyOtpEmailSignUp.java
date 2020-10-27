@@ -46,8 +46,8 @@ public class VerifyOtpEmailSignUp extends AppCompatActivity implements View.OnCl
     private ImageView iv_back;
     private PinEntryEditText otpView;
     private LinearLayout ll_resend;
-    private String firebaseToken, firstName, email, mobileWithCountry,  s_gender, s_ageGroup,
-            s_profession, password, imageProfilePath, countryId, from;
+    private String firebaseToken, email, mobileWithCountry,  s_gender, s_ageGroup,
+            industryId, s_profession, password, countryId, from;
     private int otp;
 
     private static final long START_TIME_IN_MILLIS = 120000;
@@ -82,12 +82,11 @@ public class VerifyOtpEmailSignUp extends AppCompatActivity implements View.OnCl
 
 
         from = getIntent().getStringExtra("from");
-//        imageProfilePath = Utility.getSharedPreferences(context, Constants.KEY_POFILE_PIC);
-//        firstName = Utility.getSharedPreferences(context, Constants.KEY_FIRSTNAME);
         email = Utility.getSharedPreferences(context, Constants.KEY_EMAIL);
         mobileWithCountry = Utility.getSharedPreferences(context, Constants.KEY_MOBILE);
         s_gender = Utility.getSharedPreferences(context, Constants.KEY_GENDER);
         s_ageGroup = Utility.getSharedPreferences(context, Constants.KEY_AGE_GROUP);
+        industryId = Utility.getSharedPreferences(context, Constants.KEY_INDUSTRY);
         s_profession = Utility.getSharedPreferences(context, Constants.KEY_PROF);
         countryId = Utility.getSharedPreferences(context, Constants.KEY_COUNTRY_ID);
         password = Utility.getSharedPreferences(context, "password");
@@ -266,26 +265,10 @@ public class VerifyOtpEmailSignUp extends AppCompatActivity implements View.OnCl
     private void signUpApiResponse() {
         Utility.showProgressDialog(context);
         Log.e("VerifyOTP", "userOtp" +otp+Constants.KEY_BOT +otp + mobileWithCountry  + countryId + password + "Tokan : " + firebaseToken);
-//        if (imageProfilePath != null) {
-//            Log.e("imageProfilePath", imageProfilePath);
-//            File imageProfile = new File(imageProfilePath);
-//            RequestBody requestBodyImage = RequestBody.create(MediaType.parse("image/jpeg"), imageProfile);
-//            MultipartBody.Part image1 = MultipartBody.Part.createFormData("if_profilePic", imageProfile.getName(), requestBodyImage);
-//            RequestBody bot1 = RequestBody.create(MediaType.parse("text/plain"), Constants.KEY_BOT);
-//            RequestBody firstName1 = RequestBody.create(MediaType.parse("text/plain"), firstName);
-//            RequestBody lastName1 = RequestBody.create(MediaType.parse("text/plain"), lastName);
-//            RequestBody email1 = RequestBody.create(MediaType.parse("text/plain"), email);
-//            RequestBody mobile1 = RequestBody.create(MediaType.parse("text/plain"), mobileWithCountry);
-//            RequestBody password1 = RequestBody.create(MediaType.parse("text/plain"), password);
-//            RequestBody firebaseToken1 = RequestBody.create(MediaType.parse("text/plain"), firebaseToken);
-//
-//            ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-//            call = apiInterface.userSignUpImage(bot1, firstName1, lastName1, email1, mobile1, password1, firebaseToken1, image1);
-//            Log.e("signUp", "withImage");
-//        } else {
-
         ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelSignUp> call = apiInterface.userSignUp(Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE, email, mobileWithCountry, s_gender, s_ageGroup, "1", s_profession, countryId, password, firebaseToken);
+        Call<ModelSignUp> call = apiInterface.userSignUp(Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE,
+                email, mobileWithCountry, s_gender, s_ageGroup, industryId, s_profession, countryId,
+                "0","1", password, firebaseToken);
 
         call.enqueue(new Callback<ModelSignUp>() {
             @Override
@@ -299,6 +282,7 @@ public class VerifyOtpEmailSignUp extends AppCompatActivity implements View.OnCl
                     String bearerToken = signUpDetails.getBearerToken();
 
                     Utility.setSharedPreference(context, Constants.KEY_BEARER_TOKEN, bearerToken);
+                    Utility.setSharedPreference(context, Constants.KEY_EMAIL_VERIFIED, "true");
                     Utility.setSharedPreference(context, Constants.KEY_START, "1");
                     Utility.setSharedPreference(context, "isVerify", "Na");
                     Utility.setSharedPreference(context, "password", "Na");

@@ -108,6 +108,7 @@ public class AddAddress extends AppCompatActivity implements View.OnClickListene
                 }
                 break;
             }
+
             case R.id.tv_currentLocation: {
                 dialogUpdate();
                 break;

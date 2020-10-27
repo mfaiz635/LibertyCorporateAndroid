@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:text="I am unfit for work"
+                    android:text="I am Covid-19 positive"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:text="I am fit for work"
+                    android:text="I am Covide-19 negative"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>

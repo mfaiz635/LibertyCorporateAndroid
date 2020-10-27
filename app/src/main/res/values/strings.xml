@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Liberty&amp;Passage</string>
+    <string name="app_name">Liberty Open</string>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBs5bEgyyHuU7msJW4IxkuZIeHxunYIg9w</string>
 <!--    <string name="google_maps_key_old" templateMergeStrategy="preserve" translatable="false">AIzaSyCoYkj0KGMI31DebV3pjq2sd53mCzor-Lo</string>-->
@@ -24,16 +24,5 @@
     <string name="ok">OK</string>
     <string name="request_location_updates">Request location updates</string>
     <string name="remove_location_updates">Remove location updates</string>
-
-
-    <string name="crop_image_activity_title"></string>
-    <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
-    <string name="crop_image_menu_rotate_right">Rotate</string>
-    <string name="crop_image_menu_crop">Crop</string>
-    <string name="crop_image_menu_flip">Flip</string>
-    <string name="crop_image_menu_flip_horizontally">Flip horizontally</string>
-    <string name="crop_image_menu_flip_vertically">Flip vertically</string>
-    <string name="pick_image_intent_chooser_title">Select source</string>
-    <string name="crop_image_activity_no_permissions">Cancelling, required permissions are not granted</string>
 
 </resources>

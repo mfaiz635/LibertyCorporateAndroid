@@ -24,35 +24,34 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import libertypassage.com.app.R;
 import libertypassage.com.app.adapter.CountryCodeAdapter;
 import libertypassage.com.app.adapter.CountryCodeSpinnerAdapter;
+import libertypassage.com.app.models.login.Address;
+import libertypassage.com.app.models.login.Confirmed;
+import libertypassage.com.app.models.login.LastTrack;
+import libertypassage.com.app.models.login.ModelLogin;
+import libertypassage.com.app.models.login.Temprature;
+import libertypassage.com.app.models.login.UserDetails;
+import libertypassage.com.app.models.login.UserStatus;
 import libertypassage.com.app.services.AlarmReceiver;
 import libertypassage.com.app.models.CountryDetail;
 import libertypassage.com.app.models.CountryDto;
-import libertypassage.com.app.models.DetailsOTP;
-import libertypassage.com.app.models.LogInDetails;
-import libertypassage.com.app.models.ModelCountryList;
-import libertypassage.com.app.models.ModelLogIn;
-import libertypassage.com.app.models.ModelOTP;
+import libertypassage.com.app.models.login.LogInDetails;
 import libertypassage.com.app.utilis.ApiInterface;
 import libertypassage.com.app.utilis.ClientInstance;
 import libertypassage.com.app.utilis.Constants;
@@ -74,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CenturyGothicTextview tv_countryCode, tv_countryCode1, login_btn, tv_forgot_pass;
     private ImageView pass_view, pass_hide, iv_country, iv_country_gray;
     private View view;
-    private String firebaseToken, message;
+    private String firebaseToken;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     Spinner spn_countryCode;
     String country_Name, flag = "x", country;
@@ -235,7 +234,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (mobile.length() > 7) {
                                 if (!TextUtils.isEmpty(password)) {
                                     if (Utility.isConnectingToInternet(context)) {
-                                        logInReponseApi(country + mobile, password, "number");
+                                        logInReponseApi(country+mobile, password, "number");
                                     } else {
                                         Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show();
                                     }
@@ -301,20 +300,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void logInReponseApi(String email, String password, String from) {
         Utility.showProgressDialog(context);
         ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelLogIn> call = apiInterface.userLogIn(Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE, email, password);
+        Call<ModelLogin> call = apiInterface.userLogIn(Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE, firebaseToken, email, password);
 
         Log.e("Login_parameter", email + "/" + password + "/" + from);
-        call.enqueue(new Callback<ModelLogIn>() {
+        call.enqueue(new Callback<ModelLogin>() {
             @Override
-            public void onResponse(Call<ModelLogIn> call, Response<ModelLogIn> response) {
+            public void onResponse(Call<ModelLogin> call, Response<ModelLogin> response) {
                 Utility.stopProgressDialog(context);
-                ModelLogIn model = response.body();
+                ModelLogin model = response.body();
                 Log.e("LoginResponse", new Gson().toJson(model));
 
                 if (model != null && model.getError().equals(false)) {
-                    message = model.getMessage();
-                    LogInDetails logInDetails = model.getLogInDetails();
+                    LogInDetails logInDetails = model.getDetails();
                     Utility.setSharedPreference(context, Constants.KEY_BEARER_TOKEN, logInDetails.getBearerToken());
+
+                    UserDetails userDetails = logInDetails.getUserDetails();
+                    Utility.setSharedPreference(context, Constants.KEY_MOBILE, userDetails.getPhoneNumber());
+                    Utility.setSharedPreference(context, Constants.KEY_EMAIL, userDetails.getEmailId());
+                    Utility.setSharedPreference(context, Constants.KEY_GENDER, userDetails.getGender());
+                    Utility.setSharedPreference(context, Constants.KEY_AGE_GROUP, userDetails.getAgeGroup());
+                    Utility.setSharedPreference(context, Constants.KEY_INDUSTRY, String.valueOf(userDetails.getIndustryId()));
+                    Utility.setSharedPreference(context, Constants.KEY_PROF, String.valueOf(userDetails.getProfId()));
+                    Utility.setSharedPreference(context, Constants.KEY_EMAIL_VERIFIED, String.valueOf(userDetails.getEmailVerified()));
+
+                    Address add = userDetails.getAddress();
+                    Utility.setSharedPreference(context, Constants.KEY_CURRENT_LOC, add.getAddress());
+
+                    Confirmed confirmed = userDetails.getConfirmed();
+                    Utility.setSharedPreference(context, Constants.KEY_STATUS, String.valueOf(confirmed.getConfirmation()));
+                    Utility.setSharedPreference(context, Constants.KEY_CHANGE_STATUS, confirmed.getUpdatedAt());
+                    Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_ADD, confirmed.getClinicAddress());
+                    Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_DATE, confirmed.getDate());
+
+                    Temprature temprature = userDetails.getTemprature();
+                    Utility.setSharedPreference(context, Constants.KEY_MY_TEMP, temprature.getTemprature());
+                    Utility.setSharedPreference(context, Constants.KEY_TEMP_TYPE, temprature.getTempType());
+
+                    UserStatus userStatus = userDetails.getUserStatus();
+                    Utility.setSharedPreference(context, Constants.KEY_RISK_SCORE, String.valueOf(userDetails.getRiskScore()));
+                    Utility.setSharedPreference(context, Constants.KEY_CURRENT_STATUS, String.valueOf(userStatus.getId()));
+                    Utility.setSharedPreference(context, Constants.KEY_TITLE, userStatus.getTitle());
+                    Utility.setSharedPreference(context, Constants.KEY_SUB_TITLE, userStatus.getSubTitle());
+                    Utility.setSharedPreference(context, Constants.KEY_DESCRIPTION, userStatus.getDescription());
+                    Utility.setSharedPreference(context, Constants.KEY_ALERT_DESCRIPTION, userStatus.getAlertDescription());
+
                     localNotification();
 
                 } else if (model != null && model.getError().equals(true)) {
@@ -324,54 +353,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void onFailure(Call<ModelLogIn> call, Throwable t) {
+            public void onFailure(Call<ModelLogin> call, Throwable t) {
                 Utility.stopProgressDialog(context);
                 Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
-    private void getOTPResponse(String mobile, String bearerToken) {
-//        Utility.showProgressDialog(context);
-        ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<ModelOTP> call = apiInterface.getOtpResponse(Constants.KEY_BOT, mobile);
-
-        call.enqueue(new Callback<ModelOTP>() {
-            @Override
-            public void onResponse(Call<ModelOTP> call, Response<ModelOTP> response) {
-                Utility.stopProgressDialog(context);
-                ModelOTP model = response.body();
-                Log.e("ResendOTP", new Gson().toJson(model));
-                if (model != null && model.getError().equals(false)) {
-                    DetailsOTP detailsOTP = model.getDetails();
-                    int otp = detailsOTP.getOtp();
-
-                    Utility.setSharedPreference(context, "t_bearer", bearerToken);
-                    Utility.setSharedPreference(context, "t_mobile", mobile);
-                    Utility.setSharedPreference(context, "otp", String.valueOf(otp));
-                    Utility.setSharedPreference(context, "isVerify", "login");
-
-                    Intent intent = new Intent(context, VerifyOTPForgotPassword.class);
-                    startActivity(intent);
-                    finish();
-                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
-
-
-                } else if (model != null && model.getError().equals(true)) {
-                    Utility.stopProgressDialog(context);
-                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelOTP> call, Throwable t) {
-                Utility.stopProgressDialog(context);
-//                Log.e("model", "onFailure    " + t.getMessage());
-                Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
     private void setCountryCode() {
         Log.e("called---", "yesss");
@@ -390,8 +378,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             tv_countryCode1.setText(country_Name);
             Utility.setSharedPreference(context, "country_code", String.valueOf(code));
         }
-
     }
+
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -542,7 +530,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         calendar.set(Calendar.HOUR_OF_DAY, 7);
         calendar.set(Calendar.MINUTE, 0);
         manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HALF_DAY, pendingIntent);
-
 
         Intent intent = new Intent(context, HomePage.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

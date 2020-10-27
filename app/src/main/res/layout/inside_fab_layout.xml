@@ -112,11 +112,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:text="Location History"
+                android:text="Hotspots"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabInfected"

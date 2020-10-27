@@ -89,7 +89,7 @@ public class VerifyOTPForgotPassword extends AppCompatActivity implements View.O
                     Utility.setSharedPreference(context, "otp", "Na");
                     if (isVerify.equals("forgot")) {
                         Utility.setSharedPreference(context, "isVerify", "forgotEmail");
-                        Intent intent = new Intent(VerifyOTPForgotPassword.this, RequestOtpEmailForgotPassword.class);
+                        Intent intent = new Intent(VerifyOTPForgotPassword.this, RequestOtpEmailForgot.class);
                         startActivity(intent);
                     } else if (isVerify.equals("login")) {
                         Toast.makeText(context, "You are login successfully", Toast.LENGTH_LONG).show();
@@ -128,7 +128,7 @@ public class VerifyOTPForgotPassword extends AppCompatActivity implements View.O
                         if (isVerify.equals("forgot")) {
                             Toast.makeText(context, "Mobile number verifiy successfully", Toast.LENGTH_LONG).show();
                             Utility.setSharedPreference(context, "isVerify", "forgotEmail");
-                            Intent intent = new Intent(VerifyOTPForgotPassword.this, RequestOtpEmailForgotPassword.class);
+                            Intent intent = new Intent(VerifyOTPForgotPassword.this, RequestOtpEmailForgot.class);
                             startActivity(intent);
                         } else if (isVerify.equals("login")) {
                             Toast.makeText(context, "You are login successfully", Toast.LENGTH_LONG).show();

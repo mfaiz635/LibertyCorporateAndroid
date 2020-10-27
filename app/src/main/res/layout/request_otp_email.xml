@@ -74,28 +74,28 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="@color/colorPrimary" />
+                    app:tint="@color/colorPrimary" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="#39241C" />
+                    app:tint="#39241C" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="#39241C" />
+                    app:tint="#39241C" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="#39241C" />
+                    app:tint="#39241C" />
             </LinearLayout>
 
             <libertypassage.com.app.widgets.CenturyGothicTextview
@@ -146,16 +146,14 @@
             <libertypassage.com.app.widgets.CenturyGothicTextview
                 android:id="@+id/tv_skip"
                 android:layout_width="@dimen/_180sdp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
+                android:background="@drawable/boader_black_rounded"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="SKIP"
-                android:visibility="gone"
+                android:text="SKIP FOR NOW"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/_16sdp" />
-
-
 
         </LinearLayout>
     </ScrollView>

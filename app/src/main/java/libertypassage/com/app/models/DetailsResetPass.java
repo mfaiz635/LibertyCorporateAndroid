@@ -1,11 +1,11 @@
 
 package libertypassage.com.app.models;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import libertypassage.com.app.models.login.UserDetails;
+
 
 public class DetailsResetPass {
-
     @SerializedName("bearer_token")
     @Expose
     private String bearer_token;

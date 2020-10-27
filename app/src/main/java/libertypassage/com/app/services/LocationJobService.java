@@ -60,7 +60,7 @@ public class LocationJobService extends android.app.job.JobService {
                     }
                 }
             }
-        }, 300000);
+        }, 60000);
 
     }
 
@@ -80,7 +80,7 @@ public class LocationJobService extends android.app.job.JobService {
             public void run() {
                 unregisterReceiver(restartSensorServiceReceiver);
             }
-        }, 1000);
+        }, 60000);
 
         return false;
     }

@@ -70,6 +70,7 @@ public class SplashActivity extends Activity {
         if (Utility.hasPermissionInManifest(SplashActivity.this, PERMISSION_CODE, permission)) {
             handler.postDelayed(runnable, TIME_OUT);
         }
+
     }
 
     Runnable runnable = new Runnable() {
@@ -122,7 +123,6 @@ public class SplashActivity extends Activity {
                     startActivity(i);
                     finish();
                 } else {
-                    Utility.setSharedPreference(context, Constants.KEY_FOR_TITLE, "Required LogIn for update your status");
                     Intent i = new Intent(context, LoginActivity.class);
                     startActivity(i);
                     finish();

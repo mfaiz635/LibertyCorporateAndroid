@@ -13,6 +13,12 @@ public class DetailIndustry {
     @Expose
     private String title;
 
+    public DetailIndustry(Integer industryId, String title) {
+        this.industryId = industryId;
+        this.title = title;
+
+    }
+
     public Integer getIndustryId() {
         return industryId;
     }

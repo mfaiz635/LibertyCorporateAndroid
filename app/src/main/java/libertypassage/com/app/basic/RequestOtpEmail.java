@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import libertypassage.com.app.R;
 import libertypassage.com.app.models.DetailsOTP;
 import libertypassage.com.app.models.ModelOTP;
+import libertypassage.com.app.models.ModelSignUp;
+import libertypassage.com.app.models.SignUpDetails;
 import libertypassage.com.app.utilis.ApiInterface;
 import libertypassage.com.app.utilis.ClientInstance;
 import libertypassage.com.app.utilis.Constants;
@@ -31,7 +33,8 @@ public class RequestOtpEmail extends AppCompatActivity implements View.OnClickLi
     private String TAG = RequestOtpEmail.class.getSimpleName();
     private TextView tv_continue, tv_skip;
     private ImageView iv_back;
-    private String token, email;
+    private String firebaseToken, email, mobileWithCountry,  s_gender, s_ageGroup,
+            s_profession, password, industryId, corporationId, countryId;
 
 
 
@@ -54,6 +57,14 @@ public class RequestOtpEmail extends AppCompatActivity implements View.OnClickLi
         tv_skip.setOnClickListener(this);
 
         email = Utility.getSharedPreferences(context, Constants.KEY_EMAIL);
+        mobileWithCountry = Utility.getSharedPreferences(context, Constants.KEY_MOBILE);
+        s_gender = Utility.getSharedPreferences(context, Constants.KEY_GENDER);
+        s_ageGroup = Utility.getSharedPreferences(context, Constants.KEY_AGE_GROUP);
+        s_profession = Utility.getSharedPreferences(context, Constants.KEY_PROF);
+        countryId = Utility.getSharedPreferences(context, Constants.KEY_COUNTRY_ID);
+        industryId = Utility.getSharedPreferences(context, Constants.KEY_INDUSTRY);
+        password = Utility.getSharedPreferences(context, "password");
+        firebaseToken = Utility.getSharedPreferences(context, "firebaseToken");
     }
 
 
@@ -61,7 +72,6 @@ public class RequestOtpEmail extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_continue: {
-
                 if (!TextUtils.isEmpty(email)) {
                         getOTPResponse(email);
                 } else {
@@ -71,9 +81,11 @@ public class RequestOtpEmail extends AppCompatActivity implements View.OnClickLi
             }
 
             case R.id.tv_skip: {
-                Intent intent = new Intent(context, EnrolmentDeclaration.class);
-                startActivity(intent);
-                finish();
+                if (Utility.isConnectingToInternet(context)) {
+                    signUpApiResponse();
+                } else {
+                    Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show();
+                }
                 break;
             }
 
@@ -83,7 +95,6 @@ public class RequestOtpEmail extends AppCompatActivity implements View.OnClickLi
             }
         }
     }
-
 
     private void getOTPResponse(String email) {
         Utility.showProgressDialog(context);
@@ -123,7 +134,55 @@ public class RequestOtpEmail extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    private void signUpApiResponse() {
+        Utility.showProgressDialog(context);
+        Log.e("VerifyOTP", "userOtp"+Constants.KEY_BOT+ mobileWithCountry  + countryId + password + "Tokan : " + firebaseToken);
+        ApiInterface apiInterface = ClientInstance.getRetrofitInstance().create(ApiInterface.class);
+        Call<ModelSignUp> call = apiInterface.userSignUp(Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE,
+                email, mobileWithCountry, s_gender, s_ageGroup, industryId, s_profession,
+                countryId, "0", "0", password, firebaseToken);
 
+        call.enqueue(new Callback<ModelSignUp>() {
+            @Override
+            public void onResponse(Call<ModelSignUp> call, Response<ModelSignUp> response) {
+                Utility.stopProgressDialog(context);
+                ModelSignUp model = response.body();
+                Log.e("SignUpModel", new Gson().toJson(model));
+
+                if (model != null && model.getError().equals(false)) {
+                    SignUpDetails signUpDetails = model.getDetails();
+                    String bearerToken = signUpDetails.getBearerToken();
+
+                    Utility.setSharedPreference(context, Constants.KEY_BEARER_TOKEN, bearerToken);
+                    Utility.setSharedPreference(context, Constants.KEY_EMAIL_VERIFIED, "false");
+                    Utility.setSharedPreference(context, Constants.KEY_START, "1");
+                    Utility.setSharedPreference(context, "isVerify", "Na");
+                    Utility.setSharedPreference(context, "password", "Na");
+                    Utility.setSharedPreference(context, "firebaseToken", "Na");
+                    Utility.setSharedPreference(context, "otp", "Na");
+
+                    Intent intent = new Intent(context, EnrolmentDeclaration.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
+
+
+
+                } else if (model != null && model.getError().equals(true)) {
+                    Utility.stopProgressDialog(context);
+                    Toast.makeText(context, model.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelSignUp> call, Throwable t) {
+                Utility.stopProgressDialog(context);
+                Log.e("onFailure", t.toString());
+                Toast.makeText(context, Constants.ERROR_MSG, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
