@@ -7,46 +7,9 @@
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:orientation="vertical"
-    tools:context=".basic.MyTemperature">
+    tools:context=".view.UpdateMyTemperature">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:padding="@dimen/_5sdp"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/back_black"
-            tools:ignore="VectorDrawableCompat" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:text="LIBERTY"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:text="&amp; PASSAGE"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
+    <include layout="@layout/activity_header" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,39 +26,45 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/line"
-            android:tint="@color/colorPrimary" />
+            app:tint="@color/colorPrimary"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/line"
-            android:tint="@color/colorPrimary" />
+            app:tint="@color/colorPrimary"
+            tools:ignore="ContentDescription"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/line"
-            android:tint="#39241C" />
+            app:tint="#39241C"
+            tools:ignore="ContentDescription"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/line"
-            android:tint="#39241C" />
+            app:tint="#39241C"
+            tools:ignore="ContentDescription"/>
     </LinearLayout>
 
-    <libertypassage.com.app.widgets.CenturyGothicTextview
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_30sdp"
-        android:text="MY TEMPERATURE"
+        android:gravity="center_horizontal"
+        android:text="ADD TEMPERATURE BEFORE CHECK IN LOCATION/SAFE ENTRY"
+        android:fontFamily="@font/century_gothic"
         android:textColor="@color/white"
-        android:textSize="@dimen/_14sdp" />
-
+        android:textSize="@dimen/_14sdp"
+        tools:ignore="HardcodedText" />
 
     <RelativeLayout
         android:layout_width="@dimen/_200sdp"
@@ -103,8 +72,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_10sdp">
 
-        <libertypassage.com.app.widgets.CircleSeekBar
-            android:id="@+id/seekbar"
+        <libertypassage.com.corporate.utilities.CircleSeekBar
+            android:id="@+id/seekBar"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_200sdp"
             android:layout_centerInParent="true"
@@ -113,27 +82,31 @@
             app:wheel_reached_width="12dp"
             app:wheel_unreached_width="12dp" />
 
-        <libertypassage.com.app.widgets.CenturyGothicTextview
+        <TextView
             android:id="@+id/tv_tempValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:maxLength="5"
             android:text=""
+            android:fontFamily="@font/century_gothic"
             android:textColor="@color/white"
             android:textSize="@dimen/_25sdp"
             android:textStyle="bold" />
 
-        <libertypassage.com.app.widgets.CenturyGothicTextview
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/tv_tempValue"
             android:text="°"
+            android:fontFamily="@font/century_gothic"
             android:textColor="@color/white"
-            android:textSize="@dimen/_20sdp" />
+            android:textSize="@dimen/_20sdp"
+            android:layout_toEndOf="@id/tv_tempValue"
+            tools:ignore="HardcodedText" />
 
-        <libertypassage.com.app.widgets.CenturyGothicTextview
+        <TextView
             android:id="@+id/tv_tempTpye"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,8 +115,11 @@
             android:layout_marginLeft="@dimen/_2sdp"
             android:layout_marginTop="@dimen/_3sdp"
             android:text="Celsius"
+            android:fontFamily="@font/century_gothic"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            tools:ignore="HardcodedText" />
     </RelativeLayout>
 
 
@@ -156,7 +132,7 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <libertypassage.com.app.widgets.CenturyGothicTextview
+        <TextView
             android:id="@+id/tv_celcius"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/_35sdp"
@@ -165,10 +141,13 @@
             android:background="@drawable/rounded_gray_button"
             android:gravity="center"
             android:text="Celsius"
+            android:fontFamily="@font/century_gothic"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            tools:ignore="HardcodedText" />
 
-        <libertypassage.com.app.widgets.CenturyGothicTextview
+        <TextView
             android:id="@+id/tv_farenheit"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/_35sdp"
@@ -177,8 +156,11 @@
             android:background="@drawable/rounded_gray_trans_button"
             android:gravity="center"
             android:text="Fahrenheit"
+            android:fontFamily="@font/century_gothic"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
@@ -190,17 +172,19 @@
         android:layout_marginRight="@dimen/_15sdp"
         android:background="@color/gray" />
 
-    <libertypassage.com.app.widgets.CenturyGothicTextview
+    <TextView
         android:id="@+id/tv_next"
         android:layout_width="@dimen/_180sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginBottom="@dimen/_30sdp"
-        android:background="@drawable/rounded_gradiant_button"
+        android:background="@drawable/rounded_gradient_button"
         android:gravity="center"
         android:text="SUBMIT"
+        android:fontFamily="@font/century_gothic"
         android:textColor="@color/white"
-        android:textSize="@dimen/_14sdp" />
+        android:textSize="@dimen/_14sdp"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

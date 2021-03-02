@@ -1,51 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:orientation="vertical"
-    tools:context=".basic.SignUpActivity">
+    tools:context=".view.TestingActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:padding="@dimen/_5sdp"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/back_black"
-            tools:ignore="VectorDrawableCompat" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:text="LIBERTY"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:text="&amp; PASSAGE"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    <include layout="@layout/activity_header" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -57,8 +20,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/_15sdp"
-            android:paddingRight="@dimen/_15sdp">
-
+            android:paddingRight="@dimen/_15sdp"
+            tools:ignore="UselessLeaf">
 
         </LinearLayout>
     </ScrollView>

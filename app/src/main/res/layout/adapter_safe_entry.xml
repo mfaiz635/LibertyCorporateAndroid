@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlMain"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@drawable/rounded_gray_trans_button">
+
+        <TextView
+            android:id="@+id/tvUrlName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_80sdp"
+            android:fontFamily="@font/century_gothic"
+            android:text=""
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_80sdp" />
+
+        <TextView
+            android:id="@+id/tvCheckout"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/century_gothic"
+            android:background="@drawable/rounded_grediant"
+            android:gravity="center"
+            android:text="Checkout"
+            android:textStyle="bold"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            tools:ignore="HardcodedText,SmallSp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/tvCheckoutDone"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/century_gothic"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:background="@drawable/rounded_grediant_gray"
+            android:gravity="center"
+            android:text="Checkout"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:ignore="HardcodedText,SmallSp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/century_gothic"
+            android:text="date"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginStart="@dimen/_10sdp"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/ivNotFav"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/_25sdp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/star"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_25sdp" />
+
+        <ImageView
+            android:id="@+id/ivFav"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/_25sdp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/star_yellow"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_above="@id/tvTime"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@color/gray" />
+    </RelativeLayout>
+</LinearLayout>

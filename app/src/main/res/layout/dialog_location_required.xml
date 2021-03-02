@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/_150sdp"
-    android:layout_margin="@dimen/_40sdp"
+    android:layout_margin="@dimen/_30sdp"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/_10sdp">
@@ -13,25 +14,28 @@
         android:layout_height="fill_parent">
 
         <ImageView
-            android:id="@+id/cancel"
+            android:id="@+id/ivCancel"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/_7sdp"
             android:src="@drawable/ic_close"
-            android:tint="@color/gray" />
+            app:tint="@color/gray"
+            tools:ignore="ContentDescription,RtlHardcoded" />
 
-        <libertypassage.com.app.widgets.CenturyGothicTextview
-            android:id="@+id/title"
+        <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_40sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:gravity="center"
+            android:fontFamily="@font/century_gothic"
             android:text="Must be required to turn on location"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_14sdp"
+            tools:ignore="HardcodedText" />
 
         <View
             android:layout_width="match_parent"
@@ -47,19 +51,21 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <libertypassage.com.app.widgets.CenturyGothicTextview
-                android:id="@+id/tv_notAllow"
+            <TextView
+                android:id="@+id/tvDontAllow"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_39sdp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:gravity="center"
                 android:text="DON'T ALLOW"
+                android:fontFamily="@font/century_gothic"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText" />
 
-            <libertypassage.com.app.widgets.CenturyGothicTextview
-                android:id="@+id/tv_ok"
+            <TextView
+                android:id="@+id/tvOk"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_39sdp"
                 android:layout_marginLeft="1dp"
@@ -67,8 +73,10 @@
                 android:background="@color/white"
                 android:gravity="center"
                 android:text="OK"
+                android:fontFamily="@font/century_gothic"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
         </LinearLayout>
     </RelativeLayout>

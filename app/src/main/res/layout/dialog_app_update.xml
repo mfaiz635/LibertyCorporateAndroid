@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_30sdp"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_10sdp">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/cancel"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/update"
+            app:tint="@color/colorAccent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_below="@id/cancel"
+            android:gravity="center"
+            android:fontFamily="@font/century_gothic"
+            android:text="Get more with the new update"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_below="@id/title"
+            android:gravity="center"
+            android:fontFamily="@font/century_gothic"
+            android:text="We have enhanced the app, and added some new features!"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_12sdp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvOk"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/rounded_grediant"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:text="UPDATE"
+            android:fontFamily="@font/century_gothic"
+            android:layout_below="@id/msg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvLater"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/boarder_button"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:text="LATER"
+            android:fontFamily="@font/century_gothic"
+            android:layout_below="@id/tvOk"
+            android:textColor="@color/gradiant1"
+            android:textSize="@dimen/_14sdp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

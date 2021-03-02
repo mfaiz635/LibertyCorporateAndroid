@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    android:orientation="vertical"
+    tools:context=".corporate.EnterReferenceNumber">
+
+    <include layout="@layout/activity_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingRight="@dimen/_15sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/century_gothic"
+                android:text="As you are the first time user we need to find your employer"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/et_firstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_25sdp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:fontFamily="@font/century_gothic"
+                android:text="Enter your unique reference number sent by your employer"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText" />
+
+            <libertypassage.com.corporate.utilities.PinEntryEditText
+                android:id="@+id/otpView"
+                android:layout_width="@dimen/_220sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:cursorVisible="false"
+                android:inputType="number"
+                android:maxLength="8"
+                android:textColor="@color/white"
+                android:textIsSelectable="false"
+                android:textSize="40sp"
+                app:pinAnimationType="none"
+                app:pinBackgroundIsSquare="false"
+                app:pinLineColors="@color/white"
+                app:pinLineStroke="1dp"
+                app:pinLineStrokeSelected="1dp"
+                app:pinTextBottomPadding="7dp" />
+
+
+            <TextView
+                android:id="@+id/tv_continue"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:background="@drawable/rounded_gradient_button"
+                android:gravity="center"
+                android:text="CONTINUE"
+                android:fontFamily="@font/century_gothic"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_25sdp"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Or"
+                    android:fontFamily="@font/century_gothic"
+                    android:textColor="@color/corporate_text"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_9sdp"
+                    android:layout_toLeftOf="@id/tv_or"
+                    android:background="@color/corporate_text"
+                    android:layout_marginEnd="@dimen/_9sdp"
+                    android:layout_toStartOf="@id/tv_or" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_9sdp"
+                    android:layout_toRightOf="@id/tv_or"
+                    android:background="@color/corporate_text"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_toEndOf="@id/tv_or" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:gravity="center"
+                android:visibility="visible"
+                android:fontFamily="@font/century_gothic"
+                android:text="If you haven’t received URN via SMS/Text, Please contact your employer"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/tv_contactUs"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:gravity="center"
+                android:text="CONTACT US"
+                android:fontFamily="@font/century_gothic"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

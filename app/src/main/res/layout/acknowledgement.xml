@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
@@ -7,45 +8,9 @@
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:orientation="vertical"
-    tools:context=".basic.SignUpActivity">
+    tools:context=".view.Acknowledgement">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:padding="@dimen/_5sdp"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/back_black"
-            tools:ignore="VectorDrawableCompat" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:text="LIBERTY"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:text="&amp; PASSAGE"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    <include layout="@layout/activity_header" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -73,61 +38,71 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="@color/colorPrimary" />
+                    app:tint="@color/colorPrimary"
+                    tools:ignore="ContentDescription" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="#39241C" />
+                    app:tint="#39241C"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="#39241C" />
+                    app:tint="#39241C"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/line"
-                    android:tint="#39241C" />
+                    app:tint="#39241C"
+                    tools:ignore="ContentDescription"/>
             </LinearLayout>
 
-            <libertypassage.com.app.widgets.CenturyGothicTextview
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:text="ACKNOWLEDGEMENT"
+                android:fontFamily="@font/century_gothic"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
 
 
-            <libertypassage.com.app.widgets.CenturyGothicBoldTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="Thanks"
+                android:fontFamily="@font/century_gothic"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_20sdp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
-            <libertypassage.com.app.widgets.CenturyGothicTextview
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@android:color/transparent"
                 android:gravity="center"
+                android:fontFamily="@font/century_gothic"
                 android:text="For Installing the App"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
 
-            <libertypassage.com.app.widgets.CenturyGothicTextview
+            <TextView
                 android:id="@+id/et_firstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,9 +111,11 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@android:color/transparent"
                 android:gravity="center"
+                android:fontFamily="@font/century_gothic"
                 android:text="Tracking is now enabled and you will be alerted should any risks of infection arise"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -154,14 +131,17 @@
                     app:srcCompat="@drawable/location"
                     tools:ignore="VectorDrawableCompat" />
 
-                <libertypassage.com.app.widgets.CenturyGothicTextview
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_30sdp"
                     android:text="Location"
+                    android:fontFamily="@font/century_gothic"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText"
+                    android:layout_marginStart="@dimen/_30sdp" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/location_switch"
@@ -169,7 +149,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_14sdp"
                     android:checked="true"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <View
@@ -180,62 +161,20 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@color/gray"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:visibility="gone" >
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:padding="@dimen/_1sdp"
-                    app:srcCompat="@drawable/bluetooth"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <libertypassage.com.app.widgets.CenturyGothicTextview
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_30sdp"
-                    android:text="Bluetooth"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/blutooth_switch"
-                    style="@style/SwitchCompatStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_14sdp"
-                    android:layout_alignParentRight="true" />
-            </RelativeLayout>
-
-            <libertypassage.com.app.widgets.CenturyGothicTextview
+            <TextView
                 android:id="@+id/tv_next"
                 android:layout_width="@dimen/_180sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_45sdp"
                 android:layout_marginBottom="@dimen/_30sdp"
-                android:background="@drawable/rounded_gradiant_button"
+                android:background="@drawable/rounded_gradient_button"
                 android:gravity="center"
                 android:text="NEXT"
+                android:fontFamily="@font/century_gothic"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
-
-            <libertypassage.com.app.widgets.CenturyGothicTextview
-                android:id="@+id/tv_latLong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/_19sdp"
-                android:gravity="center"
-                android:text="LatLong"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
     </ScrollView>

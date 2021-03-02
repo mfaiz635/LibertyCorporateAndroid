@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<libertypassage.com.app.widgets.CenturyGothicTextview
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lbl_name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="left"
+    android:fontFamily="@font/century_gothic"
     android:padding="@dimen/_10sdp"
     android:textColor="@color/black"
-    android:textSize="14sp" />
+    android:textSize="14sp"
+    tools:ignore="RtlHardcoded" />

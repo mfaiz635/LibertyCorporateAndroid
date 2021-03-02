@@ -14,7 +14,8 @@
     <color name="gray3">#0F1126</color>
     <color name="gray_out">#8E8888</color>
 
-
+    <color name="corporate_text">#4F5273</color>
+    <color name="corporate_bg">#0F112A</color>
     <color name="def_wheel_color">#4e586e</color>
     <color name="def_reached_color">#f47f22</color>
     <color name="def_pointer_color">#FFFFFF</color>

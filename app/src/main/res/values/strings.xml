@@ -1,21 +1,44 @@
 <resources>
-    <string name="app_name">Liberty Open</string>
+    <string name="app_name">Liberty Corporate</string>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBs5bEgyyHuU7msJW4IxkuZIeHxunYIg9w</string>
-<!--    <string name="google_maps_key_old" templateMergeStrategy="preserve" translatable="false">AIzaSyCoYkj0KGMI31DebV3pjq2sd53mCzor-Lo</string>-->
+    <!--    <string name="google_maps_key_old" templateMergeStrategy="preserve" translatable="false">AIzaSyCoYkj0KGMI31DebV3pjq2sd53mCzor-Lo</string>-->
     <string name="sample_tag">Every team has a unique process for shipping software. Use an out-of-the-box workflow.</string>
+    <string name="liberty">LIBERTY</string>
+    <string name="corporate">CORPORATE</string>
     <string name="signup">REGISTER</string>
     <string name="login">LOG IN</string>
     <string name="submit">SUBMIT</string>
     <string name="continues">CONTINUE</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="email_mobile">Email/Mobile Number</string>
     <string name="forgotPass">Forgot your password</string>
     <string name="verify_otp">Verify otp</string>
     <string name="term1">I declare that I haven’t visited any country considered to be a high-risk zone according the WHO in the last 14-days</string>
     <string name="term2">I accept all the terms &amp; conditions of use</string>
     <string name="terms3">I accepted enabling location tracking</string>
     <string name="terms4">I accepted sharing my location data pre-infection</string>
+
+
+    <string name="serverError">Finding server issue....please try later!</string>
+    <string name="connectInternet">Please connect to internet and try again</string>
+    <string name="requiredFullName">Required Full Name</string>
+    <string name="requiredEmail">Required Email</string>
+    <string name="invalidEmail">Required Valid Email</string>
+    <string name="requiredMobile">Required Mobile Number</string>
+    <string name="invalidMobile">Required Valid Mobile Number</string>
+    <string name="requiredEmailMobile">Required Email/Mobile Number</string>
+    <string name="requiredPassword">Required Password</string>
+    <string name="invalidPassword">Required Valid Password</string>
+    <string name="requiredGender">Required Gender</string>
+    <string name="requiredAgeGroup">Required Age Group</string>
+    <string name="requiredIndustry">Required Industry</string>
+    <string name="requiredProfession">Required Profession</string>
+    <string name="required">Required Field</string>
+    <string name="invalid">Invalid Field</string>
+    <string name="validation_title">Whoops!</string>
+    <string name="validation_sub_title">We need just a few more details:</string>
 
     <string name="location_updated">Location Updated</string>
     <string name="permission_rationale">Location permission is needed for core functionality</string>
@@ -24,5 +47,8 @@
     <string name="ok">OK</string>
     <string name="request_location_updates">Request location updates</string>
     <string name="remove_location_updates">Remove location updates</string>
+    <string name="next">NEXT</string>
+
+
 
 </resources>

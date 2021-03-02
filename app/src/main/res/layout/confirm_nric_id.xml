@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    android:orientation="vertical"
+    tools:context=".view.ConfirmNricId">
+
+    <include layout="@layout/activity_header" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingRight="@dimen/_15sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/century_gothic"
+                android:gravity="center_horizontal"
+                android:text="NRIC ID"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_qrcode_scanerr"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:srcCompat="@drawable/nirc_id"
+                tools:ignore="VectorDrawableCompat" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/tvNricId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/century_gothic"
+                android:text="Provide your NRIC Id"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText"
+                android:layout_marginStart="@dimen/_15sdp" />
+
+            <EditText
+                android:id="@+id/etNricId"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@color/corporate_bg"
+                android:fontFamily="@font/century_gothic"
+                android:hint="Enter NRIC Id here"
+                android:padding="@dimen/_10sdp"
+                android:singleLine="true"
+                android:inputType="textCapWords"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="Autofill,HardcodedText"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/century_gothic"
+                android:text="By checking in, you declare that : "
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_15sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/circle_orange"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tvTerms1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="You have no close contact with a confirmed COVID-19 case in the past 14 days."
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_15sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/circle_orange"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tvTerms2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="You're not currently under a Quarantine Order or Stay-Home Notice."
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_15sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/circle_orange"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tvTerms3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="You have no fever or flu-like symptoms."
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_15sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/circle_orange"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tvTerms31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="You agree to the"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/tvTerms32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/tvTerms31"
+                    android:fontFamily="@font/century_gothic"
+                    android:text=" Terms "
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText"
+                    android:layout_toEndOf="@id/tvTerms31" />
+
+                <View
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_below="@id/tvTerms32"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_toRightOf="@id/tvTerms31"
+                    android:background="@color/colorAccent"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_toEndOf="@id/tvTerms31" />
+
+                <TextView
+                    android:id="@+id/tvTerms33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_toRightOf="@id/tvTerms32"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="and consent to the"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText"
+                    android:layout_toEndOf="@id/tvTerms32"
+                    android:layout_marginStart="@dimen/_2sdp" />
+
+                <TextView
+                    android:id="@+id/tvTerms34"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvTerms31"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="collection/use of your information for contact tracing."
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvNext"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:background="@drawable/rounded_gradient_button"
+                android:fontFamily="@font/century_gothic"
+                android:gravity="center"
+                android:text="SAVE"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

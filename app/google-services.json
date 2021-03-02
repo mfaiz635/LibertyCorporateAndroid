@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "880470322090",
-    "firebase_url": "https://libertyandpassage-88d58.firebaseio.com",
-    "project_id": "libertyandpassage-88d58",
-    "storage_bucket": "libertyandpassage-88d58.appspot.com"
+    "project_number": "1079025719720",
+    "firebase_url": "https://libertypassagecorporate.firebaseio.com",
+    "project_id": "libertypassagecorporate",
+    "storage_bucket": "libertypassagecorporate.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:880470322090:android:7e81b8f3fc6cb259ba19d3",
+        "mobilesdk_app_id": "1:1079025719720:android:589793a06087e8d701e59d",
         "android_client_info": {
-          "package_name": "libertypassage.com.app"
+          "package_name": "libertypassage.com.corporate"
         }
       },
       "oauth_client": [
         {
-          "client_id": "880470322090-ffmk54988h3u5gih3pa63c78a07c4bdv.apps.googleusercontent.com",
+          "client_id": "1079025719720-ffkb616k7g1h5r08i6n3av6gl99nnlkt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDmbpPMmVfpDj2EkeKZP9maSON1nDCqqEc"
+          "current_key": "AIzaSyDBr34XBYk7KBKle8g5bXb5kAcDAvwRVTw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "880470322090-ffmk54988h3u5gih3pa63c78a07c4bdv.apps.googleusercontent.com",
+              "client_id": "1079025719720-ffkb616k7g1h5r08i6n3av6gl99nnlkt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -14,7 +14,7 @@
         <item name="trackTint">@color/switch_track_color</item>
     </style>
 
-<!--for custom progress dialog -->
+    <!--for custom progress dialog -->
     <style name="MyTheme" parent="android:Theme.Holo.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -24,6 +24,7 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="CustomAlertDialogStyle">
         <item name="android:bottomBright">@android:color/transparent</item>
         <item name="android:bottomDark">@android:color/transparent</item>
@@ -41,12 +42,15 @@
     <style name="EnterFromBottomAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_bottom</item>
     </style>
+
     <style name="EnterFromTopAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_top</item>
     </style>
+
     <style name="EnterFromLeftAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_left</item>
     </style>
+
     <style name="EnterFromRightAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
     </style>
@@ -54,12 +58,15 @@
     <style name="ExitToBottomAnimation">
         <item name="android:windowExitAnimation">@anim/exit_to_bottom</item>
     </style>
+
     <style name="ExitToTopAnimation">
         <item name="android:windowExitAnimation">@anim/exit_to_top</item>
     </style>
+
     <style name="ExitToLeftAnimation">
         <item name="android:windowExitAnimation">@anim/exit_to_left</item>
     </style>
+
     <style name="ExitToRightAnimation">
         <item name="android:windowExitAnimation">@anim/exit_to_right</item>
     </style>
@@ -68,30 +75,37 @@
         <item name="android:windowEnterAnimation">@anim/enter_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/exit_to_bottom</item>
     </style>
+
     <style name="TopTopAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_top</item>
         <item name="android:windowExitAnimation">@anim/exit_to_top</item>
     </style>
+
     <style name="LeftLeftAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_left</item>
         <item name="android:windowExitAnimation">@anim/exit_to_left</item>
     </style>
+
     <style name="RightRightAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
         <item name="android:windowExitAnimation">@anim/exit_to_right</item>
     </style>
+
     <style name="BottomTopAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/exit_to_top</item>
     </style>
+
     <style name="TopBottomAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_top</item>
         <item name="android:windowExitAnimation">@anim/exit_to_bottom</item>
     </style>
+
     <style name="LeftRightAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_left</item>
         <item name="android:windowExitAnimation">@anim/exit_to_right</item>
     </style>
+
     <style name="RightLeftAnimation">
         <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
         <item name="android:windowExitAnimation">@anim/exit_to_left</item>

@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <libertypassage.com.app.widgets.CenturyGothicTextview
+    <TextView
         android:id="@+id/lbl_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:gravity="left"
-        android:text="dgdgd"
+        android:text="Country"
+        android:fontFamily="@font/century_gothic"
         android:textColor="@color/colorPrimaryDark"
-        android:padding="@dimen/_5sdp" />
+        android:padding="@dimen/_5sdp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
 
     <View
         android:layout_width="match_parent"

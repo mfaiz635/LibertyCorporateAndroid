@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="libertypassage.com.app">
+    package="libertypassage.com.corporate">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_LAUNCH_BROADCASTS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature
@@ -31,143 +33,143 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup"
-        tools:targetApi="q">
-
-        <activity
-            android:name=".basic.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        tools:targetApi="Q">
+        <activity android:name=".view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+
         <activity
-            android:name=".basic.LoginActivity"
+            android:name=".view.LogInActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.ForgotPassword"
+            android:name=".view.ForgotPassword"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.UpdatePassword"
+            android:name=".view.UpdatePassword"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.SignUpActivity"
+            android:name=".view.SignUpActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.VerifyOTPSignUp"
+            android:name=".view.VerifyOtpSignUp"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.RequestOtpEmail"
+            android:name=".view.VerifyOtpForgot"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.VerifyOtpEmailSignUp"
+            android:name=".view.Acknowledgement"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.VerifyOTPForgotPassword"
+            android:name=".view.EnrolmentDeclaration"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.Acknowledgement"
+            android:name=".view.MyTemperature"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.EnrolmentDeclaration"
+            android:name=".view.MyAddress"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.MyTemperature"
+            android:name=".view.ConfirmDetails"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.NoInternetConnection"
+            android:name=".view.ChangeStatus"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.AddAddress"
+            android:name=".view.HomePage"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.ConfirmDetails"
+            android:name=".view.UpdateAddress"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.ChangeStatus"
+            android:name=".view.ConfirmNricId"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.HomePage"
+            android:name=".view.UpdateProfile"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.UpdateAddress"
+            android:name=".view.AboutAppActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.UpdateProfile"
+            android:name=".view.UpdateMyTemperature"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.VerifyOtpEmailUpadteProfile"
+            android:name=".view.HotSpotsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.RequestOtpEmailForgot"
+            android:name=".view.SafeEntryActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.VerifyOtpEmailForgotPassword"
+            android:name=".view.SafeEntryCheckIn"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.UpdateMyTemperature"
+            android:name=".view.SafeEntryCheckOut"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.LocationHistory"
+            android:name=".view.SafeEntryFavourites"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".other.QRCodeScanerActivity"
+            android:name=".others.QRCodeScannerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".other.QRScanResultActivity"
+            android:name=".others.QRScanResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".basic.TestingActivity"
+            android:name=".corporate.EnterContactNumber"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".corporate.EnterReferenceNumber"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".corporate.ContactUs"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".corporate.ConfirmEmployer"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.TestingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
-
-        <meta-data
-            android:name="com.google.gms.vision.DEPENDENCIES"
-            android:value="barcode" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-        <service
-            android:name=".services.LocationJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
             android:name=".services.GPSTrackerLocation"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="false">
             <intent-filter>
-                <action android:name="libertypassage.com.app.services.SendNotification" />
+                <action android:name=".services.SendNotification" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
@@ -177,6 +179,9 @@
             android:enabled="true"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance" />
+        <service
+            android:name=".services.LocationJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <receiver
             android:name=".services.RestartServiceBroadcastReceiver"
             android:enabled="true"
@@ -187,35 +192,32 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="uk.ac.shef.oak.activity_recognition.sensor_service.RestartSensor" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
-        <service android:name=".utilis.location.LocationUpdateService" />
-
-        <service
-            android:name=".utilis.location.LocationServiceContinue"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="libertypassage.com.app.services.SendNotification" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
-
-        <service android:name=".utilis.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <receiver
-            android:name=".services.AlarmReceiver"
+            android:name=".utilities.AlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <service android:name=".utilities.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 </manifest>

@@ -1,51 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:orientation="vertical"
-    tools:context=".basic.SignUpActivity">
+    tools:context=".view.TestingActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:padding="@dimen/_5sdp"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/back_black"
-            tools:ignore="VectorDrawableCompat" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:text="LIBERTY"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-        <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:text="&amp; PASSAGE"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    <include layout="@layout/activity_header" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -61,40 +24,14 @@
 
             <TextView
                 android:id="@+id/txtScanResult"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:gravity="center_horizontal"
-                android:text="No data found..!!"
-                android:textColor="#ffffff"
-                android:textSize="18sp" />
-
-            <RelativeLayout
-                android:id="@+id/rl_goBack"
-                android:layout_width="@dimen/_190sdp"
-                android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_35sdp"
-                android:layout_marginBottom="@dimen/_20sdp"
-                android:background="@drawable/boader_black_rounded"
-                android:gravity="center">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    app:srcCompat="@drawable/back"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <libertypassage.com.app.widgets.CenturyGothicTextview
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_25sdp"
-                    android:text="GO BACK"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_14sdp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
+                android:text="Result"
+                android:layout_margin="@dimen/_20sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
     </ScrollView>

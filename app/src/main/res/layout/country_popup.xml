@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_40sdp"
+    android:layout_margin="@dimen/_30sdp"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/_10sdp">
@@ -22,14 +23,15 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="@dimen/_10sdp"
-                app:srcCompat="@drawable/places_ic_search"
+                android:paddingStart="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_search_24"
                 app:tint="@color/white"
-                tools:ignore="VectorDrawableCompat" />
+                tools:ignore="RtlSymmetry,VectorDrawableCompat" />
 
-            <libertypassage.com.app.widgets.CenturyGothicEditText
+            <EditText
                 android:id="@+id/edtCountry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,9 +42,13 @@
                 android:layout_marginLeft="@dimen/_29sdp"
                 android:inputType="textCapWords"
                 android:padding="@dimen/_10sdp"
+                android:fontFamily="@font/century_gothic"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="Autofill,HardcodedText"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_29sdp" />
 
             <ImageView
                 android:id="@+id/cancel"
@@ -52,7 +58,9 @@
                 android:layout_margin="@dimen/_7sdp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_close"
-                android:tint="@color/white" />
+                app:tint="@color/white"
+                android:layout_alignParentEnd="true"
+                tools:ignore="ContentDescription" />
 
         </RelativeLayout>
 

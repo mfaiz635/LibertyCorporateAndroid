@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fabFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:id="@+id/layoutFabSettings"
@@ -20,7 +22,8 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabSetting"
@@ -28,43 +31,49 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:background="@drawable/circle_orange"
-                android:backgroundTint="@color/colorPrimary"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/slider"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                app:backgroundTint="@color/colorPrimary"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
+
         <LinearLayout
-            android:id="@+id/layoutDetails"
+            android:id="@+id/layoutRecordTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp">
 
 
-            <libertypassage.com.app.widgets.CenturyGothicBoldTextView
+            <TextView
                 android:id="@+id/cvtSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:text="Record Temperature"
+                android:fontFamily="@font/century_gothic"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                tools:ignore="HardcodedText"
+                android:layout_marginEnd="@dimen/_5sdp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/temp_gray"
+                android:src="@drawable/temperature"
+                android:tint="#AEB2CC"
                 app:backgroundTint="#1B1F3A"
-                app:fabSize="mini" />
-
+                app:fabSize="mini"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,17 +84,21 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp">
 
-            <libertypassage.com.app.widgets.CenturyGothicBoldTextView
+            <TextView
                 android:id="@+id/cvtEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:text="Update Profile"
+                android:fontFamily="@font/century_gothic"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginEnd="@dimen/_5sdp"
+                tools:ignore="HardcodedText" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabEdit"
@@ -93,41 +106,117 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/profile"
                 app:backgroundTint="#1B1F3A"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layoutInfectedArea"
+            android:id="@+id/layoutHotspots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp">
 
-            <libertypassage.com.app.widgets.CenturyGothicBoldTextView
-                android:id="@+id/infected"
+            <TextView
+                android:id="@+id/hotSpots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:text="Hotspots"
+                android:text="HotSpots"
+                android:fontFamily="@font/century_gothic"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText"
+                android:layout_marginEnd="@dimen/_5sdp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabInfected"
+                android:id="@+id/fabHotSpots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle_gray"
                 android:src="@drawable/location_history"
                 app:backgroundTint="#1B1F3A"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                tools:ignore="ContentDescription"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layoutSafeEntry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp">
 
+            <TextView
+                android:id="@+id/safeEntry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:text="Safe Entry"
+                android:fontFamily="@font/century_gothic"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginEnd="@dimen/_5sdp"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabSafeEntry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_gray"
+                android:src="@drawable/safe_entry"
+                app:backgroundTint="#1B1F3A"
+                android:tint="#AEB2CC"
+                app:fabSize="mini"
+                tools:ignore="ContentDescription"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:text="About App"
+                android:fontFamily="@font/century_gothic"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText"
+                android:layout_marginEnd="@dimen/_5sdp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_gray"
+                android:src="@drawable/about"
+                app:backgroundTint="#1B1F3A"
+                android:tint="#AEB2CC"
+                app:fabSize="mini"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutLogout"
@@ -137,26 +226,32 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="gone">
 
-            <libertypassage.com.app.widgets.CenturyGothicBoldTextView
+            <TextView
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:text="Logout"
+                android:fontFamily="@font/century_gothic"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText"
+                android:layout_marginEnd="@dimen/_5sdp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle_gray"
-                android:src="@drawable/logout"
+                android:src="@drawable/location_history"
                 app:backgroundTint="#1B1F3A"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                tools:ignore="ContentDescription"/>
         </LinearLayout>
 
     </LinearLayout>
