@@ -66,6 +66,75 @@
                 app:sv_unitTextColor="@android:color/transparent"
                 app:sv_withTremble="false" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:visibility="gone"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="Accuracy Score"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
+
+                <com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
+                    android:id="@+id/trCornerProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_17sdp"
+                    android:layout_marginLeft="@dimen/_7sdp"
+                    app:rcBackgroundColor="@color/gray"
+                    app:rcBackgroundPadding="1dp"
+                    app:rcMax="100"
+                    app:rcProgress="0"
+                    app:rcProgressColors="@array/sample_progress_gradient"
+                    app:rcRadius="10dp"
+                    app:rcTextPositionPriority="inside"
+                    app:rcTextProgress="0"
+                    app:rcTextProgressColor="@color/white"
+                    app:rcTextProgressSize="@dimen/_6sdp"
+                    app:rcTextProgressMargin="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_17sdp"
+                    android:layout_marginStart="@dimen/_7sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="100"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_status_title"
                 android:layout_width="wrap_content"

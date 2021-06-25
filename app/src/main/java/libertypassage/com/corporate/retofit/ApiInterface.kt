@@ -4,11 +4,10 @@ package libertypassage.com.corporate.retofit
 import libertypassage.com.corporate.model.*
 import libertypassage.com.corporate.model.login.ModelLogin
 import libertypassage.com.corporate.utilities.Constants
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 
 interface ApiInterface {
@@ -67,28 +66,6 @@ interface ApiInterface {
         @Field("if_mobile_number") mobile: String?
     ): Call<ModelOTP>
 
-    @POST(Constants.GET_EMAIL_OTP)
-    @FormUrlEncoded
-    fun emailOtp(
-        @Field("if_bot") if_bot: String?,
-        @Field("if_email_id") if_email_id: String?
-    ): Call<ModelOTP>
-
-    @POST(Constants.RESEND_EMAIL_OTP)
-    @FormUrlEncoded
-    fun resendEmailOtp(
-        @Field("if_bot") if_bot: String?,
-        @Field("if_email_id") if_email_id: String?
-    ): Call<ModelOTP>
-
-    @POST(Constants.UPDATE_EMAIL_VERIFICATION)
-    @FormUrlEncoded
-    fun emailVerification(
-        @Header("Authorization") auth: String?,
-        @Field("if_bot") if_bot: String?,
-        @Field("if_email_verification") if_email_verification: String?
-    ): Call<ModelResponse>
-
     @POST(Constants.FORGOT_PASS)
     @FormUrlEncoded
     fun forgotPassword(
@@ -138,16 +115,19 @@ interface ApiInterface {
         @Field("if_vaccine_id") if_vaccine_id: String?,
         @Field("if_clinic_address") if_clinic_address: String?,
         @Field("if_date") if_date: String?
-    ): Call<ModelConforme>
+    ): Call<ModelConfirm>
 
-    @POST(Constants.ADD_TEMP)
-    @FormUrlEncoded
-    fun addTemp(
+    @POST(Constants.ADD_USER_CONF)
+    @Multipart
+    fun changeStatusWithImages(
         @Header("Authorization") auth: String?,
-        @Field("if_bot") if_bot: String?,
-        @Field("if_temp_type") if_temp_type: String?,
-        @Field("if_temprature") if_temprature: String?
-    ): Call<ModelResponse>
+        @Part("if_bot") if_bot: RequestBody?,
+        @Part("if_confirmed") if_confirmed: RequestBody?,
+        @Part("if_vaccine_id") if_vaccine_id: RequestBody?,
+        @Part("if_clinic_address") if_clinic_address: RequestBody?,
+        @Part("if_date") if_date: RequestBody?,
+        @Part images: Array<MultipartBody.Part?>
+    ): Call<ModelConfirm>
 
     @POST(Constants.LOCATION_HISTORY)
     @FormUrlEncoded
@@ -168,16 +148,6 @@ interface ApiInterface {
         @Field("if_ip_address") if_ip_address: String?,
         @Field("if_corp_id") if_corp_id: String?
     ): Call<ModelTrackUserLocation>
-
-    @POST(Constants.ADD_ADDRESS)
-    @FormUrlEncoded
-    fun addAddress(
-        @Header("Authorization") auth: String?,
-        @Field("if_bot") if_bot: String?,
-        @Field("if_address") if_address: String?,
-        @Field("if_postcode") if_postcode: String?,
-        @Field("if_town") if_town: String?
-    ): Call<ModelResponse>
 
     @POST(Constants.ADDRESS_AND_TEMP)
     @FormUrlEncoded
@@ -208,3 +178,44 @@ interface ApiInterface {
     @FormUrlEncoded
     fun getAppVersion(@Field("if_bot") if_bot: String?): Call<ModelAppVersion>
 }
+
+
+/*
+//--------------This api function currently not used.--------------------------------------------//
+    @POST(Constants.GET_EMAIL_OTP)
+    @FormUrlEncoded
+    fun emailOtp(
+        @Field("if_bot") if_bot: String?,
+        @Field("if_email_id") if_email_id: String?
+    ): Call<ModelOTP>
+    @POST(Constants.RESEND_EMAIL_OTP)
+    @FormUrlEncoded
+    fun resendEmailOtp(
+        @Field("if_bot") if_bot: String?,
+        @Field("if_email_id") if_email_id: String?
+    ): Call<ModelOTP>
+    @POST(Constants.UPDATE_EMAIL_VERIFICATION)
+    @FormUrlEncoded
+    fun emailVerification(
+        @Header("Authorization") auth: String?,
+        @Field("if_bot") if_bot: String?,
+        @Field("if_email_verification") if_email_verification: String?
+    ): Call<ModelResponse>
+    @POST(Constants.ADD_TEMP)
+    @FormUrlEncoded
+    fun addTemp(
+        @Header("Authorization") auth: String?,
+        @Field("if_bot") if_bot: String?,
+        @Field("if_temp_type") if_temp_type: String?,
+        @Field("if_temprature") if_temprature: String?
+    ): Call<ModelResponse>
+    @POST(Constants.ADD_ADDRESS)
+    @FormUrlEncoded
+    fun addAddress(
+        @Header("Authorization") auth: String?,
+        @Field("if_bot") if_bot: String?,
+        @Field("if_address") if_address: String?,
+        @Field("if_postcode") if_postcode: String?,
+        @Field("if_town") if_town: String?
+    ): Call<ModelResponse>
+ */

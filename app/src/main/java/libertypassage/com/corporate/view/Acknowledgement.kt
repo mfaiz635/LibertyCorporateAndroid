@@ -2,6 +2,7 @@ package libertypassage.com.corporate.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
@@ -60,6 +62,15 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
     private var corporationId = ""
     private var location = ""
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    val permissions = arrayOf<String?>(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    )
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +95,7 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> {
@@ -94,7 +106,16 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
                 if (location == "0") {
                     dialogUpdate()
                 } else {
-                    getLastLocation()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(permissions, 456)
+                    } else {
+                        if (isLocationEnabled()) {
+                            Utility.getMyLocation(context)
+                        } else {
+                            dialogAlwaysLocationOn()
+                        }
+                        getGPSLocation()
+                    }
                 }
             }
         }
@@ -112,10 +133,12 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
 
             Utility.setSharedPreference(context, Constants.KEY_LAT, latitudes.toString())
             Utility.setSharedPreference(context, Constants.KEY_LONG, longitudes.toString())
+            Utility.setSharedPreference(context, Constants.KEY_ALT, altitudes.toString())
             getWifiDetails()
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
         if (checkPermissions()) {
@@ -162,23 +185,24 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun checkPermissions(): Boolean {
-        return ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
+        return ActivityCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
             ),
             PERMISSION_ID
         )
@@ -191,16 +215,34 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_ID) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation()
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (requestCode == PERMISSION_ID) {
+//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                getLastLocation()
+//            }
+//        }
+        when (requestCode) {
+        456 -> {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (isLocationEnabled()) {
+                    Utility.getMyLocation(context)
+                } else {
+                    dialogAlwaysLocationOn()
+                }
+                getGPSLocation()
+                // permission was granted, yay! do the
+            } else {
+                // permission denied, boo! Disable the
+                dialogRequestPermission()
             }
+            return
+        }
         }
     }
 
@@ -215,10 +257,10 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
         val tvDontAllow = dialog.findViewById(R.id.tvDontAllow) as TextView
         val tvOk = dialog.findViewById(R.id.tvOk) as TextView
 
-        ivCancel.setOnClickListener({
+        ivCancel.setOnClickListener {
             location = "0"
             dialog.dismiss()
-        })
+        }
 
         tvDontAllow.setOnClickListener {
             location_switch.isChecked = false
@@ -356,7 +398,61 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
                 else -> {
                 }
             }
+            104 ->
+                if (resultCode != Activity.RESULT_OK) {
+                    if (isLocationEnabled()) {
+                        Utility.getMyLocation(context)
+                    } else {
+                        dialogAlwaysLocationOn()
+                    }
+                    getGPSLocation()
+                }
         }
+    }
+
+    private fun dialogAlwaysLocationOn() {
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.dialog_location_alwayson)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        val tvOk = dialog.findViewById(R.id.tvOk) as TextView
+
+        tvOk.setOnClickListener {
+            startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1)
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun dialogRequestPermission() {
+        val dialog = Dialog(context)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_runtime_permission)
+
+        val tvCancel = dialog.findViewById(R.id.tvCancel) as TextView
+        val tvSetting = dialog.findViewById(R.id.tvSetting) as TextView
+
+        tvCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        tvSetting.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri: Uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivityForResult(intent, 456)
+        }
+        dialog.show()
     }
 
     override fun onBackPressed() {

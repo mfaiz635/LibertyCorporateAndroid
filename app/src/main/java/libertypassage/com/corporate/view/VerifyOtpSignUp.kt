@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_header.*
 import kotlinx.android.synthetic.main.verify_otp_signup.*
 import libertypassage.com.corporate.R
@@ -69,7 +70,7 @@ class VerifyOtpSignUp : AppCompatActivity(), View.OnClickListener {
         profession = Utility.getSharedPreferences(context, Constants.KEY_PROF)!!
         countryId = Utility.getSharedPreferences(context, Constants.KEY_COUNTRY_ID)!!
         industryId = Utility.getSharedPreferences(context, Constants.KEY_INDUSTRY)!!
-        industryId = Utility.getSharedPreferences(context, Constants.KEY_CORPORATION_ID)!!
+        corporationId = Utility.getSharedPreferences(context, Constants.KEY_CORPORATION_ID)!!
         password = Utility.getSharedPreferences(context, "password")!!
         firebaseToken = Utility.getSharedPreferences(context, "firebaseToken")!!
 
@@ -151,11 +152,18 @@ class VerifyOtpSignUp : AppCompatActivity(), View.OnClickListener {
         val call: Call<ModelSignUp> = apiInterface.userSignUp(Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE,
             email, mobile, gender, ageGroup, industryId, profession, countryId,  password,
             firebaseToken, corporationId, "0")
+
+
+        Log.e("corporationId", corporationId)
+
+
+
+
         call.enqueue(object : Callback<ModelSignUp?> {
             override fun onResponse(call: Call<ModelSignUp?>, response: Response<ModelSignUp?>) {
                 val modelResponse: ModelSignUp? = response.body()
                 dialogProgress!!.dismiss()
-
+                Log.e("ModelSignUp", Gson().toJson(modelResponse))
                 if (modelResponse != null && modelResponse.error?.equals(false)!!) {
 
                     val signUpDetails = modelResponse.details

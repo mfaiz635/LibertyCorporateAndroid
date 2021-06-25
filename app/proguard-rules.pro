@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+#-mergeinterfacesaggressively
+#-overloadaggressively
+#-repackageclasses "libertypassage.com.corporate"

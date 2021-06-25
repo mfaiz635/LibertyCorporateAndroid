@@ -22,7 +22,7 @@
 
 
     <string name="serverError">Finding server issue....please try later!</string>
-    <string name="connectInternet">Please connect to internet and try again</string>
+    <string name="connectInternet">Please check your internet connectivity and try again!</string>
     <string name="requiredFullName">Required Full Name</string>
     <string name="requiredEmail">Required Email</string>
     <string name="invalidEmail">Required Valid Email</string>

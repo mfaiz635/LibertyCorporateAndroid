@@ -24,6 +24,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_login.*
@@ -49,11 +51,10 @@ class LogInActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var context: Context
     var dialogProgress: DialogProgress? = null
     var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
-    var deviceToken = ""
+    var firebaseToken = ""
     var countryCode = ""
     var mobile = ""
     var password = ""
-
     //  country dialog
     var countryNamesArray = ArrayList<String>()
     var countries = ArrayList<CountryDto>()
@@ -132,6 +133,17 @@ class LogInActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun init() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.e("getInstanceId failed", task.exception.toString())
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                firebaseToken = task.result.token
+                Log.e("firebaseToken =", firebaseToken)
+            })
+
         val jsonFileString = Utility.getJsonFromAssets(applicationContext, "countrylist.json")
         val gson = Gson()
         val listUserType = object : TypeToken<List<CountryDetail?>?>() {}.type
@@ -263,8 +275,7 @@ class LogInActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                 } else {
-                    Toast.makeText(context, "Required email/mobile number", Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(context, "Required email/mobile number", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -274,7 +285,7 @@ class LogInActivity : AppCompatActivity(), View.OnClickListener {
         dialogProgress!!.show()
         val apiInterface: ApiInterface = ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
         val call: Call<ModelLogin> = apiInterface.userLogIn(
-            Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE, deviceToken, mobileNo, password
+            Constants.KEY_BOT, Constants.KEY_DEVICE_TYPE, firebaseToken, mobileNo, password
         )
         call.enqueue(object : Callback<ModelLogin?> {
             override fun onResponse(call: Call<ModelLogin?>, response: Response<ModelLogin?>) {
@@ -346,17 +357,35 @@ class LogInActivity : AppCompatActivity(), View.OnClickListener {
                     val vaccines = confirmed?.vaccineName
                     Utility.setSharedPreference(context, Constants.KEY_VACCINE_NAME, vaccines?.name)
 
-                    val temprature = userDetails?.temprature
+                    val temperature = userDetails?.temprature
                     Utility.setSharedPreference(
                         context,
                         Constants.KEY_MY_TEMP,
-                        temprature?.temprature
+                        temperature?.temprature
                     )
                     Utility.setSharedPreference(
                         context,
                         Constants.KEY_TEMP_TYPE,
-                        temprature?.tempType
+                        temperature?.tempType
                     )
+
+                    val lastTrack = userDetails?.lastTrack
+                    Utility.setSharedPreference(
+                        context,
+                        Constants.KEY_LAT,
+                        lastTrack?.latitude
+                    )
+                    Utility.setSharedPreference(
+                        context,
+                        Constants.KEY_LONG,
+                        lastTrack?.longitude
+                    )
+                    Utility.setSharedPreference(
+                        context,
+                        Constants.KEY_ALT,
+                        lastTrack?.heightAzimuth
+                    )
+
                     val userStatus = userDetails?.userStatus
                     Utility.setSharedPreference(
                         context,

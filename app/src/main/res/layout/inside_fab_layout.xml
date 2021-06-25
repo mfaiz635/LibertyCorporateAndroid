@@ -39,6 +39,41 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layoutAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:text="About App"
+                android:fontFamily="@font/century_gothic"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText"
+                android:layout_marginEnd="@dimen/_5sdp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_gray"
+                android:src="@drawable/about"
+                app:backgroundTint="#1B1F3A"
+                android:tint="#AEB2CC"
+                app:fabSize="mini"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutRecordTemp"
@@ -127,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:text="HotSpots"
+                android:text="High Risk Locations"
                 android:fontFamily="@font/century_gothic"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/white"
@@ -155,7 +190,8 @@
             android:layout_marginRight="@dimen/_5sdp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginEnd="@dimen/_5sdp">
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/safeEntry"
@@ -182,41 +218,7 @@
                 tools:ignore="ContentDescription"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layoutAbout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginEnd="@dimen/_5sdp">
 
-            <TextView
-                android:id="@+id/about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:text="About App"
-                android:fontFamily="@font/century_gothic"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText"
-                android:layout_marginEnd="@dimen/_5sdp" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabAbout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/circle_gray"
-                android:src="@drawable/about"
-                app:backgroundTint="#1B1F3A"
-                android:tint="#AEB2CC"
-                app:fabSize="mini"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutLogout"

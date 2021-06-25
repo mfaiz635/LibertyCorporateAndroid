@@ -34,7 +34,7 @@ import java.util.*
 
 class MyService : android.app.Service(), LocationListener {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
-    private var token = ""
+    private var token: String? = ""
     private var wifiMacAddress = ""
     private var wifiIpAddress = ""
     private var wifiMode = ""
@@ -61,11 +61,11 @@ class MyService : android.app.Service(), LocationListener {
     private var longitude = 0.0
 
     // Declaring a Location Manager
-    protected var locationManager: LocationManager? = null
+    private var locationManager: LocationManager? = null
 
 
-     fun MyService() {
-    }
+//     fun MyService() {
+//    }
 
     override fun onCreate() {
         super.onCreate()
@@ -76,32 +76,34 @@ class MyService : android.app.Service(), LocationListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             restartForeground()
         }
-        if (token.isNotEmpty()) {
+        if (token!=null) {
             locationGPS
         }
     }
 
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        Log.e(TAG, "restarting Service !!")
         counter = 0
-
-        // it has been killed by Android and now it is restarted. We must make sure to have reinitialised everything
-        if (intent == null) {
-            val bck = ProcessMainClass()
-            bck.launchService(this)
-        }
-
+       // it has been killed by Android and now it is restarted. We must make sure to have reinitialised everything
+       try{
+           if (intent!!.extras != null) {
+               val bck = ProcessMainClass()
+               bck.launchService(this)
+           }
         // make sure you call the startForeground on onStartCommand because otherwise
         // when we hide the notification on onScreen it will nto restart in Android 6 and 7
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            if (token.isNotEmpty())
-                Log.e("ServiceToken", token)
-            restartForeground()
+            if(token!!.isNotEmpty() && token != ""){
+                restartForeground()
+            }
         }
         startTimer()
         // return start sticky so if it is killed by android, it will be restarted with Intent null
+
+       } catch (e: Exception) {
+           Log.e(TAG, "MyServiceError " + e.message)
+       }
         return START_STICKY
     }
 
@@ -177,17 +179,21 @@ class MyService : android.app.Service(), LocationListener {
         timerTask = object : TimerTask() {
             override fun run() {
                 Log.e("in timer", "in timer ++++  " + counter++)
-                if (token.isNotEmpty()) {
+                if (token!!.isNotEmpty()) {
                     val manager = getSystemService(LOCATION_SERVICE) as LocationManager
                     if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         locationByFused
                     } else {
+                        try{
                         locationGPS
                         val latitude = locationGPS!!.latitude
                         val longitude = locationGPS!!.longitude
                         val altitude = locationGPS!!.altitude
                         Log.e("GPSLatLong", "$latitude----$longitude")
                         getWifiDetails(latitude, longitude, altitude)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error in notification " + e.message)
+                        }
                     }
                 }
             }
@@ -235,8 +241,7 @@ class MyService : android.app.Service(), LocationListener {
     private fun getWifiDetails(latitude: Double, longitude: Double, altitude: Double) {
         val connManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-        val wifiManager =
-                super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
+        val wifiManager =super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
         val wInfo = wifiManager.connectionInfo
         if(wifiManager.isWifiEnabled){
             if(Objects.requireNonNull<NetworkInfo>(mWifi).isConnected) {
@@ -422,7 +427,7 @@ class MyService : android.app.Service(), LocationListener {
     }
 
     companion object {
-        protected const val NOTIFICATION_ID = 1234
+        private const val NOTIFICATION_ID = 1234
         private const val TAG = "Service"
         private var mCurrentMyService: MyService? = null
 

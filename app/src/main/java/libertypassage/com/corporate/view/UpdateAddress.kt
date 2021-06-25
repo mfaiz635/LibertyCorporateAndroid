@@ -1,18 +1,28 @@
 package libertypassage.com.corporate.view
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -78,6 +88,7 @@ class UpdateAddress : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_back -> {
@@ -90,13 +101,30 @@ class UpdateAddress : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.iv_qrcode_scanerr -> {
-                val intent = Intent(context, QRCodeScannerActivity::class.java)
-                startActivityForResult(intent, 170)
+                val permissions = arrayOf<String?>(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(permissions, 123)
+                } else {
+                    val intent = Intent(context, QRCodeScannerActivity::class.java)
+                    startActivityForResult(intent, 170)
+                }
             }
 
             R.id.tv_currentLocation -> {
-                getLastLocation()
-//                dialogUpdate()
+                val permissions = arrayOf<String?>(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(permissions, 456)
+                } else {
+                    getLastLocation()
+                }
             }
 
             R.id.tv_next -> {
@@ -125,34 +153,6 @@ class UpdateAddress : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
-//    private fun dialogUpdate() {
-//        val dialog = Dialog(context)
-//        dialog.window!!.setLayout(
-//            ViewGroup.LayoutParams.MATCH_PARENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//        )
-//        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dialog.setCancelable(true)
-//        dialog.setContentView(R.layout.dialog_get_location)
-//
-//        val ivCancel = dialog.findViewById(R.id.iv_cancel) as ImageView
-//        val tvNotAllow = dialog.findViewById(R.id.tv_notAllow) as TextView
-//        val tvOk = dialog.findViewById(R.id.tv_ok) as TextView
-//
-//        ivCancel.setOnClickListener(View.OnClickListener {
-//            dialog.dismiss()
-//        })
-//        tvNotAllow.setOnClickListener(View.OnClickListener {
-//            dialog.dismiss()
-//        })
-//        tvOk.setOnClickListener(View.OnClickListener {
-//            getLastLocation()
-//            dialog.dismiss()
-//        })
-//        dialog.show()
-//    }
-
 
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
@@ -231,7 +231,6 @@ class UpdateAddress : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 170) {
@@ -244,7 +243,108 @@ class UpdateAddress : AppCompatActivity(), View.OnClickListener {
                     Log.e("contents", contents)
                 }
             }
+        }else if(requestCode == 101){
+            val intent = Intent(context, QRCodeScannerActivity::class.java)
+            startActivityForResult(intent, 170)
+
+        }else if(requestCode == 104){
+            getLastLocation()
         }
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            123 -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+
+                    val intent = Intent(context, QRCodeScannerActivity::class.java)
+                    startActivityForResult(intent, 170)
+                    // permission was granted, yay! do the
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    dialogRequestPermissionCamera()
+                }
+                return
+            }
+            456 -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED ){
+                    getLastLocation()
+                    // permission was granted, yay! do the
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    dialogRequestPermission()
+                }
+                return
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun dialogRequestPermissionCamera() {
+        val dialog = Dialog(context)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_runtime_permission)
+
+        val tvDescription = dialog.findViewById(R.id.tvDescription) as TextView
+        val tvCancel = dialog.findViewById(R.id.tvCancel) as TextView
+        val tvSetting = dialog.findViewById(R.id.tvSetting) as TextView
+
+        tvDescription.text = "Camera & Storage Permission access must be allowed to use the Liberty App. " +
+                "You can allow the access in Setting > Permission."
+
+        tvCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        tvSetting.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri: Uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivityForResult(intent, 456)
+        }
+        dialog.show()
+    }
+
+    private fun dialogRequestPermission() {
+        val dialog = Dialog(context)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_runtime_permission)
+
+        val tvCancel = dialog.findViewById(R.id.tvCancel) as TextView
+        val tvSetting = dialog.findViewById(R.id.tvSetting) as TextView
+
+        tvCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        tvSetting.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri: Uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivityForResult(intent, 456)
+        }
+        dialog.show()
     }
 
     @SuppressLint("ClickableViewAccessibility")

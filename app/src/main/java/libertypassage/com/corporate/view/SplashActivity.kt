@@ -3,31 +3,41 @@ package libertypassage.com.corporate.view
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.net.sip.SipErrorCode.TIME_OUT
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.android.synthetic.main.dialog_runtime_permission.*
 import libertypassage.com.corporate.R
 import libertypassage.com.corporate.corporate.EnterContactNumber
 import libertypassage.com.corporate.corporate.EnterReferenceNumber
 import libertypassage.com.corporate.utilities.Constants
+import libertypassage.com.corporate.utilities.Constants.Companion.PERMISSION_CODE
+import libertypassage.com.corporate.utilities.CustomCheckBox
 import libertypassage.com.corporate.utilities.Utility
 import libertypassage.com.corporate.utilities.Utility.hasPermissionInManifest
-import libertypassage.com.corporate.utilities.Utility.setSharedPreference
 
 
 class SplashActivity : Activity() {
-    private var context: Context? = null
+    private lateinit var context: Context
     private val handler = Handler()
     private var token: String? = null
-
+    private var termsAccept: String? = null
     @RequiresApi(Build.VERSION_CODES.Q)
     var permission = arrayOf<String?>(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -38,20 +48,21 @@ class SplashActivity : Activity() {
         Manifest.permission.ACCESS_BACKGROUND_LOCATION)
 
 
+
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         context = this@SplashActivity
-        // get Device Id
-        val deviceId = Settings.Secure.getString(
-            applicationContext.contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
-        setSharedPreference(this, Constants.KEY_DEVICEID, deviceId)
         token = Utility.getSharedPreferences(this, Constants.KEY_BEARER_TOKEN)
-        if (hasPermissionInManifest(this@SplashActivity, PERMISSION_CODE, permission)) {
-            handler.postDelayed(runnable, 10)
+        termsAccept = Utility.getSharedPreferences(this, Constants.KEY_TERMS_ACCEPT)
+
+        if(termsAccept.equals("1")){
+            if (hasPermissionInManifest(this@SplashActivity, PERMISSION_CODE, permission)) {
+                handler.postDelayed(runnable, 10)
+            }
+        }else{
+            dialogTerms()
         }
 
         rl_started.setOnClickListener {
@@ -69,9 +80,7 @@ class SplashActivity : Activity() {
     private var runnable = Runnable {
         Log.e("Splash", "token : $token")
         if (token != "") {
-            val start = Utility.getSharedPreferences(
-                context!!, Constants.KEY_START
-            )
+            val start = Utility.getSharedPreferences(context, Constants.KEY_START )
             if (start == "1") {
                 startActivity(Intent(context, EnrolmentDeclaration::class.java))
                 finish()
@@ -92,16 +101,16 @@ class SplashActivity : Activity() {
                 finish()
             }
         } else {
-            if (Utility.getSharedPreferences(context!!, "isVerify") == "signup") {
+            if (Utility.getSharedPreferences(context, "isVerify") == "signup") {
                 val i = Intent(context, VerifyOtpSignUp::class.java)
                 i.putExtra("from", "splash")
                 startActivity(i)
                 finish()
-            } else if (Utility.getSharedPreferences(context!!, "isVerify") == "refNumber") {
+            } else if (Utility.getSharedPreferences(context, "isVerify") == "refNumber") {
                 val i = Intent(context, EnterReferenceNumber::class.java)
                 startActivity(i)
                 finish()
-            } else if (Utility.getSharedPreferences(context!!, "isVerify") == "forgot") {
+            } else if (Utility.getSharedPreferences(context, "isVerify") == "forgot") {
                 val i = Intent(context, VerifyOtpForgot::class.java)
                 i.putExtra("from", "splash")
                 startActivity(i)
@@ -123,7 +132,7 @@ class SplashActivity : Activity() {
         var hasAllPermissions = false
         when (requestCode) {
             PERMISSION_CODE -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
                     hasAllPermissions = true
                 } else {
                     hasAllPermissions = false
@@ -136,7 +145,152 @@ class SplashActivity : Activity() {
         }
     }
 
-    companion object {
-        private const val PERMISSION_CODE = 100
+    private fun dialogTerms() {
+        val dialog = Dialog(this@SplashActivity)
+        dialog.setContentView(R.layout.dialog_terms_splash)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        val checkBoxTerms1 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms1)
+        val checkBoxTerms2 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms2)
+        val checkBoxTerms3 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms3)
+        val checkBoxTerms4 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms4)
+        val checkBoxTerms5 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms5)
+        val tvSafeEntry = dialog.findViewById<TextView>(R.id.tvSafeEntry)
+        val tvPrivacyPolicy = dialog.findViewById<TextView>(R.id.tvPrivacyPolicy)
+        val tvNotAgree = dialog.findViewById<TextView>(R.id.tvNotAgree)
+        val tvAgree = dialog.findViewById<TextView>(R.id.tvAgree)
+        val tvOk = dialog.findViewById<TextView>(R.id.tvOk)
+        var terms1 = "1"
+        var terms2 = "1"
+        var terms3 = "1"
+        var terms4 = "1"
+        var terms5 = "1"
+
+        checkBoxTerms1.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                terms1 = "1"
+                if (terms2 == "1" && terms3 == "1" && terms4 == "1" && terms5 == "1") {
+                    tvNotAgree.visibility = View.GONE
+                    tvAgree.visibility = View.VISIBLE
+                } else {
+                    tvNotAgree.visibility = View.VISIBLE
+                    tvAgree.visibility = View.GONE
+                }
+            } else {
+                terms1 = "0"
+                tvNotAgree.visibility = View.VISIBLE
+                tvAgree.visibility = View.GONE
+            }
+        }
+
+        checkBoxTerms2.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                terms2 = "1"
+                if (terms1 == "1" && terms3 == "1" && terms4 == "1" && terms5 == "1") {
+                    tvNotAgree.visibility = View.GONE
+                    tvAgree.visibility = View.VISIBLE
+                } else {
+                    tvNotAgree.visibility = View.VISIBLE
+                    tvAgree.visibility = View.GONE
+                }
+            } else {
+                terms2 = "0"
+                tvNotAgree.visibility = View.VISIBLE
+                tvAgree.visibility = View.GONE
+            }
+        }
+
+        checkBoxTerms3.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                terms3 = "1"
+                if (terms2 == "1" && terms1 == "1" && terms4 == "1" && terms5 == "1") {
+                    tvNotAgree.visibility = View.GONE
+                    tvAgree.visibility = View.VISIBLE
+                } else {
+                    tvNotAgree.visibility = View.VISIBLE
+                    tvAgree.visibility = View.GONE
+                }
+            } else {
+                terms3 = "0"
+                tvNotAgree.visibility = View.VISIBLE
+                tvAgree.visibility = View.GONE
+            }
+        }
+
+        checkBoxTerms4.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                terms4 = "1"
+                if (terms1 == "1" && terms2 == "1" && terms3 == "1" && terms5 == "1") {
+                    tvNotAgree.visibility = View.GONE
+                    tvAgree.visibility = View.VISIBLE
+                } else {
+                    tvNotAgree.visibility = View.VISIBLE
+                    tvAgree.visibility = View.GONE
+                }
+            } else {
+                terms4 = "0"
+                tvNotAgree.visibility = View.VISIBLE
+                tvAgree.visibility = View.GONE
+            }
+        }
+
+        checkBoxTerms5.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                terms5 = "1"
+                if (terms1 == "1" && terms2 == "1" && terms3 == "1" && terms4 == "1") {
+                    tvNotAgree.visibility = View.GONE
+                    tvAgree.visibility = View.VISIBLE
+                } else {
+                    tvNotAgree.visibility = View.VISIBLE
+                    tvAgree.visibility = View.GONE
+                }
+            } else {
+                terms5 = "0"
+                tvNotAgree.visibility = View.VISIBLE
+                tvAgree.visibility = View.GONE
+            }
+        }
+
+        tvSafeEntry.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.safeentry.gov.sg/")))
+        }
+
+        tvPrivacyPolicy.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://passageliberty.azurewebsites.net/privacypolicy")))
+        }
+
+        tvAgree.setOnClickListener {
+            if (terms1 != "1") {
+                Toast.makeText(context, "Accept of First Privacy Policy", Toast.LENGTH_LONG).show()
+            } else if (terms2 != "1") {
+                Toast.makeText(context, "Accept of Second Privacy Policy", Toast.LENGTH_LONG).show()
+            } else if (terms3 != "1") {
+                Toast.makeText(context, "Accept of Third Privacy Policy", Toast.LENGTH_LONG).show()
+            } else if (terms4 != "1") {
+                Toast.makeText(context, "Accept of Forth Privacy Policy", Toast.LENGTH_LONG).show()
+            } else if (terms5 != "1") {
+                Toast.makeText(context, "Accept of Fifth Privacy Policy", Toast.LENGTH_LONG).show()
+            } else {
+                Utility.setSharedPreference(this@SplashActivity, Constants.KEY_TERMS_ACCEPT, "1")
+                if (hasPermissionInManifest(this@SplashActivity, PERMISSION_CODE, permission)) {
+                    handler.postDelayed(runnable, 10)
+                }
+            }
+            dialog.dismiss()
+        }
+
+        tvOk.setOnClickListener {
+            val intent = Intent(Intent.ACTION_MAIN)
+            intent.addCategory(Intent.CATEGORY_HOME)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 }

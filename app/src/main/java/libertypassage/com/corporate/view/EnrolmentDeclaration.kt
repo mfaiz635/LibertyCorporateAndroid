@@ -81,8 +81,7 @@ class EnrolmentDeclaration : AppCompatActivity(), View.OnClickListener {
                 if (terms1 != "1") {
                     Toast.makeText(context, "Accept of First Declaration", Toast.LENGTH_LONG).show()
                 } else if (terms2 != "1") {
-                    Toast.makeText(context, "Accept of Second Declaration", Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(context, "Accept of Second Declaration", Toast.LENGTH_LONG).show()
                 } else if (terms3 != "1") {
                     Toast.makeText(context, "Accept of Third Declaration", Toast.LENGTH_LONG).show()
                 } else if (terms4 != "1") {

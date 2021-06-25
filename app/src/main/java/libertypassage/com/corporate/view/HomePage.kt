@@ -28,6 +28,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
 import com.github.anastr.speedviewlib.ImageSpeedometer
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -61,8 +62,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var fabSetting: FloatingActionButton? = null
     private var imageSpeedometer: ImageSpeedometer? = null
-    private var installStateUpdatedListener: InstallStateUpdatedListener? = null
-    private var mAppUpdateManager: AppUpdateManager? = null
+    private var trCornerProgressBar: TextRoundCornerProgressBar? = null
     private var PERMISSION_ID = 44
     private var token = ""
     private var wifiMacAddress = ""
@@ -78,7 +78,12 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
     private var countryName = ""
     private var fabExpanded = false
 
-
+    @RequiresApi(Build.VERSION_CODES.Q)
+    val permissions = arrayOf<String?>(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,8 +95,9 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         corporationId = Utility.getSharedPreferences(context, Constants.KEY_CORPORATION_ID)!!
         dialogProgress = DialogProgress(context)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        imageSpeedometer = findViewById<ImageSpeedometer>(R.id.imageSpeedometer)
-        fabSetting = findViewById<FloatingActionButton>(R.id.fabSetting)
+        imageSpeedometer = findViewById(R.id.imageSpeedometer)
+        fabSetting = findViewById(R.id.fabSetting)
+        trCornerProgressBar = findViewById(R.id.trCornerProgressBar)
 
         statusId = Utility.getSharedPreferences(context, Constants.KEY_CURRENT_STATUS)!!
         if (statusId.isNotEmpty()) {
@@ -101,6 +107,9 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         if (riskScore.isNotEmpty()) {
             imageSpeedometer!!.speedTo(riskScore.toFloat())
         }
+
+        trCornerProgressBar!!.progress = 90.toFloat()
+        trCornerProgressBar!!.progressText = 90.toString()
 
         fabSetting?.setOnClickListener(this)
         layoutRecordTemp.setOnClickListener(this)
@@ -114,25 +123,18 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         Utility.setSharedPreference(context, Constants.KEY_START, "5")
         closeSubMenusFab()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            RestartServiceBroadcastReceiver.scheduleJob(applicationContext)
-        } else {
-            val bck = ProcessMainClass()
-            bck.launchService(applicationContext)
-        }
-
-//        installStateUpdatedListener = InstallStateUpdatedListener { state: InstallState ->
-//            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-//                //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
-//                popupSnackBarUpdate()
-//            } else if (state.installStatus() == InstallStatus.INSTALLED) {
-//                installStateUpdatedListener?.let { mAppUpdateManager?.unregisterListener(it) }
-//            } else {
-//                Log.e(TAG, "InstallStateUpdatedListener: state: " + state.installStatus())
-//            }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            RestartServiceBroadcastReceiver.scheduleJob(applicationContext)
+//        } else {
+//            val bck = ProcessMainClass()
+//            bck.launchService(applicationContext)
 //        }
+//
+//        getGPSLocation()
 
-        getGPSLocation()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(permissions, 789)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -140,7 +142,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         when (v!!.id) {
 
             R.id.fabSetting -> {
-                if (fabExpanded == true) {
+                if (fabExpanded) {
                     closeSubMenusFab()
                 } else {
                     openSubMenusFab()
@@ -161,18 +163,18 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.layoutHotspots -> {
-                if (checkPermissions()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(permissions, 456)
+                } else {
                     if (isLocationEnabled()) {
                         Utility.getMyLocation(context)
                     } else {
                         dialogAlwaysLocationOn()
                     }
-                } else {
-                    requestPermissions()
+                    val intent = Intent(context, HotSpotsActivity::class.java)
+                    startActivity(intent)
+                    closeSubMenusFab()
                 }
-                val intent = Intent(context, HotSpotsActivity::class.java)
-                startActivity(intent)
-                closeSubMenusFab()
             }
 
             R.id.layoutSafeEntry -> {
@@ -213,12 +215,16 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             enableGPSSettingsRequest(this@HomePage)
         } else {
-            val latitude: Double = gps.getLatitude()
-            val longitude: Double = gps.getLongitude()
-            val altitudes: Double = gps.getAltitude()
-            Utility.setSharedPreference(context, Constants.KEY_LAT, latitude.toString())
-            Utility.setSharedPreference(context, Constants.KEY_LONG, longitude.toString())
-            getWifiDetails(latitude, longitude, altitudes)
+            try {
+                val latitude: Double = gps.getLatitude()
+                val longitude: Double = gps.getLongitude()
+                val altitudes: Double = gps.getAltitude()
+                Utility.setSharedPreference(context, Constants.KEY_LAT, latitude.toString())
+                Utility.setSharedPreference(context, Constants.KEY_LONG, longitude.toString())
+                getWifiDetails(latitude, longitude, altitudes)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error " + e.message)
+            }
         }
     }
 
@@ -227,26 +233,26 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         val locationRequest = LocationRequest.create()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         mFusedLocationClient!!.lastLocation
-                .addOnSuccessListener(
-                    this
-                ) { location ->
-                    if (location != null) {
-                        val latitudes = location.latitude
-                        val longitudes = location.longitude
-                        val altitudes = location.altitude
-                        Utility.setSharedPreference(
-                            context,
-                            Constants.KEY_LAT,
-                            latitudes.toString()
-                        )
-                        Utility.setSharedPreference(
-                            context,
-                            Constants.KEY_LONG,
-                            longitudes.toString()
-                        )
-                        getWifiDetails(latitudes, longitudes, altitudes)
-                    }
+            .addOnSuccessListener(
+                this
+            ) { location ->
+                if (location != null) {
+                    val latitudes = location.latitude
+                    val longitudes = location.longitude
+                    val altitudes = location.altitude
+                    Utility.setSharedPreference(
+                        context,
+                        Constants.KEY_LAT,
+                        latitudes.toString()
+                    )
+                    Utility.setSharedPreference(
+                        context,
+                        Constants.KEY_LONG,
+                        longitudes.toString()
+                    )
+                    getWifiDetails(latitudes, longitudes, altitudes)
                 }
+            }
     }
 
     private fun getWifiDetails(latitudes: Double, longitudes: Double, altitudes: Double) {
@@ -254,14 +260,14 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         val connManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
         val wifiManager =
-                super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
+            super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
         val wInfo = wifiManager.connectionInfo
-        if(wifiManager.isWifiEnabled){
-            if(Objects.requireNonNull<NetworkInfo>(mWifi).isConnected) {
+        if (wifiManager.isWifiEnabled) {
+            if (Objects.requireNonNull<NetworkInfo>(mWifi).isConnected) {
                 wifiIpAddress = wInfo.ssid
                 wifiMacAddress = wInfo.bssid
                 wifiMode = "Connected"
-            }else{
+            } else {
                 val wifiList = wifiManager.scanResults
                 val ssidList = ArrayList<String>()
                 val bssidList = ArrayList<String>()
@@ -277,10 +283,10 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        val addresses: List<Address>
-        val geocoder = Geocoder(context, Locale.getDefault())
         try {
-            addresses = geocoder.getFromLocation(latitudes,longitudes,1)
+            val addresses: List<Address>
+            val geoCoder = Geocoder(context, Locale.getDefault())
+            addresses = geoCoder.getFromLocation(latitudes, longitudes, 1)
             countryName = addresses[0].countryName
         } catch (e: IOException) {
             e.printStackTrace()
@@ -291,16 +297,16 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
                 trackUserLocation(latitudes, longitudes, altitudes)
             }
         } else {
-            Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.connectInternet, Toast.LENGTH_LONG).show()
         }
     }
 
-
     private fun trackUserLocation(latitudes: Double, longitudes: Double, altitudes: Double) {
         dialogProgress!!.show()
-        val apiInterface: ApiInterface = ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
+        val apiInterface: ApiInterface =
+            ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
         val call: Call<ModelTrackUserLocation> = apiInterface.trackUserLocation(
-            Constants.KEY_HEADER+token,
+            Constants.KEY_HEADER + token,
             Constants.KEY_BOT,
             latitudes,
             longitudes,
@@ -312,7 +318,8 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         call.enqueue(object : Callback<ModelTrackUserLocation?> {
             override fun onResponse(
                 call: Call<ModelTrackUserLocation?>,
-                response: Response<ModelTrackUserLocation?> ) {
+                response: Response<ModelTrackUserLocation?>
+            ) {
                 val modelResponse: ModelTrackUserLocation? = response.body()
                 dialogProgress!!.dismiss()
                 Log.e("TrackUserLocationHome", Gson().toJson(modelResponse))
@@ -397,12 +404,16 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
 //        getAppVersion()
     }
 
-    private fun getAppVersion(){
-        val apiInterface: ApiInterface = ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
+    private fun getAppVersion() {
+        val apiInterface: ApiInterface =
+            ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
         val call: Call<ModelAppVersion> = apiInterface.getAppVersion(Constants.KEY_BOT)
         call.enqueue(object : Callback<ModelAppVersion?> {
             @SuppressLint("SimpleDateFormat")
-            override fun onResponse(call: Call<ModelAppVersion?>, response: Response<ModelAppVersion?>) {
+            override fun onResponse(
+                call: Call<ModelAppVersion?>,
+                response: Response<ModelAppVersion?>
+            ) {
                 val responses: ModelAppVersion? = response.body()
 
                 if (responses != null && responses.error?.equals(false)!!) {
@@ -429,67 +440,6 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-/*
-    override fun onStart() {
-        super.onStart()
-        mAppUpdateManager = AppUpdateManagerFactory.create(context)
-        installStateUpdatedListener?.let { mAppUpdateManager!!.registerListener(it) }
-        mAppUpdateManager!!.appUpdateInfo.addOnSuccessListener { appUpdateInfo: AppUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE /*AppUpdateType.IMMEDIATE*/)) {
-                try {
-                    mAppUpdateManager!!.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        AppUpdateType.FLEXIBLE /*AppUpdateType.IMMEDIATE*/,
-                        this@HomePage,
-                        3
-                    )
-                } catch (e: SendIntentException) {
-                    e.printStackTrace()
-                }
-            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
-                popupSnackBarUpdate()
-            } else {
-                Log.e(TAG, "checkForAppUpdateAvailability: something else")
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mAppUpdateManager != null) {
-            installStateUpdatedListener?.let { mAppUpdateManager!!.unregisterListener(it) }
-        }
-    }
-
-    private fun popupSnackBarUpdate() {
-        val snackbar = Snackbar.make(
-            findViewById(R.id.rootLayout),
-            "New App is ready for update!",
-            Snackbar.LENGTH_INDEFINITE
-        )
-        snackbar.setAction("Install") { view: View? ->
-            if (mAppUpdateManager != null) {
-                mAppUpdateManager!!.completeUpdate()
-            }
-        }
-        snackbar.setActionTextColor(resources.getColor(R.color.green_app))
-        snackbar.show()
-    }
-*/
-
-//    override fun onResume() {
-//        super.onResume()
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            RestartServiceBroadcastReceiver.scheduleJob(context)
-//        } else {
-//            val bck = ProcessMainClass()
-//            bck.launchService(applicationContext)
-//        }
-////       startService(new Intent(HomePage.this, LocationServiceContinue.class));
-//    }
-
     //closes FAB submenus
     private fun closeSubMenusFab() {
         layoutRecordTemp.visibility = View.INVISIBLE
@@ -511,9 +461,15 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
 
 //      layoutLogout.setVisibility(View.VISIBLE);
 //      Singapore, UK, India
-        if(countryName == "Singapore" || countryName == "United Kingdom" || countryName == "UK" || countryName == "India"){
+//        if(countryName == "Singapore" || countryName == "United Kingdom" || countryName == "UK" || countryName == "India"){
+//            layoutSafeEntry.visibility = View.VISIBLE
+//        }else{
+//            layoutSafeEntry.visibility = View.INVISIBLE
+//        }
+
+        if (countryName == "Singapore") {
             layoutSafeEntry.visibility = View.VISIBLE
-        }else{
+        } else {
             layoutSafeEntry.visibility = View.INVISIBLE
         }
         fabSetting!!.setImageResource(R.drawable.ic_close_white)
@@ -541,16 +497,22 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
     private fun dialogUpdateApp() {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialog_app_update)
-        dialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,  ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCancelable(false)
         val tvOk = dialog.findViewById(R.id.tvOk) as TextView
         val tvLater = dialog.findViewById(R.id.tvLater) as TextView
 
         tvOk.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=libertypassage.com.corporate")))
-            //           Uri.parse("https://play.google.com/store/apps/details?id=com.flipkart.android")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=libertypassage.com.corporate")
+                )
+            )
             dialog.dismiss()
         }
         tvLater.setOnClickListener {
@@ -588,9 +550,8 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
 
     private fun isLocationEnabled(): Boolean {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
     private val LOCATION_SETTINGS_REQUEST = 1
@@ -628,7 +589,17 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
                 if (resultCode != Activity.RESULT_OK) {
                     Log.e(TAG, "onActivityResult: app download failed")
                 }
-
+            104 ->
+                if (resultCode != Activity.RESULT_OK) {
+                    if (isLocationEnabled()) {
+                        Utility.getMyLocation(context)
+                    } else {
+                        dialogAlwaysLocationOn()
+                    }
+                    val intent = Intent(context, HotSpotsActivity::class.java)
+                    startActivity(intent)
+                    closeSubMenusFab()
+                }
         }
     }
 
@@ -640,7 +611,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
         builder.setAlwaysShow(true)
         val result =
-                LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build())
+            LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build())
         result.setResultCallback { result ->
             val status = result.status
             when (status.statusCode) {
@@ -661,6 +632,88 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            456 -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (isLocationEnabled()) {
+                        Utility.getMyLocation(context)
+                    } else {
+                        dialogAlwaysLocationOn()
+                    }
+                    val intent = Intent(context, HotSpotsActivity::class.java)
+                    startActivity(intent)
+                    closeSubMenusFab()
+                    // permission was granted, yay! do the
+                } else {
+                    // permission denied, boo! Disable the
+                    dialogRequestPermission()
+                }
+                return
+            }
+            789 -> {
+                try {
+                    if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            RestartServiceBroadcastReceiver.scheduleJob(applicationContext)
+                        } else {
+                            val bck = ProcessMainClass()
+                            bck.launchService(applicationContext)
+                        }
+                        getGPSLocation()
+                        // permission was granted, yay! do the
+                    } else {
+                        Log.e("Permission", "Deny")
+                        val latitude = Utility.getSharedPreferences(context, Constants.KEY_LAT)!!
+                        val longitude = Utility.getSharedPreferences(context, Constants.KEY_LONG)!!
+                        val altitudes = Utility.getSharedPreferences(context, Constants.KEY_ALT)!!
+                        if (latitude.isNotEmpty() && latitude != "") {
+                            getWifiDetails(
+                                latitude.toDouble(),
+                                longitude.toDouble(),
+                                altitudes.toDouble()
+                            )
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("error", e.message.toString())
+                }
+                return
+            }
+        }
+    }
+
+    private fun dialogRequestPermission() {
+        val dialog = Dialog(context)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_runtime_permission)
+
+        val tvCancel = dialog.findViewById(R.id.tvCancel) as TextView
+        val tvSetting = dialog.findViewById(R.id.tvSetting) as TextView
+
+        tvCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        tvSetting.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri: Uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivityForResult(intent, 456)
+        }
+        dialog.show()
+    }
 
     private fun appExit() {
         finish()

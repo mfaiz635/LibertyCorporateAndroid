@@ -18,7 +18,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.OnCompleteListener
@@ -33,7 +32,6 @@ import libertypassage.com.corporate.retofit.ApiInterface
 import libertypassage.com.corporate.retofit.ClientInstance
 import libertypassage.com.corporate.utilities.*
 import libertypassage.com.corporate.view.adapter.*
-import libertypassage.com.corporate.viewmodel.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,10 +41,8 @@ import java.util.regex.Pattern
 
 class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var context: Context
-    private lateinit var industryListViewModel: IndustryListViewModel
-    private lateinit var professionListViewModel: ProfessionListViewModel
-    var dialogProgress: DialogProgress? = null
-    var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
+    private var dialogProgress: DialogProgress? = null
+    private var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
     var fullName = ""
     var email = ""
     var countryCode = ""
@@ -81,8 +77,6 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
         context = this@SignUpActivity
         dialogProgress = DialogProgress(context)
-        industryListViewModel = ViewModelProvider(this).get(IndustryListViewModel::class.java)
-        professionListViewModel = ViewModelProvider(this).get(ProfessionListViewModel::class.java)
 
         iv_back.setOnClickListener(this)
         tv_countryCode.setOnClickListener(this)
@@ -162,7 +156,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             if (Utility.isConnectingToInternet(context)) {
                 callApiIndustryList()
             } else {
-                Toast.makeText(context, "Please connect to internet and try again", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.connectInternet, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -243,7 +237,7 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
             ) {
                 if (spinnerIndustry.selectedItemPosition != 0) {
                     industryId = industryArrayList[position].industryId.toString()
-                    callApiProfessionList()
+                    callApiProfessionList(industryId)
                 }else{
                     industryId=""
                 }
@@ -386,13 +380,25 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         dialogValidation!!.show()
     }
 
+
     private fun callApiIndustryList() {
         dialogProgress!!.show()
-        industryListViewModel.getList()!!.observe(this,
-            { response ->
+        val apiInterface: ApiInterface =
+            ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
+        val call: Call<Industry> = apiInterface.getIndustries(Constants.KEY_BOT)
+
+        call.enqueue(object : Callback<Industry?> {
+            @SuppressLint("SimpleDateFormat")
+            override fun onResponse(
+                call: Call<Industry?>,
+                response: Response<Industry?>
+            ) {
                 dialogProgress!!.dismiss()
-                if (response != null && response.error?.equals(false)!!) {
-                    val indList = response.details
+                val responses: Industry? = response.body()
+
+                if (responses != null && responses.error?.equals(false)!!) {
+
+                    val indList = responses.details
 
                     industryArrayList.clear()
                     industryArrayList.add(
@@ -403,43 +409,66 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                     )
                     industryArrayList.addAll(indList!!)
                     industryAdapter = IndustryAdapter(context, industryArrayList)
-                    spinnerIndustry.adapter = industryAdapter
+                    spinnerIndustry!!.adapter = industryAdapter
                     Utility.saveIndustry(context, industryArrayList)
-                } else {
-                    if (response.error?.equals(true)!!) {
-                        Utility.stopProgressDialog(context)
-                        Toast.makeText(context, response.message, Toast.LENGTH_LONG).show()
-                    }
+
+
+                } else if (responses != null && responses.error?.equals(true)!!) {
+                    dialogProgress!!.dismiss()
+                    Toast.makeText(context, responses.message, Toast.LENGTH_LONG).show()
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<Industry?>, t: Throwable) {
+                dialogProgress!!.dismiss()
+            }
+        })
     }
 
-    private fun callApiProfessionList() {
+    private fun callApiProfessionList(industryId: String) {
         dialogProgress!!.show()
-        professionListViewModel.getList("1")!!.observe(this,
-            { response ->
+        val apiInterface: ApiInterface =
+            ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
+        val call: Call<IndustryProfessions> =
+            apiInterface.getIndustryProfessions(Constants.KEY_BOT, industryId)
+
+        call.enqueue(object : Callback<IndustryProfessions?> {
+            @SuppressLint("SimpleDateFormat")
+            override fun onResponse(
+                call: Call<IndustryProfessions?>,
+                response: Response<IndustryProfessions?>
+            ) {
                 dialogProgress!!.dismiss()
-                if (response != null && response.error?.equals(false)!!) {
-                    val ipList = response.details
+                val responses: IndustryProfessions? = response.body()
+
+                if (responses != null && responses.error?.equals(false)!!) {
+
+                    val ipList = responses.details
+
                     ipArrayList.clear()
                     ipArrayList.add(
                         DetailIndustryProf(
                             0,
-                            1,
+                            0,
                             "Select Profession"
                         )
                     )
                     ipArrayList.addAll(ipList!!)
                     professionAdapter = ProfessionsAdapter(context, ipArrayList)
-                    spinnerProfession.adapter = professionAdapter
-                    Utility.saveIndustryProfession(context, ipArrayList)
-                } else {
-                    if (response.error == true) {
-                        Utility.stopProgressDialog(context)
-                        Toast.makeText(context, response.message, Toast.LENGTH_LONG).show()
-                    }
+                    spinnerProfession!!.adapter = professionAdapter
+//                    Utility.saveIndustryProfession(context, ipArrayList)
+
+
+                } else if (responses != null && responses.error?.equals(true)!!) {
+                    dialogProgress!!.dismiss()
+                    Toast.makeText(context, responses.message, Toast.LENGTH_LONG).show()
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<IndustryProfessions?>, t: Throwable) {
+                dialogProgress!!.dismiss()
+            }
+        })
     }
 
     private fun callApiUserExistence() {

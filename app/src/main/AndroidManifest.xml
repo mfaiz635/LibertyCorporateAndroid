@@ -91,6 +91,14 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".view.ChangeStatusImagesList"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ImagesSliderActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.HomePage"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

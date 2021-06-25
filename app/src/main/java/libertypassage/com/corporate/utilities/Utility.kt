@@ -6,6 +6,9 @@ import android.app.ActivityManager
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.location.Geocoder
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -17,6 +20,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import libertypassage.com.corporate.R
 import libertypassage.com.corporate.model.*
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 import java.util.regex.Pattern
@@ -24,12 +29,12 @@ import java.util.regex.Pattern
 
 object Utility {
     private const val PREFERENCE = "LIBERTY"
-    private const val KEY_COUNTRY_LIST = "country_list"
     private const val KEY_INDUSTRY_LIST = "industry_list"
     private const val KEY_INDUSTRY_PROF = "industry_profession"
     private const val KEY_HOTSPOTS_LIST = "hotspots_list"
     private const val KEY_SAFE_ENTRY = "safe_entry"
     private const val KEY_VACCINE_LIST = "vaccine_list"
+    private const val KEY_STATUS_IMAGES = "status_images_list"
     private var progressDialog: ProgressDialog? = null
 
 
@@ -78,11 +83,7 @@ object Utility {
             permissionName: Array<String?>
     ): Boolean {
         for (s in permissionName) {
-            if (ContextCompat.checkSelfPermission(
-                            activity!!,
-                            s!!
-                    ) != PackageManager.PERMISSION_GRANTED
-            ) {
+            if (ContextCompat.checkSelfPermission(activity!!, s!!) != PackageManager.PERMISSION_GRANTED) {
                 // Some permissions are not granted, ask the user.
                 ActivityCompat.requestPermissions(activity, permissionName, requestCode)
                 return false
@@ -144,6 +145,25 @@ object Utility {
         return try {
             val arr = Gson().fromJson(str, Array<DetailVaccines>::class.java)
             return ArrayList<DetailVaccines>(Arrays.asList<DetailVaccines>(*arr))
+        } catch (e: java.lang.Exception) {
+            ArrayList()
+        }
+    }
+
+    fun saveStatusImages(context: Context, list: List<ClinicQrImage?>?) {
+        val str = Gson().toJson(list)
+        val sp = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.putString(KEY_STATUS_IMAGES, str)
+        editor.apply()
+    }
+
+    fun getStatusImages(context: Context): ArrayList<ClinicQrImage> {
+        val sp = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE)
+        val str = sp.getString(KEY_STATUS_IMAGES, null)
+        return try {
+            val arr = Gson().fromJson(str, Array<ClinicQrImage>::class.java)
+            return ArrayList<ClinicQrImage>(Arrays.asList<ClinicQrImage>(*arr))
         } catch (e: java.lang.Exception) {
             ArrayList()
         }
@@ -284,5 +304,18 @@ object Utility {
         return modelMyLocation
     }
 
+    fun imageCompress(fileName: String?): File {
+        val file: File = File(fileName)
+        try {
+            val bitmap = BitmapFactory.decodeFile(file.path)
+            val matrix = Matrix()
+            val bitmapNew = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+            bitmapNew.compress(Bitmap.CompressFormat.JPEG, 40, FileOutputStream(file))
+        } catch (t: Throwable) {
+            Log.e("ERROR", "Error compressing file.$t")
+            t.printStackTrace()
+        }
+        return file
+    }
 
 }

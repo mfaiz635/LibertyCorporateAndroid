@@ -7,19 +7,17 @@ import java.util.ArrayList
 interface Constants {
     companion object {
         const val mainUrl = "https://passageliberty.azurewebsites.net/api/"
+        const val ImageUrl = "https://passageliberty.azurewebsites.net/"
+//        const val mainUrl = "https://passageliberty.azurewebsites.net/dev/api/"
+
         const val CHECK_USER_EXISTENCE = "checkUserExistance"
         const val GET_OTP = "getOtp"
-        const val GET_EMAIL_OTP = "getEmailOtp"
-        const val RESEND_EMAIL_OTP = "resetEmailOtp"
-        const val UPDATE_EMAIL_VERIFICATION = "updateEmailVerification"
         const val INDUSTRIES = "getIndustries"
         const val INDUSTRIES_PROFESSIONS = "getIndustryProfessions"
         const val SIGN_UP = "addUser"
         const val LOG_IN = "userLogin"
         const val FORGOT_PASS = "resetPasswordOtp"
         const val UPDATE_PASS = "updateUserPassword"
-        const val ADD_ADDRESS = "addUserAddress"
-        const val ADD_TEMP = "addUserTemp"
         const val ADD_USER_CONF = "addUserConf"
         const val USER_ENROLL_DECLARE = "addUserEnrollDeclare"
         const val TRACK_USER_LOCATION = "addTrackUserLocation"
@@ -29,6 +27,12 @@ interface Constants {
         const val GET_VACCINES = "getVaccines"
         const val VERIFY_EMPLOYEE = "verifyEmployee"
         const val GET_APP_VERSION = "getcurrentversion"
+
+//        const val GET_EMAIL_OTP = "getEmailOtp"
+//        const val RESEND_EMAIL_OTP = "resetEmailOtp"
+//        const val UPDATE_EMAIL_VERIFICATION = "updateEmailVerification"
+//        const val ADD_TEMP = "addUserTemp"
+//        const val ADD_ADDRESS = "addUserAddress"
 //        const val GET_USER = "getUser"
 //        const val PROFESSIONS = "getProfessions"
 //        const val COUNTRY_CODE = "getCountries"
@@ -39,7 +43,6 @@ interface Constants {
 
 
         //Shared Pref Keys
-        const val KEY_DEVICEID = "device_id"
         const val KEY_DEVICE_TYPE = "Android"
         const val KEY_FULLNAME = "full_name"
         const val KEY_EMAIL = "user_email"
@@ -69,11 +72,17 @@ interface Constants {
         const val KEY_SUB_TITLE = "sub_title"
         const val KEY_DESCRIPTION = "description"
         const val KEY_ALERT_DESCRIPTION = "alert_description"
-        const val KEY_LAT = "lat"
-        const val KEY_LONG = "long"
+        const val KEY_LAT = "latitude"
+        const val KEY_LONG = "longitude"
+        const val KEY_ALT = "altitudes"
         const val KEY_MY_LOCATION = "my_location"
         const val KEY_CORPORATION_ID = "corporation_id"
         const val KEY_NRIC_ID = "nric_id"
+        const val PERMISSION_CODE = 100
+        const val KEY_TERMS_ACCEPT = "terms_accept"
         var safeEntryArrayList: ArrayList<ModelSafeEntry> = ArrayList<ModelSafeEntry>()
+
+
+//        Log.e("ModelSignUp", Gson().toJson(modelResponse))
     }
 }
