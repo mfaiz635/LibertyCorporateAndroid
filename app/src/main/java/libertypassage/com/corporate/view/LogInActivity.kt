@@ -516,7 +516,7 @@ class LogInActivity : AppCompatActivity(), View.OnClickListener {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
-        Toast.makeText(context, "You are login Successfully", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "You have been login successfully.", Toast.LENGTH_LONG).show()
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -19,7 +19,7 @@
     <string name="term2">I accept all the terms &amp; conditions of use</string>
     <string name="terms3">I accepted enabling location tracking</string>
     <string name="terms4">I accepted sharing my location data pre-infection</string>
-
+    <string name="special_character_amp"><![CDATA[1 special character @$!%*#-_?&]]></string>
 
     <string name="serverError">Finding server issue....please try later!</string>
     <string name="connectInternet">Please check your internet connectivity and try again!</string>

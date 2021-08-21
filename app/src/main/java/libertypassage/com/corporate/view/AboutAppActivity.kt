@@ -52,7 +52,9 @@ class AboutAppActivity : AppCompatActivity(), View.OnClickListener{
                 dialogTerms()
             }
             R.id.tvPrivacyPolicy -> {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://passageliberty.azurewebsites.net/privacypolicy")))
+                val intent = Intent(this, PrivacyPolicyActivity::class.java)
+                intent.putExtra("url", "https://passageliberty.azurewebsites.net/privacypolicy")
+                startActivity(intent)
             }
         }
     }
@@ -72,11 +74,15 @@ class AboutAppActivity : AppCompatActivity(), View.OnClickListener{
         val tvOk = dialog.findViewById<TextView>(R.id.tvOk)
 
         tvSafeEntry.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.safeentry.gov.sg/")))
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            intent.putExtra("url", "https://www.safeentry.gov.sg/")
+            startActivity(intent)
         }
 
         tvPrivacyPolicy.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://passageliberty.azurewebsites.net/privacypolicy")))
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            intent.putExtra("url", "https://passageliberty.azurewebsites.net/privacypolicy")
+            startActivity(intent)
         }
 
         tvOk.setOnClickListener {

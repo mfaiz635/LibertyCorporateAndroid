@@ -192,11 +192,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvAddress"
                     android:layout_marginLeft="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_35sdp"
                     android:fontFamily="@font/century_gothic"
                     android:gravity="center"
-                    android:text="Tracking is now enabled and you will be alerted should any risks of infection arise"
+                    android:text="Now you can record your temperature regularly."
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
                     tools:ignore="HardcodedText" />

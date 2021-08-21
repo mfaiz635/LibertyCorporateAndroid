@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvSafeEntry"
         android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:fontFamily="@font/century_gothic"
         android:text="Last seven days visits"
@@ -97,8 +96,6 @@
             android:id="@+id/tvCheckIn"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_5sdp"
             android:layout_weight="1"
             android:background="@drawable/border_orange_rounded"
             android:fontFamily="@font/century_gothic"
@@ -115,8 +112,6 @@
             android:id="@+id/tvAllEntry"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_10sdp"
             android:layout_weight="1"
             android:background="@drawable/border_blue_rounded"
             android:fontFamily="@font/century_gothic"
@@ -128,9 +123,5 @@
             tools:ignore="HardcodedText"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp" />
-
-
     </LinearLayout>
-
-
 </RelativeLayout>

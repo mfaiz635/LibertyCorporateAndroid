@@ -11,180 +11,187 @@
 
     <include layout="@layout/activity_header" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:weightSum="4">
+        android:scrollbars="none">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/line"
-            app:tint="@color/colorPrimary"
-            tools:ignore="ContentDescription" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/line"
-            app:tint="@color/colorPrimary"
-            tools:ignore="ContentDescription"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="4">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/line"
-            app:tint="#39241C"
-            tools:ignore="ContentDescription"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/line"
+                    app:tint="@color/colorPrimary"
+                    tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/line"
-            app:tint="#39241C"
-            tools:ignore="ContentDescription"/>
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/line"
+                    app:tint="@color/colorPrimary"
+                    tools:ignore="ContentDescription" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:gravity="center_horizontal"
-        android:text="ADD TEMPERATURE BEFORE CHECK IN LOCATION/SAFE ENTRY"
-        android:fontFamily="@font/century_gothic"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_14sdp"
-        tools:ignore="HardcodedText" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/line"
+                    app:tint="#39241C"
+                    tools:ignore="ContentDescription" />
 
-    <RelativeLayout
-        android:layout_width="@dimen/_200sdp"
-        android:layout_height="@dimen/_200sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_10sdp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/line"
+                    app:tint="#39241C"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
 
-        <libertypassage.com.corporate.utilities.CircleSeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_200sdp"
-            android:layout_centerInParent="true"
-            android:padding="@dimen/_20sdp"
-            app:wheel_pointer_radius="12dp"
-            app:wheel_reached_width="12dp"
-            app:wheel_unreached_width="12dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:fontFamily="@font/century_gothic"
+                android:gravity="center_horizontal"
+                android:text="ADD TEMPERATURE BEFORE CHECK IN LOCATION/SAFE ENTRY"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
 
-        <TextView
-            android:id="@+id/tv_tempValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:maxLength="5"
-            android:text=""
-            android:fontFamily="@font/century_gothic"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_25sdp"
-            android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_200sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/tv_tempValue"
-            android:text="°"
-            android:fontFamily="@font/century_gothic"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_20sdp"
-            android:layout_toEndOf="@id/tv_tempValue"
-            tools:ignore="HardcodedText" />
+                <libertypassage.com.corporate.utilities.CircleSeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_200sdp"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/_20sdp"
+                    app:wheel_pointer_radius="12dp"
+                    app:wheel_reached_width="12dp"
+                    app:wheel_unreached_width="12dp" />
 
-        <TextView
-            android:id="@+id/tv_tempTpye"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_tempValue"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:text="Celsius"
-            android:fontFamily="@font/century_gothic"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"
-            android:layout_marginStart="@dimen/_2sdp"
-            tools:ignore="HardcodedText" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_tempValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/century_gothic"
+                    android:maxLength="5"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_25sdp"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/tv_tempValue"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="°"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_20sdp"
+                    tools:ignore="HardcodedText" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+                <TextView
+                    android:id="@+id/tv_tempTpye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_tempValue"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/century_gothic"
+                    android:text="Celsius"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    tools:ignore="HardcodedText" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_celcius"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_gray_button"
-            android:gravity="center"
-            android:text="Celsius"
-            android:fontFamily="@font/century_gothic"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            tools:ignore="HardcodedText" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-        <TextView
-            android:id="@+id/tv_farenheit"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_gray_trans_button"
-            android:gravity="center"
-            android:text="Fahrenheit"
-            android:fontFamily="@font/century_gothic"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/tv_celcius"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_button"
+                    android:fontFamily="@font/century_gothic"
+                    android:gravity="center"
+                    android:text="Celsius"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_farenheit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_trans_button"
+                    android:fontFamily="@font/century_gothic"
+                    android:gravity="center"
+                    android:text="Fahrenheit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:background="@color/gray" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_next"
-        android:layout_width="@dimen/_180sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:background="@drawable/rounded_gradient_button"
-        android:gravity="center"
-        android:text="SUBMIT"
-        android:fontFamily="@font/century_gothic"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_14sdp"
-        tools:ignore="HardcodedText" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@color/gray" />
 
+            <TextView
+                android:id="@+id/tv_next"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:background="@drawable/rounded_gradient_button"
+                android:fontFamily="@font/century_gothic"
+                android:gravity="center"
+                android:text="SUBMIT"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

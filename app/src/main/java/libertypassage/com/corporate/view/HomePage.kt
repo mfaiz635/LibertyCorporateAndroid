@@ -259,8 +259,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         //check network type
         val connManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-        val wifiManager =
-            super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
+        val wifiManager = super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
         val wInfo = wifiManager.connectionInfo
         if (wifiManager.isWifiEnabled) {
             if (Objects.requireNonNull<NetworkInfo>(mWifi).isConnected) {

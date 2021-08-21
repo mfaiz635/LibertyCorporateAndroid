@@ -28,6 +28,7 @@ interface Constants {
         const val VERIFY_EMPLOYEE = "verifyEmployee"
         const val GET_APP_VERSION = "getcurrentversion"
 
+
 //        const val GET_EMAIL_OTP = "getEmailOtp"
 //        const val RESEND_EMAIL_OTP = "resetEmailOtp"
 //        const val UPDATE_EMAIL_VERIFICATION = "updateEmailVerification"
@@ -79,10 +80,8 @@ interface Constants {
         const val KEY_CORPORATION_ID = "corporation_id"
         const val KEY_NRIC_ID = "nric_id"
         const val PERMISSION_CODE = 100
-        const val KEY_TERMS_ACCEPT = "terms_accept"
+        const val KEY_TERMS_ACCEPT = "terms_accept_corporate"
         var safeEntryArrayList: ArrayList<ModelSafeEntry> = ArrayList<ModelSafeEntry>()
-
-
 //        Log.e("ModelSignUp", Gson().toJson(modelResponse))
     }
 }

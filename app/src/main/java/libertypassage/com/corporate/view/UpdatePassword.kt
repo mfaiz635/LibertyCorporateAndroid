@@ -26,6 +26,8 @@ import java.util.regex.Pattern
 class UpdatePassword : AppCompatActivity(), View.OnClickListener {
     lateinit var context: Context
     var dialogProgress: DialogProgress? = null
+    private val passwordPattern =
+        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%!\\-_?&])(?=\\S+\$).{8,}".toRegex()
     private var token = ""
 
 
@@ -49,19 +51,15 @@ class UpdatePassword : AppCompatActivity(), View.OnClickListener {
             R.id.submit_btn -> {
                 val password = et_password.text.toString()
                 if (!TextUtils.isEmpty(password)) {
-                    if (password.length > 5) {
-                        if (Pattern.compile("[A-Z ]").matcher(password).find()) {
+                        if (Pattern.compile(passwordPattern.toString()).matcher(password).find()) {
                             if (Utility.isConnectingToInternet(context)) {
                                 callApiUpdatePassword(password)
                             } else {
-                                Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, R.string.connectInternet, Toast.LENGTH_LONG).show()
                             }
                         } else {
-                            et_password.error = "Password must have one uppercase character"
+                            et_password.error = "Password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character"
                         }
-                    } else {
-                        et_password.error = "Password length must have 6 character"
-                    }
                 } else {
                     et_password.error = "Required password"
                 }

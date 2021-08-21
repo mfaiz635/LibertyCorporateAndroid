@@ -110,7 +110,6 @@
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     app:srcCompat="@drawable/edit"
-                    android:layout_alignParentRight="true"
                     tools:ignore="VectorDrawableCompat"
                     android:layout_alignParentEnd="true" />
 
@@ -125,7 +124,7 @@
                     android:fontFamily="@font/century_gothic"
                     android:background="@android:color/transparent"
                     android:textSize="@dimen/_12sdp"
-                    tools:ignore="Autofill,TextFields" />
+                    tools:ignore="Autofill,LabelFor,TextFields" />
             </RelativeLayout>
 
             <TextView
