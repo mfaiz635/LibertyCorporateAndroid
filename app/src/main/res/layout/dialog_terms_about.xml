@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -37,7 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="@dimen/_10sdp"
@@ -51,7 +53,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/century_gothic"
                     android:text="Whilst this app anonymises you at source, it does collect location data (only if you allow location access) to alert you of the potential high risk areas when the app is closed or not in use."
                     android:textColor="@color/black"
@@ -71,7 +72,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="@dimen/_10sdp"
@@ -85,7 +87,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/century_gothic"
                     android:text="The following personal data is required to map you with your employers: Your first and last name, phone number, email, Wi-Fi / SSID and location."
                     android:textColor="@color/black"
@@ -105,7 +106,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="@dimen/_10sdp"
@@ -119,7 +121,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/century_gothic"
                     android:text="The App may collect the Wi-Fi / SSID information from the user’s device in order to correctly analyse the risk exposure and manage the safety and wellness of the employees."
                     android:textColor="@color/black"
@@ -139,7 +140,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="@dimen/_10sdp"
@@ -153,7 +155,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/century_gothic"
                     android:text="NRIC and FIN no (Optional and applicable to App users in Singapore only) is collected as per the Singapore Government instructions for Safe-Entry check-ins"
                     android:textColor="@color/black"
@@ -171,7 +172,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginLeft="@dimen/_20sdp"
                     android:fontFamily="@font/century_gothic"
                     android:text="https://www.safeentry.gov.sg/"
                     android:textColor="@color/colorAccent"
@@ -183,7 +183,6 @@
                     android:layout_height="@dimen/_1sdp"
                     android:layout_below="@id/tvSafeEntry"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginLeft="@dimen/_20sdp"
                     android:background="@color/colorAccent" />
 
                 <TextView
@@ -193,7 +192,6 @@
                     android:layout_below="@id/tvSafeEntry"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginLeft="@dimen/_20sdp"
                     android:fontFamily="@font/century_gothic"
                     android:text="This information is separately collected by the Government and not stored in our database."
                     android:textColor="@color/black"
@@ -213,7 +211,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="@dimen/_10sdp"
@@ -225,8 +224,39 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:text="Camera access is needed to scan the QR code of a location address where user is recording temperature. The App collects this location information along with temperature data in order to analyse the risk exposure and manage the safety and wellness of users."
+                    android:fontFamily="@font/century_gothic"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/circle_orange"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="The App needs permission on users' Images, Videos, and Files related to App functionality only if you want to share any images or files with the App."
                     android:fontFamily="@font/century_gothic"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
@@ -264,7 +294,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_toEndOf="@id/tvTerms42"
-                    android:layout_toRightOf="@id/tvTerms42"
                     android:fontFamily="@font/century_gothic"
                     android:text="Privacy Policy"
                     android:textColor="@color/colorAccent"
@@ -276,9 +305,7 @@
                     android:layout_height="@dimen/_1sdp"
                     android:layout_below="@id/tvPrivacyPolicy"
                     android:layout_marginStart="@dimen/_1sdp"
-                    android:layout_marginLeft="@dimen/_1sdp"
                     android:layout_toEndOf="@id/tvTerms42"
-                    android:layout_toRightOf="@id/tvTerms42"
                     android:background="@color/colorAccent" />
             </RelativeLayout>
 

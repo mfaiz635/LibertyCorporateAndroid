@@ -19,7 +19,8 @@ class MyTemperature : AppCompatActivity(), View.OnClickListener {
     lateinit var context: Context
     private var seekBar: CircleSeekBar? = null
     private var tempType = "Celsius"
-    private var currentTemp = "30.00"
+    private var currentTemp = "35.00"
+    private var maxProcess = 5.00
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +43,11 @@ class MyTemperature : AppCompatActivity(), View.OnClickListener {
         } else if (tempType == "Fahrenheit") {
             tv_tempTpye.text = "Fahrenheit"
         }
-        tv_tempValue.text = 30.00.toString()
+        tv_tempValue.text = 35.00.toString()
         seekBar?.setOnSeekBarChangeListener(object : CircleSeekBar.OnSeekBarChangeListener {
             override fun onChanged(seekbar: CircleSeekBar?, curValue: Double) {
                 if (tempType == "Celsius") {
-                    tv_tempValue.text = (curValue + 30.00).toString()
+                    tv_tempValue.text = (curValue + 35.00).toString()
                 } else if (tempType == "Fahrenheit") {
                     tv_tempValue.text = (curValue + 90.00).toString()
                 }
@@ -64,8 +65,9 @@ class MyTemperature : AppCompatActivity(), View.OnClickListener {
 
             R.id.tvCelcius -> {
                 tempType = "Celsius"
-                tv_tempValue.text = 30.00.toString()
+                tv_tempValue.text = 35.00.toString()
                 seekBar!!.curProcess = 0.00
+                seekBar!!.maxProcess = maxProcess
                 tv_tempTpye.text = "Celsius"
                 tvCelcius.background = resources.getDrawable(R.drawable.rounded_gray_button)
                 tvFarenheit.background = resources.getDrawable(R.drawable.rounded_gray_trans_button)
@@ -75,6 +77,7 @@ class MyTemperature : AppCompatActivity(), View.OnClickListener {
                 tempType = "Fahrenheit"
                 tv_tempValue.text = 90.00.toString()
                 seekBar!!.curProcess = 0.00
+                seekBar!!.maxProcess = 20.0
                 tv_tempTpye.text = "Fahrenheit"
                 tvCelcius.background = resources.getDrawable(R.drawable.rounded_gray_trans_button)
                 tvFarenheit.background = resources.getDrawable(R.drawable.rounded_gray_button)

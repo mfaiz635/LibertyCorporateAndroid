@@ -60,7 +60,6 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
     private var check = "0"
     private var hospital = ""
     private var selectDate = ""
-    private var statusId = 0
     private var vaccineId = ""
 
 
@@ -77,9 +76,7 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
         dateChangeStatus = Utility.getSharedPreferences(context, Constants.KEY_CHANGE_STATUS)!!
         oldHospitalAddress = Utility.getSharedPreferences(context, Constants.KEY_HOSPITAL_ADD)!!
         confirmHospitalDate = Utility.getSharedPreferences(context, Constants.KEY_HOSPITAL_DATE)!!
-        statusId = Utility.getSharedPreferences(context, Constants.KEY_CURRENT_STATUS)!!.toInt()
         vaccineId = Utility.getSharedPreferences(context, Constants.KEY_VACCINE_ID)!!
-
         Log.e("vaccineId", vaccineId)
         Log.e("confirmation", confirmation)
 
@@ -102,7 +99,7 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
             checkBox_postive.isChecked = false
             check = "0"
         } else {
-            if (confirmation.isNotEmpty()) {
+            if (confirmation.isNotEmpty() && confirmation!="" && confirmation!="null") {
                 checkBox_negative.isChecked = false
                 checkBox_postive.isChecked = true
                 check = "1"
@@ -173,7 +170,6 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
         vaccineArrayList.addAll(Utility.getVaccine(context))
         vaccineAdapter = VaccineAdapter(context, vaccineArrayList)
         spinnerVaccine.adapter = vaccineAdapter
-
         try {
             if (vaccineId.isNotEmpty() && vaccineId != "null" && vaccineId != "") {
                 spinnerVaccine.setSelection(vaccineId.toInt())
@@ -188,7 +184,7 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
             } else {
                 Toast.makeText(
                     context,
-                    "Please connect to internet and try again",
+                    R.string.connectInternet,
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -247,23 +243,20 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
                 selectDate = tv_select_date.text.toString().trim()
 
                 if (!checkBox_postive.isChecked && !checkBox_negative.isChecked) {
-                    Toast.makeText(
-                        context,
-                        "Please confirmed your fit/unfit status",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(context,"Please confirmed your fit/unfit status",
+                        Toast.LENGTH_LONG).show()
                 } else if (hospital.isEmpty()) {
                     Toast.makeText(context, "Please write remark details", Toast.LENGTH_LONG).show()
                 } else if (selectDate == "Select Date") {
                     Toast.makeText(context, "Please select date", Toast.LENGTH_LONG).show()
                 } else if (Utility.isConnectingToInternet(context)) {
-                    if (imagesArrayList.size > 0) {
+                    if (imagesArrayList.isNotEmpty() && imagesArrayList.size > 0) {
                         changeStatusWithImages()
                     } else {
                         changeStatusApi()
                     }
                 } else {
-                    Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.connectInternet, Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -344,9 +337,13 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun changeStatusApi() {
+        Log.e("check", check)
+        Log.e("vaccineId", vaccineId)
+        Log.e("hospital", hospital)
+        Log.e("selectDate", selectDate)
+
         dialogProgress!!.show()
-        val apiInterface: ApiInterface =
-            ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
+        val apiInterface: ApiInterface = ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
         val call: Call<ModelConfirm> = apiInterface.changeStatus(
             Constants.KEY_HEADER + token, Constants.KEY_BOT, check,
             vaccineId, hospital, selectDate
@@ -359,17 +356,12 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
             ) {
                 dialogProgress!!.dismiss()
                 val responses: ModelConfirm? = response.body()
-                Log.e("changeStatus", Gson().toJson(responses))
+                Log.e("ChangeStatus", Gson().toJson(responses))
                 if (responses != null && responses.error?.equals(false)!!) {
 
                     val details = responses.details
                     val clinicQrImageList = details!!.clinicQrImage
-                    returnImagesList.clear()
-                    returnImagesList.addAll(clinicQrImageList!!)
-                    Utility.saveStatusImages(context, returnImagesList)
 
-                    Toast.makeText(context, "Status changed successfully", Toast.LENGTH_SHORT)
-                        .show()
                     val date = Calendar.getInstance().time
                     val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                     val currentDate = df.format(date)
@@ -379,6 +371,12 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
                     Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_ADD, hospital)
                     Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_DATE, selectDate)
                     Utility.setSharedPreference(context, Constants.KEY_VACCINE_ID, vaccineId)
+
+                    returnImagesList.clear()
+                    returnImagesList.addAll(clinicQrImageList!!)
+                    Utility.saveStatusImages(context, returnImagesList)
+
+                    Toast.makeText(context, "Status changed successfully", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(context, HomePage::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -436,16 +434,12 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
             ) {
                 dialogProgress!!.dismiss()
                 val model: ModelConfirm? = response.body()
-                Log.e("changeStatusMultipart", Gson().toJson(model))
+                Log.e("changeStatusImages", Gson().toJson(model))
                 if (model != null && model.error!!.equals(false)) {
 
                     val details = model.details
                     val clinicQrImageList = details!!.clinicQrImage
-                    returnImagesList.clear()
-                    returnImagesList.addAll(clinicQrImageList!!)
-                    Utility.saveStatusImages(context, returnImagesList)
 
-                    Toast.makeText(context, "Status changed successfully", Toast.LENGTH_SHORT).show()
                     val date = Calendar.getInstance().time
                     val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
                     val currentDate = df.format(date)
@@ -456,11 +450,18 @@ class ChangeStatus : AppCompatActivity(), View.OnClickListener {
                     Utility.setSharedPreference(context, Constants.KEY_HOSPITAL_DATE, selectDate)
                     Utility.setSharedPreference(context, Constants.KEY_VACCINE_ID, vaccineId)
 
+                    returnImagesList.clear()
+                    returnImagesList.addAll(clinicQrImageList!!)
+                    Utility.saveStatusImages(context, returnImagesList)
+
+                    Toast.makeText(context, "Status changed successfully", Toast.LENGTH_SHORT).show()
+
                     val intent = Intent(context, HomePage::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                     finish()
+
 
                 } else if (model != null && model.error!!.equals(true)) {
                     dialogProgress!!.dismiss()

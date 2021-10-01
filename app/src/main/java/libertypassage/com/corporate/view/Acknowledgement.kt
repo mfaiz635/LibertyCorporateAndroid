@@ -221,6 +221,7 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 //        if (requestCode == PERMISSION_ID) {
 //            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -309,12 +310,13 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
                 trackUserLocation()
             }
         } else {
-            Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.connectInternet, Toast.LENGTH_LONG).show()
         }
     }
 
     private fun trackUserLocation() {
         Log.e("LocationUpdateServer", "Continue")
+        dialogProgress!!.show()
         val apiInterface: ApiInterface = ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
         val call: Call<ModelTrackUserLocation> = apiInterface.trackUserLocation(Constants.KEY_HEADER + token,
             Constants.KEY_BOT, latitudes, longitudes, altitudes, wifiMacAddress, "$wifiIpAddress-$wifiMode", "0")
@@ -322,18 +324,20 @@ class Acknowledgement : AppCompatActivity(), View.OnClickListener {
         call.enqueue(object : Callback<ModelTrackUserLocation?> {
             override fun onResponse(call: Call<ModelTrackUserLocation?>, response: Response<ModelTrackUserLocation?>) {
                 val model: ModelTrackUserLocation? = response.body()
-
+                dialogProgress!!.dismiss()
                 if (model != null && model.error?.equals(false)!!) {
                     Utility.setSharedPreference(context, Constants.KEY_START, "3")
                     val intent = Intent(context, MyTemperature::class.java)
                     startActivity(intent)
 
                 } else if (model != null && model.error?.equals(true)!!) {
+                    dialogProgress!!.dismiss()
                     Log.e("ErrorResponse", model.message!!)
                 }
             }
 
             override fun onFailure(call: Call<ModelTrackUserLocation?>, t: Throwable) {
+                dialogProgress!!.dismiss()
                 Log.e("model", "onFailure    " + t.message)
             }
         })

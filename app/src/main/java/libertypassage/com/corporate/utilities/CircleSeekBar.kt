@@ -88,7 +88,7 @@ class CircleSeekBar @JvmOverloads constructor(
 
     private fun initAttrs(attrs: AttributeSet?, defStyle: Int) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CircleSeekBar, defStyle, 0)
-        mMaxProcess = a.getInt(R.styleable.CircleSeekBar_wheel_max_process, 20).toDouble()
+        mMaxProcess = a.getInt(R.styleable.CircleSeekBar_wheel_max_process, 5).toDouble()
         mCurProcess = a.getInt(R.styleable.CircleSeekBar_wheel_cur_process, 0).toDouble()
         if (mCurProcess > mMaxProcess) mCurProcess = mMaxProcess
         mReachedColor = a.getColor(

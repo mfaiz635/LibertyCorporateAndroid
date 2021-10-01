@@ -75,7 +75,6 @@ class VerifyOtpSignUp : AppCompatActivity(), View.OnClickListener {
         firebaseToken = Utility.getSharedPreferences(context, "firebaseToken")!!
 
 
-
         iv_back.setOnClickListener(this)
         tv_continue.setOnClickListener(this)
         tv_resendCode.setOnClickListener(this)
@@ -153,11 +152,7 @@ class VerifyOtpSignUp : AppCompatActivity(), View.OnClickListener {
             email, mobile, gender, ageGroup, industryId, profession, countryId,  password,
             firebaseToken, corporationId, "0")
 
-
         Log.e("corporationId", corporationId)
-
-
-
 
         call.enqueue(object : Callback<ModelSignUp?> {
             override fun onResponse(call: Call<ModelSignUp?>, response: Response<ModelSignUp?>) {

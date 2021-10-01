@@ -78,7 +78,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/century_gothic"
-                android:text="1.2.0"
+                android:text="1.2.2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
@@ -106,7 +106,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/century_gothic"
-                android:text="25 June 2021"
+                android:text="16 July 2021"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
@@ -192,8 +192,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_30sdp"
                 android:gravity="center_horizontal">
 
                 <TextView
@@ -213,7 +213,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_toEndOf="@id/tvTerms1"
-                    android:layout_toRightOf="@id/tvTerms1"
                     android:fontFamily="@font/century_gothic"
                     android:text="Personal Data"
                     android:textColor="@color/colorAccent"
@@ -225,9 +224,7 @@
                     android:layout_height="@dimen/_1sdp"
                     android:layout_below="@id/tvConsentForm"
                     android:layout_marginStart="@dimen/_1sdp"
-                    android:layout_marginLeft="@dimen/_1sdp"
                     android:layout_toEndOf="@id/tvTerms1"
-                    android:layout_toRightOf="@id/tvTerms1"
                     android:background="@color/colorAccent" />
             </RelativeLayout>
 
@@ -268,7 +265,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_toEndOf="@id/tvTerms42"
-                    android:layout_toRightOf="@id/tvTerms42"
                     android:fontFamily="@font/century_gothic"
                     android:text="Privacy Policy"
                     android:textColor="@color/colorAccent"
@@ -280,9 +276,7 @@
                     android:layout_height="@dimen/_1sdp"
                     android:layout_below="@id/tvPrivacyPolicy"
                     android:layout_marginStart="@dimen/_1sdp"
-                    android:layout_marginLeft="@dimen/_1sdp"
                     android:layout_toEndOf="@id/tvTerms42"
-                    android:layout_toRightOf="@id/tvTerms42"
                     android:background="@color/colorAccent" />
             </RelativeLayout>
 
@@ -295,10 +289,10 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/_40sdp"
+                android:layout_marginLeft="@dimen/_30sdp"
                 android:layout_marginRight="@dimen/_30sdp"
-                android:layout_marginLeft="@dimen/_30sdp">
+                android:layout_marginBottom="@dimen/_40sdp"
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/_25sdp"
@@ -311,24 +305,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_30sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:fontFamily="@font/century_gothic"
                     android:text="Stop access background Location"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
-                    tools:ignore="HardcodedText"
-                    />
+                    tools:ignore="HardcodedText" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/location_switch"
                     style="@style/SwitchCompatStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_14sdp"
-                    android:layout_alignParentRight="true"
-                    android:checked="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:checked="true" />
             </RelativeLayout>
 
         </LinearLayout>

@@ -110,8 +110,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/_9sdp"
-                    android:layout_toLeftOf="@id/tv_or"
                     android:background="@color/corporate_text"
                     android:layout_marginEnd="@dimen/_9sdp"
                     android:layout_toStartOf="@id/tv_or" />
@@ -120,8 +118,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_9sdp"
-                    android:layout_toRightOf="@id/tv_or"
                     android:background="@color/corporate_text"
                     android:layout_marginStart="@dimen/_9sdp"
                     android:layout_toEndOf="@id/tv_or" />

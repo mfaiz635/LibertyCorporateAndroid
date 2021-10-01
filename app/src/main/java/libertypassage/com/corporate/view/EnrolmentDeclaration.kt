@@ -1,16 +1,20 @@
 package libertypassage.com.corporate.view
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import libertypassage.com.corporate.R
 import libertypassage.com.corporate.utilities.Constants
 import libertypassage.com.corporate.utilities.Utility
-import kotlinx.android.synthetic.main.acknowledgement.tv_next
 import kotlinx.android.synthetic.main.enrolment_declaration.*
 import libertypassage.com.corporate.model.ModelResponse
 import libertypassage.com.corporate.retofit.ApiInterface
@@ -39,6 +43,8 @@ class EnrolmentDeclaration : AppCompatActivity(), View.OnClickListener {
         dialogProgress = DialogProgress(context)
         token = Utility.getSharedPreferences(context, Constants.KEY_BEARER_TOKEN)!!
 
+        tvTerms1.setOnClickListener(this)
+        tvTerms2.setOnClickListener(this)
         tv_next.setOnClickListener(this)
         init()
     }
@@ -76,21 +82,29 @@ class EnrolmentDeclaration : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
+            R.id.tvTerms1 -> {
+                dialogTerms()
+            }
+            R.id.tvTerms2 -> {
+                val intent = Intent(this, PrivacyPolicyActivity::class.java)
+                intent.putExtra("url", "https://passageliberty.azurewebsites.net/privacypolicy")
+                startActivity(intent)
+            }
             R.id.tv_next -> {
                 Log.e("terms", terms1 + terms2 + terms3 + terms4)
                 if (terms1 != "1") {
-                    Toast.makeText(context, "Accept of First Declaration", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Accept of Personal Data Declaration", Toast.LENGTH_LONG).show()
                 } else if (terms2 != "1") {
-                    Toast.makeText(context, "Accept of Second Declaration", Toast.LENGTH_LONG).show()
-                } else if (terms3 != "1") {
-                    Toast.makeText(context, "Accept of Third Declaration", Toast.LENGTH_LONG).show()
-                } else if (terms4 != "1") {
-                    Toast.makeText(context, "Accept of Fourth Declaration", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Accept of Privacy Policy Declaration", Toast.LENGTH_LONG).show()
+//                } else if (terms3 != "1") {
+//                    Toast.makeText(context, "Accept of Third Declaration", Toast.LENGTH_LONG).show()
+//                } else if (terms4 != "1") {
+//                    Toast.makeText(context, "Accept of Fourth Declaration", Toast.LENGTH_LONG).show()
                 } else {
                     if (Utility.isConnectingToInternet(context)) {
                         enrollApiResponse()
                     } else {
-                        Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, R.string.connectInternet, Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -128,6 +142,36 @@ class EnrolmentDeclaration : AppCompatActivity(), View.OnClickListener {
         })
     }
 
+    private fun dialogTerms() {
+        val dialog = Dialog(this@EnrolmentDeclaration)
+        dialog.setContentView(R.layout.dialog_terms_about)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        val tvSafeEntry = dialog.findViewById<TextView>(R.id.tvSafeEntry)
+        val tvPrivacyPolicy = dialog.findViewById<TextView>(R.id.tvPrivacyPolicy)
+        val tvOk = dialog.findViewById<TextView>(R.id.tvOk)
+
+        tvSafeEntry.setOnClickListener {
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            intent.putExtra("url", "https://www.safeentry.gov.sg/")
+            startActivity(intent)
+        }
+
+        tvPrivacyPolicy.setOnClickListener {
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            intent.putExtra("url", "https://passageliberty.azurewebsites.net/privacypolicy")
+            startActivity(intent)
+        }
+
+        tvOk.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
 
     override fun onBackPressed() {
         super.onBackPressed()

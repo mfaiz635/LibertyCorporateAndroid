@@ -153,10 +153,8 @@
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     app:srcCompat="@drawable/edit"
-                    android:layout_alignParentRight="true"
                     tools:ignore="VectorDrawableCompat"
                     android:layout_alignParentEnd="true" />
-
 
                 <EditText
                     android:id="@+id/et_address"

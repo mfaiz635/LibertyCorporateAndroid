@@ -148,7 +148,7 @@ class UpdateAddress : AppCompatActivity(), View.OnClickListener {
                         addAddressAndTemp()
                     }
                 } else {
-                    Toast.makeText(context, "Please connect the internet", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.connectInternet, Toast.LENGTH_LONG).show()
                 }
             }
         }

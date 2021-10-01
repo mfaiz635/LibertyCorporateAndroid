@@ -149,6 +149,13 @@ interface ApiInterface {
         @Field("if_corp_id") if_corp_id: String?
     ): Call<ModelTrackUserLocation>
 
+    @POST(Constants.GET_COUNTDOWN_DETAILS)
+    @FormUrlEncoded
+    fun getCountdownDetails(
+        @Header("Authorization") auth: String?,
+        @Field("if_bot") if_bot: String?,
+    ): Call<ModelTrackUserLocation>
+
     @POST(Constants.ADDRESS_AND_TEMP)
     @FormUrlEncoded
     fun addAddressTemp(

@@ -6,21 +6,28 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.net.sip.SipErrorCode.TIME_OUT
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallState
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.dialog_runtime_permission.*
 import libertypassage.com.corporate.R
@@ -46,6 +53,8 @@ class SplashActivity : Activity() {
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+    private var mAppUpdateManager: AppUpdateManager? = null
+    private val appUpdateCode = 110
 
 
 
@@ -57,13 +66,13 @@ class SplashActivity : Activity() {
         token = Utility.getSharedPreferences(this, Constants.KEY_BEARER_TOKEN)
         termsAccept = Utility.getSharedPreferences(this, Constants.KEY_TERMS_ACCEPT)
 
-        if(termsAccept.equals("1")){
-            if (hasPermissionInManifest(this@SplashActivity, PERMISSION_CODE, permission)) {
-                handler.postDelayed(runnable, 10)
-            }
-        }else{
-            dialogTerms()
-        }
+//        if(termsAccept.equals("1")){
+//            if (hasPermissionInManifest(this@SplashActivity, PERMISSION_CODE, permission)) {
+//                handler.postDelayed(runnable, 10)
+//            }
+//        }else{
+//            dialogTerms()
+//        }
 
         rl_started.setOnClickListener {
             if (hasPermissionInManifest(
@@ -145,6 +154,95 @@ class SplashActivity : Activity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 110) {
+            if (resultCode == RESULT_CANCELED) {
+                checkUpdate()
+            } else if (resultCode == RESULT_OK) {
+                Toast.makeText(context,"App have been update successfully....!", Toast.LENGTH_LONG).show()
+            } else {
+                checkUpdate()
+            }
+        }
+    }
+
+    private fun checkUpdate() {
+        mAppUpdateManager = AppUpdateManagerFactory.create(this)
+        mAppUpdateManager!!.registerListener(installStateUpdatedListener)
+
+        mAppUpdateManager!!.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                try {
+                    mAppUpdateManager!!.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.IMMEDIATE,
+                        this@SplashActivity,
+                        appUpdateCode
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    e.printStackTrace()
+                }
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                popupSnackBarForCompleteUpdate()
+            } else {
+                Log.e("checkForAppUpdate: ", "NewUpdateNotAvailable")
+                if(termsAccept.equals("1")){
+                    if (hasPermissionInManifest(this@SplashActivity, PERMISSION_CODE, permission)) {
+                        handler.postDelayed(runnable, 10)
+                    }
+                }else{
+                    dialogTerms()
+                }
+            }
+        }
+    }
+
+    private var installStateUpdatedListener: InstallStateUpdatedListener =
+        object : InstallStateUpdatedListener {
+            override fun onStateUpdate(state: InstallState) {
+                if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                    //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                    popupSnackBarForCompleteUpdate()
+                } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                    if (mAppUpdateManager != null) {
+                        mAppUpdateManager!!.unregisterListener(this)
+                    }
+                } else {
+                    Log.e("InstallUpdated: ", ""+state.installStatus())
+                }
+            }
+        }
+
+    private fun popupSnackBarForCompleteUpdate() {
+        val snackBar = Snackbar.make(findViewById(R.id.rlMain),
+            "New app is ready!",
+            Snackbar.LENGTH_INDEFINITE
+        )
+        snackBar.setAction("Install") { view: View? ->
+            if (mAppUpdateManager != null) {
+                mAppUpdateManager!!.completeUpdate()
+            }
+        }
+        snackBar.setActionTextColor(resources.getColor(R.color.colorPrimaryDark))
+        snackBar.show()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkUpdate()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mAppUpdateManager != null) {
+            mAppUpdateManager!!.unregisterListener(installStateUpdatedListener);
+        }
+    }
+
     private fun dialogTerms() {
         val dialog = Dialog(this@SplashActivity)
         dialog.setContentView(R.layout.dialog_terms_splash)
@@ -159,6 +257,7 @@ class SplashActivity : Activity() {
         val checkBoxTerms3 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms3)
         val checkBoxTerms4 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms4)
         val checkBoxTerms5 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms5)
+        val checkBoxTerms6 = dialog.findViewById<CustomCheckBox>(R.id.checkBoxTerms6)
         val tvSafeEntry = dialog.findViewById<TextView>(R.id.tvSafeEntry)
         val tvPrivacyPolicy = dialog.findViewById<TextView>(R.id.tvPrivacyPolicy)
         val tvNotAgree = dialog.findViewById<TextView>(R.id.tvNotAgree)
@@ -169,11 +268,12 @@ class SplashActivity : Activity() {
         var terms3 = "1"
         var terms4 = "1"
         var terms5 = "1"
+        var terms6 = "1"
 
         checkBoxTerms1.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 terms1 = "1"
-                if (terms2 == "1" && terms3 == "1" && terms4 == "1" && terms5 == "1") {
+                if (terms2 == "1" && terms3 == "1" && terms4 == "1" && terms5 == "1" && terms6 == "1") {
                     tvNotAgree.visibility = View.GONE
                     tvAgree.visibility = View.VISIBLE
                 } else {
@@ -190,7 +290,7 @@ class SplashActivity : Activity() {
         checkBoxTerms2.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 terms2 = "1"
-                if (terms1 == "1" && terms3 == "1" && terms4 == "1" && terms5 == "1") {
+                if (terms1 == "1" && terms3 == "1" && terms4 == "1" && terms5 == "1" && terms6 == "1") {
                     tvNotAgree.visibility = View.GONE
                     tvAgree.visibility = View.VISIBLE
                 } else {
@@ -207,7 +307,7 @@ class SplashActivity : Activity() {
         checkBoxTerms3.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 terms3 = "1"
-                if (terms2 == "1" && terms1 == "1" && terms4 == "1" && terms5 == "1") {
+                if (terms2 == "1" && terms1 == "1" && terms4 == "1" && terms5 == "1" && terms6 == "1") {
                     tvNotAgree.visibility = View.GONE
                     tvAgree.visibility = View.VISIBLE
                 } else {
@@ -224,7 +324,7 @@ class SplashActivity : Activity() {
         checkBoxTerms4.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 terms4 = "1"
-                if (terms1 == "1" && terms2 == "1" && terms3 == "1" && terms5 == "1") {
+                if (terms1 == "1" && terms2 == "1" && terms3 == "1" && terms5 == "1" && terms6 == "1") {
                     tvNotAgree.visibility = View.GONE
                     tvAgree.visibility = View.VISIBLE
                 } else {
@@ -241,7 +341,7 @@ class SplashActivity : Activity() {
         checkBoxTerms5.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 terms5 = "1"
-                if (terms1 == "1" && terms2 == "1" && terms3 == "1" && terms4 == "1") {
+                if (terms1 == "1" && terms2 == "1" && terms3 == "1" && terms4 == "1" && terms6 == "1") {
                     tvNotAgree.visibility = View.GONE
                     tvAgree.visibility = View.VISIBLE
                 } else {
@@ -255,12 +355,33 @@ class SplashActivity : Activity() {
             }
         }
 
+        checkBoxTerms6.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                terms6 = "1"
+                if (terms1 == "1" && terms2 == "1" && terms3 == "1" && terms4 == "1" && terms5 == "1") {
+                    tvNotAgree.visibility = View.GONE
+                    tvAgree.visibility = View.VISIBLE
+                } else {
+                    tvNotAgree.visibility = View.VISIBLE
+                    tvAgree.visibility = View.GONE
+                }
+            } else {
+                terms6 = "0"
+                tvNotAgree.visibility = View.VISIBLE
+                tvAgree.visibility = View.GONE
+            }
+        }
+
         tvSafeEntry.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.safeentry.gov.sg/")))
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            intent.putExtra("url", "https://www.safeentry.gov.sg/")
+            startActivity(intent)
         }
 
         tvPrivacyPolicy.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://passageliberty.azurewebsites.net/privacypolicy")))
+            val intent = Intent(this, PrivacyPolicyActivity::class.java)
+            intent.putExtra("url", "https://passageliberty.azurewebsites.net/privacypolicy")
+            startActivity(intent)
         }
 
         tvAgree.setOnClickListener {
@@ -274,6 +395,8 @@ class SplashActivity : Activity() {
                 Toast.makeText(context, "Accept of Forth Privacy Policy", Toast.LENGTH_LONG).show()
             } else if (terms5 != "1") {
                 Toast.makeText(context, "Accept of Fifth Privacy Policy", Toast.LENGTH_LONG).show()
+            } else if (terms6 != "1") {
+                Toast.makeText(context, "Accept of Six Privacy Policy", Toast.LENGTH_LONG).show()
             } else {
                 Utility.setSharedPreference(this@SplashActivity, Constants.KEY_TERMS_ACCEPT, "1")
                 if (hasPermissionInManifest(this@SplashActivity, PERMISSION_CODE, permission)) {

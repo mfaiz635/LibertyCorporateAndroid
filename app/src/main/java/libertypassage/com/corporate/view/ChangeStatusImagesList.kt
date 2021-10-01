@@ -105,6 +105,8 @@ class ChangeStatusImagesList : AppCompatActivity(), View.OnClickListener {
             } catch (e: Exception) {
                 Log.e("Exception", e.message!!)
             }
+            Log.e("img123", Constants.ImageUrl + model.clinicQrImage)
+
 
             holder.cardViewImage.setOnClickListener {
                 val intent = Intent(context, ImagesSliderActivity::class.java)

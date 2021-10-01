@@ -68,10 +68,6 @@ class UserDetails {
     @Expose
     var address: Address? = null
 
-    @SerializedName("enroll_decl")
-    @Expose
-    var enrollDecl: EnrollDecl? = null
-
     @SerializedName("confirmed")
     @Expose
     var confirmed: Confirmed? = null

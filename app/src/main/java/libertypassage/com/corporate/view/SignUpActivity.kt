@@ -43,6 +43,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var context: Context
     private var dialogProgress: DialogProgress? = null
     private var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex()
+    private val passwordPattern =
+        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%!\\-_?&])(?=\\S+\$).{8,}".toRegex()
     var fullName = ""
     var email = ""
     var countryCode = ""
@@ -163,7 +165,6 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
         et_fullName.setText(Utility.getSharedPreferences(context, Constants.KEY_FULLNAME))
         et_email.setText(Utility.getSharedPreferences(context, Constants.KEY_EMAIL))
         et_mobileNo.setText(Utility.getSharedPreferences(context, Constants.KEY_MOBILE))
-      //  et_mobileNo.setText("+919658965832")
 
         genderList.add("Select Gender")
         genderList.add("Male")
@@ -347,12 +348,8 @@ class SignUpActivity : AppCompatActivity(), View.OnClickListener {
                     messages.add(resources.getString(R.string.requiredPassword))
                     isValid = false
                 }
-                password.length < 5 -> {
-                    messages.add("Password length must have 6 character")
-                    isValid = false
-                }
-                !Pattern.compile("[A-Z ]").matcher(password).find() -> {
-                    messages.add("Password must have one uppercase character")
+                !Pattern.compile(passwordPattern.toString()).matcher(password).find() -> {
+                    messages.add("Password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character")
                     isValid = false
                 }
             }

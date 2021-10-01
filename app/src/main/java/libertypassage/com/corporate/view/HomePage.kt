@@ -1,5 +1,4 @@
 package libertypassage.com.corporate.view
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -19,6 +18,7 @@ import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -33,8 +33,6 @@ import com.github.anastr.speedviewlib.ImageSpeedometer
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.home_page.*
 import kotlinx.android.synthetic.main.inside_fab_layout.*
@@ -53,6 +51,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class HomePage : AppCompatActivity(), View.OnClickListener {
@@ -77,6 +76,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
     private var riskScore = ""
     private var countryName = ""
     private var fabExpanded = false
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     val permissions = arrayOf<String?>(
@@ -117,6 +117,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         layoutHotspots.setOnClickListener(this)
         layoutSafeEntry.setOnClickListener(this)
         layoutAbout.setOnClickListener(this)
+        layoutShareApp.setOnClickListener(this)
         layoutLogout.setOnClickListener(this)
         tvChangeStatus.setOnClickListener(this)
         rlOk.setOnClickListener(this)
@@ -129,13 +130,13 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
 //            val bck = ProcessMainClass()
 //            bck.launchService(applicationContext)
 //        }
-//
 //        getGPSLocation()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, 789)
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onClick(v: View?) {
@@ -187,6 +188,10 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(context, AboutAppActivity::class.java)
                 startActivity(intent)
                 closeSubMenusFab()
+            }
+
+            R.id.layoutShareApp -> {
+                dialogAppShare()
             }
 
             R.id.layoutLogout -> {
@@ -259,8 +264,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         //check network type
         val connManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-        val wifiManager =
-            super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
+        val wifiManager = super.getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
         val wInfo = wifiManager.connectionInfo
         if (wifiManager.isWifiEnabled) {
             if (Objects.requireNonNull<NetworkInfo>(mWifi).isConnected) {
@@ -316,6 +320,7 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
             corporationId
         )
         call.enqueue(object : Callback<ModelTrackUserLocation?> {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
                 call: Call<ModelTrackUserLocation?>,
                 response: Response<ModelTrackUserLocation?>
@@ -327,8 +332,15 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
                 if (modelResponse != null && modelResponse.error?.equals(false)!!) {
 
                     val details: TrackUserLocationDetails = modelResponse.details!!
-                    val userDetails: UserDetailsTrackUser = details.userDetails!!
 
+                    val times = details.timerCountdown!!
+                    val min: Long = times.substring(0, 2).toInt().toLong()
+                    val sec: Long = times.substring(3).toInt().toLong()
+                    val t = min * 60L + sec
+                    val result = TimeUnit.SECONDS.toMillis(t)
+                    startTimeCounter(result)
+
+                    val userDetails: UserDetailsTrackUser = details.userDetails!!
                     imageSpeedometer!!.speedTo(userDetails.riskScore!!.toFloat())
 
                     val userStatus: UserStatus = userDetails.userStatus!!
@@ -375,6 +387,98 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         })
     }
 
+    private fun getCountdownDetails() {
+//        dialogProgress!!.show()
+        val apiInterface: ApiInterface =
+            ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
+        val call: Call<ModelTrackUserLocation> = apiInterface.getCountdownDetails(
+            Constants.KEY_HEADER+token,
+            Constants.KEY_BOT,
+        )
+        call.enqueue(object : Callback<ModelTrackUserLocation?> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ModelTrackUserLocation?>,
+                response: Response<ModelTrackUserLocation?>
+            ) {
+                val modelResponse: ModelTrackUserLocation? = response.body()
+//                dialogProgress!!.dismiss()
+
+                if (modelResponse != null && modelResponse.error?.equals(false)!!) {
+                    val details: TrackUserLocationDetails = modelResponse.details!!
+
+                    val times = details.timerCountdown!!
+                    val min: Long = times.substring(0, 2).toInt().toLong()
+                    val sec: Long = times.substring(3).toInt().toLong()
+                    val t = min * 60L + sec
+                    val result = TimeUnit.SECONDS.toMillis(t)
+                    startTimeCounter(result)
+
+                    val userDetails: UserDetailsTrackUser = details.userDetails!!
+                    imageSpeedometer!!.speedTo(userDetails.riskScore!!.toFloat())
+
+                    val userStatus: UserStatus = userDetails.userStatus!!
+                    statusId = userStatus.id?.toString()!!
+                    title = userStatus.title!!
+                    subTitle = userStatus.subTitle.toString()
+                    description = userStatus.description!!
+                    alertDescription = userStatus.alertDescription!!
+                    Utility.setSharedPreference(
+                        context,
+                        Constants.KEY_RISK_SCORE,
+                        userDetails.riskScore.toString()
+                    )
+                    Utility.setSharedPreference(context, Constants.KEY_CURRENT_STATUS, statusId)
+                    Utility.setSharedPreference(context, Constants.KEY_TITLE, title)
+                    Utility.setSharedPreference(context, Constants.KEY_SUB_TITLE, subTitle)
+                    Utility.setSharedPreference(context, Constants.KEY_DESCRIPTION, description)
+                    Utility.setSharedPreference(
+                        context,
+                        Constants.KEY_ALERT_DESCRIPTION,
+                        alertDescription
+                    )
+                    selectStatus(statusId.toInt())
+
+                } else if (modelResponse != null && modelResponse.error?.equals(true)!!) {
+//                    dialogProgress!!.dismiss()
+                    Toast.makeText(context, modelResponse.message, Toast.LENGTH_LONG).show()
+                    if (modelResponse.message.equals("User details not found. Please register/login again.")) {
+                        closeSubMenusFab()
+                        Utility.clearPreference(context)
+                        val intent = Intent(context, LogInActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ModelTrackUserLocation?>, t: Throwable) {
+//                dialogProgress!!.dismiss()
+                Log.e("model", "onFailure    " + t.message)
+            }
+        })
+    }
+
+    private fun startTimeCounter(timerCountdown: Long) {
+        object : CountDownTimer(timerCountdown, 1000) {
+            @SuppressLint("SetTextI18n")
+            override fun onTick(millisUntilFinished: Long) {
+                tvTagTimer.text ="Next status update will be in : ";
+                tvTimer.text = ""+String.format("0%d:%d",
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)))
+            }
+            @SuppressLint("SetTextI18n")
+            override fun onFinish() {
+                tvTimer.text = "05:00"
+                getCountdownDetails()
+            }
+        }.start()
+    }
+
     private fun selectStatus(statusId: Int) {
         tv_status_title.text = Utility.getSharedPreferences(context, Constants.KEY_TITLE)
         tvStatusMsg.text = Utility.getSharedPreferences(context, Constants.KEY_SUB_TITLE)
@@ -400,54 +504,17 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
                 tvStatusMsg.visibility = View.GONE
             }
         }
-
-//        getAppVersion()
-    }
-
-    private fun getAppVersion() {
-        val apiInterface: ApiInterface =
-            ClientInstance.retrofitInstance!!.create(ApiInterface::class.java)
-        val call: Call<ModelAppVersion> = apiInterface.getAppVersion(Constants.KEY_BOT)
-        call.enqueue(object : Callback<ModelAppVersion?> {
-            @SuppressLint("SimpleDateFormat")
-            override fun onResponse(
-                call: Call<ModelAppVersion?>,
-                response: Response<ModelAppVersion?>
-            ) {
-                val responses: ModelAppVersion? = response.body()
-
-                if (responses != null && responses.error?.equals(false)!!) {
-                    val details: DetailsAppVersion = responses.details!!
-                    val versionApi = details.android!!
-
-                    val manager = context.packageManager
-                    val info = manager.getPackageInfo(context.packageName, 0)
-                    val versionApp = info.versionName
-
-                    Log.e("versionApp", versionApp)
-                    if (versionApi > versionApp.toFloat()) {
-                        dialogUpdateApp()
-                    }
-
-                } else if (responses != null && responses.error?.equals(true)!!) {
-                    Log.e("ErrorTrue", responses.message!!)
-                }
-            }
-
-            override fun onFailure(call: Call<ModelAppVersion?>, t: Throwable) {
-                Log.e("model", "onFailure    " + t.message)
-            }
-        })
     }
 
     //closes FAB submenus
     private fun closeSubMenusFab() {
-        layoutRecordTemp.visibility = View.INVISIBLE
-        layoutProfile.visibility = View.INVISIBLE
-        layoutHotspots.visibility = View.INVISIBLE
-        layoutSafeEntry.visibility = View.INVISIBLE
-        layoutAbout.visibility = View.INVISIBLE
-        layoutLogout.visibility = View.INVISIBLE
+        layoutRecordTemp.visibility = View.GONE
+        layoutProfile.visibility = View.GONE
+        layoutHotspots.visibility = View.GONE
+        layoutSafeEntry.visibility = View.GONE
+        layoutAbout.visibility = View.GONE
+        layoutShareApp.visibility = View.GONE
+        layoutLogout.visibility = View.GONE
         fabSetting!!.setImageResource(R.drawable.slider)
         fabExpanded = false
     }
@@ -458,19 +525,20 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
         layoutProfile.visibility = View.VISIBLE
         layoutHotspots.visibility = View.VISIBLE
         layoutAbout.visibility = View.VISIBLE
+        layoutShareApp.visibility = View.VISIBLE
 
-//      layoutLogout.setVisibility(View.VISIBLE);
-//      Singapore, UK, India
+//        layoutLogout.visibility = View.VISIBLE
+//        Singapore, UK, India
 //        if(countryName == "Singapore" || countryName == "United Kingdom" || countryName == "UK" || countryName == "India"){
 //            layoutSafeEntry.visibility = View.VISIBLE
 //        }else{
-//            layoutSafeEntry.visibility = View.INVISIBLE
+//            layoutSafeEntry.visibility = View.GONE
 //        }
 
         if (countryName == "Singapore") {
             layoutSafeEntry.visibility = View.VISIBLE
         } else {
-            layoutSafeEntry.visibility = View.INVISIBLE
+            layoutSafeEntry.visibility = View.GONE
         }
         fabSetting!!.setImageResource(R.drawable.ic_close_white)
         fabExpanded = true
@@ -489,33 +557,6 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
 
         tvOk.setOnClickListener {
             startActivityForResult(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 1)
-            dialog.dismiss()
-        }
-        dialog.show()
-    }
-
-    private fun dialogUpdateApp() {
-        val dialog = Dialog(context)
-        dialog.setContentView(R.layout.dialog_app_update)
-        dialog.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setCancelable(false)
-        val tvOk = dialog.findViewById(R.id.tvOk) as TextView
-        val tvLater = dialog.findViewById(R.id.tvLater) as TextView
-
-        tvOk.setOnClickListener {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=libertypassage.com.corporate")
-                )
-            )
-            dialog.dismiss()
-        }
-        tvLater.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
@@ -711,6 +752,42 @@ class HomePage : AppCompatActivity(), View.OnClickListener {
             val uri: Uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
             startActivityForResult(intent, 456)
+        }
+        dialog.show()
+    }
+
+    private fun dialogAppShare() {
+        val dialog = Dialog(context)
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_app_share)
+
+        val tvCancel = dialog.findViewById(R.id.tvCancel) as TextView
+        val tvOk = dialog.findViewById(R.id.tvOk) as TextView
+
+        tvCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        tvOk.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Liberty & Passage")
+            intent.putExtra(
+                Intent.EXTRA_TEXT,
+                "Congratulations, you have been invited to join Liberty & Passage Universe, the Global Outbreak Management Solution. Please install the app from any of the following stores : "+
+                        "\nAndroid :"+
+                        "\nhttps://play.google.com/store/apps/details?id=libertypassage.com.corporate"+
+                        "\niOS :"+
+                        "\nhttps://apps.apple.com/in/app/liberty-passage-corporate/id1546042654"
+            )
+            intent.type = "text/plain"
+            startActivity(intent)
         }
         dialog.show()
     }

@@ -33,7 +33,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_5sdp"
             android:text="@string/corporate"
             android:fontFamily="@font/century_gothic"
             android:textColor="@color/colorPrimary"
@@ -99,19 +98,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_1sdp"
-                android:text="ENROLMENT DECLARATION"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:text="BY USING THIS APPLICATION YOU AGREE TO THE FOLLOWING PERSONAL DATA AND PRIVACY POLICY : "
                 android:fontFamily="@font/century_gothic"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"
                 tools:ignore="HardcodedText" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_40sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:orientation="horizontal">
 
@@ -124,17 +125,25 @@
                     android:checked="true" />
 
                 <TextView
-                    android:id="@+id/terms1"
+                    android:id="@+id/tvTerms1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:text="@string/term1"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Personal Data"
                     android:fontFamily="@font/century_gothic"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
-                    android:layout_marginStart="@dimen/_10sdp" />
+                    android:layout_marginStart="@dimen/_30sdp"
+                    tools:ignore="HardcodedText" />
+                <View
+                    android:layout_width="@dimen/_85sdp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginLeft="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:layout_marginRight="@dimen/_30sdp"
+                    android:background="@color/white" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -144,7 +153,7 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@color/gray" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
@@ -161,16 +170,24 @@
                     android:checked="true" />
 
                 <TextView
-                    android:id="@+id/terms2"
+                    android:id="@+id/tvTerms2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:text="@string/term2"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Privacy Policy"
                     android:fontFamily="@font/century_gothic"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
-                    android:layout_marginStart="@dimen/_10sdp" />
-            </LinearLayout>
+                    android:layout_marginStart="@dimen/_30sdp"
+                    tools:ignore="HardcodedText" />
+                <View
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginLeft="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:layout_marginRight="@dimen/_30sdp"
+                    android:background="@color/white" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -180,12 +197,14 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@color/gray" />
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_15sdp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <libertypassage.com.corporate.utilities.CustomCheckBox
@@ -200,7 +219,6 @@
                     android:id="@+id/terms3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:text="@string/terms3"
                     android:fontFamily="@font/century_gothic"
                     android:textColor="@color/white"
@@ -215,6 +233,7 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_19sdp"
                 android:layout_marginRight="@dimen/_15sdp"
+                android:visibility="gone"
                 android:background="@color/gray" />
 
             <LinearLayout
@@ -223,6 +242,7 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_15sdp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <libertypassage.com.corporate.utilities.CustomCheckBox
@@ -237,7 +257,6 @@
                     android:id="@+id/terms4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:text="@string/terms4"
                     android:fontFamily="@font/century_gothic"
                     android:textColor="@color/white"

@@ -21,12 +21,14 @@ interface Constants {
         const val ADD_USER_CONF = "addUserConf"
         const val USER_ENROLL_DECLARE = "addUserEnrollDeclare"
         const val TRACK_USER_LOCATION = "addTrackUserLocation"
+        const val GET_COUNTDOWN_DETAILS = "getCountdownDetails"
         const val ADDRESS_AND_TEMP = "addUserAddressAndTemp"
         const val LOCATION_HISTORY = "getHotspots"
         const val UPDATE_USER_PROFILE = "updateUser"
         const val GET_VACCINES = "getVaccines"
         const val VERIFY_EMPLOYEE = "verifyEmployee"
         const val GET_APP_VERSION = "getcurrentversion"
+
 
 //        const val GET_EMAIL_OTP = "getEmailOtp"
 //        const val RESEND_EMAIL_OTP = "resetEmailOtp"
@@ -79,10 +81,8 @@ interface Constants {
         const val KEY_CORPORATION_ID = "corporation_id"
         const val KEY_NRIC_ID = "nric_id"
         const val PERMISSION_CODE = 100
-        const val KEY_TERMS_ACCEPT = "terms_accept"
+        const val KEY_TERMS_ACCEPT = "terms_accept_corporate"
         var safeEntryArrayList: ArrayList<ModelSafeEntry> = ArrayList<ModelSafeEntry>()
-
-
 //        Log.e("ModelSignUp", Gson().toJson(modelResponse))
     }
 }

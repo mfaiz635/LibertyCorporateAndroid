@@ -73,7 +73,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/_27sdp"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/century_gothic"
                     android:gravity="center_vertical"
