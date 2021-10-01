@@ -11,10 +11,10 @@
 
     <include layout="@layout/activity_header" />
 
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:scrollbars="none">-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:orientation="horizontal"
                 android:weightSum="2">
@@ -166,13 +166,14 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
                     tools:ignore="HardcodedText" />
+
             </LinearLayout>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@color/gray" />
 
@@ -181,7 +182,7 @@
                 android:layout_width="@dimen/_180sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginBottom="@dimen/_30sdp"
                 android:background="@drawable/rounded_gradient_button"
                 android:fontFamily="@font/century_gothic"
@@ -192,5 +193,5 @@
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>
-<!--    </ScrollView>-->
+    </ScrollView>
 </LinearLayout>
