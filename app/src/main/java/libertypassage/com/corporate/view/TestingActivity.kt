@@ -12,15 +12,7 @@ import libertypassage.com.corporate.R
 class TestingActivity : AppCompatActivity() {
     private lateinit var context: Context
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    var permission = arrayOf<String?>(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.CAMERA,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION
-    )
+   // testing content
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
