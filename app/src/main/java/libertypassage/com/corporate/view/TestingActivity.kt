@@ -12,7 +12,6 @@ import libertypassage.com.corporate.R
 class TestingActivity : AppCompatActivity() {
     private lateinit var context: Context
 
-   // testing content
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
