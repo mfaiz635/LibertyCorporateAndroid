@@ -48,19 +48,17 @@ class UpdateMyTemperature : AppCompatActivity(), View.OnClickListener {
 
         if (tempType == "Celsius") {
             val temps = currentTemp.toFloat() - 35.00
-            seekBar!!.curProcess = temps
             seekBar!!.maxProcess = maxProcess
+            seekBar!!.curProcess = temps
             tv_celcius.background = resources.getDrawable(R.drawable.rounded_gray_button)
             tv_farenheit.background = resources.getDrawable(R.drawable.rounded_gray_trans_button)
         } else if (tempType == "Fahrenheit") {
             val temps = currentTemp.toFloat() - 90.00
-            seekBar!!.curProcess = temps
             seekBar!!.maxProcess = 20.0
+            seekBar!!.curProcess = temps
             tv_celcius.background = resources.getDrawable(R.drawable.rounded_gray_trans_button)
             tv_farenheit.background = resources.getDrawable(R.drawable.rounded_gray_button)
         }
-
-
 
         seekBar?.setOnSeekBarChangeListener(object : CircleSeekBar.OnSeekBarChangeListener {
             override fun onChanged(seekbar: CircleSeekBar?, curValue: Double) {

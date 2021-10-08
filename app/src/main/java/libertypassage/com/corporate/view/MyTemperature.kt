@@ -66,8 +66,8 @@ class MyTemperature : AppCompatActivity(), View.OnClickListener {
             R.id.tvCelcius -> {
                 tempType = "Celsius"
                 tv_tempValue.text = 35.00.toString()
-                seekBar!!.curProcess = 0.00
                 seekBar!!.maxProcess = maxProcess
+                seekBar!!.curProcess = 0.00
                 tv_tempTpye.text = "Celsius"
                 tvCelcius.background = resources.getDrawable(R.drawable.rounded_gray_button)
                 tvFarenheit.background = resources.getDrawable(R.drawable.rounded_gray_trans_button)
@@ -76,8 +76,8 @@ class MyTemperature : AppCompatActivity(), View.OnClickListener {
             R.id.tvFarenheit -> {
                 tempType = "Fahrenheit"
                 tv_tempValue.text = 90.00.toString()
-                seekBar!!.curProcess = 0.00
                 seekBar!!.maxProcess = 20.0
+                seekBar!!.curProcess = 0.00
                 tv_tempTpye.text = "Fahrenheit"
                 tvCelcius.background = resources.getDrawable(R.drawable.rounded_gray_trans_button)
                 tvFarenheit.background = resources.getDrawable(R.drawable.rounded_gray_button)
