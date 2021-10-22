@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/about_app.xml" value="0.234375" />
+        <entry key="app/src/main/res/layout/acknowledgement.xml" value="0.234375" />
+        <entry key="app/src/main/res/layout/home_page.xml" value="0.234375" />
         <entry key="app/src/main/res/layout/update_my_temperture.xml" value="0.234375" />
       </map>
     </option>

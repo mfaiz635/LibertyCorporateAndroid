@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.AnilFurkanOkcun:UWMediaPicker-Android:1.3.2@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9795a82dabd5aa219c5752fb12146e45/transformed/jetified-UWMediaPicker-Android-1.3.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9795a82dabd5aa219c5752fb12146e45/transformed/jetified-UWMediaPicker-Android-1.3.2/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9795a82dabd5aa219c5752fb12146e45/transformed/jetified-UWMediaPicker-Android-1.3.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e1e972fa341baedd7a025dc2eefbcb1d/transformed/jetified-UWMediaPicker-Android-1.3.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e1e972fa341baedd7a025dc2eefbcb1d/transformed/jetified-UWMediaPicker-Android-1.3.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e1e972fa341baedd7a025dc2eefbcb1d/transformed/jetified-UWMediaPicker-Android-1.3.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

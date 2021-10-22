@@ -169,7 +169,6 @@ class HotSpotsActivity : AppCompatActivity(), View.OnClickListener, OnMapReadyCa
     }
 
 
-
     private fun enableGPSSettingsRequest(context: Context) {
         val googleApiClient = GoogleApiClient.Builder(context).addApi(LocationServices.API).build()
         googleApiClient.connect()
